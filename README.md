@@ -2,10 +2,8 @@
 
   Director of Software Engineering with a passion for building high-impact engineering teams and scalable systems.
 
-🌐 thehimanshujain.github.io
+🌐 **[thehimanshujain.github.io](https://thehimanshujain.github.io/thehimanshujain/)**
 
   ---
 
-  ### Connect
-
-  [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=flat&logo=linkedin&logoColor=white)](https://linkedin.com/in/thehimanshujain)
+  ### Connect             [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=flat&logo=linkedin&logoColor=white)](https://linkedin.com/in/thehimanshujain)
