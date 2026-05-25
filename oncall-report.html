@@ -132,9 +132,16 @@ tbody td:first-child { font-weight: 600; color: var(--text); }
 
 .badge-red { background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.3); color: rgb(248, 113, 113); }
 
-.gchat-bubble { background: rgb(7, 31, 20); border: 1px solid rgb(26, 58, 37); border-radius: 10px; padding: 14px 16px; font-family: "Courier New", Courier, monospace; font-size: 12px; line-height: 1.65; color: rgb(167, 243, 200); white-space: pre-wrap; word-break: break-word; }
+.gchat-bubble { background: var(--surface); border: 1px solid rgba(249,115,22,.2); border-radius: 12px; overflow: hidden; font-family: "DM Sans", sans-serif; font-size: 12px; }
 
-.gchat-bubble .gchat-header { color: rgb(74, 222, 128); font-weight: bold; }
+.gchat-bubble .gchat-head { background: rgba(249,115,22,.08); border-bottom: 1px solid rgba(249,115,22,.2); padding: 10px 14px; display: flex; align-items: center; gap: 8px; }
+.gchat-bubble .gchat-head .gchat-title { font-size: 13px; font-weight: 700; color: #fb923c; flex: 1; }
+.gchat-bubble .gchat-head .gchat-date { font-size: 11px; color: var(--text-muted); }
+.gchat-bubble .gchat-body { padding: 12px 14px; display: flex; flex-direction: column; gap: 7px; }
+.gchat-bubble .gchat-row { font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 7px; }
+.gchat-bubble .gchat-row strong { color: var(--text); font-weight: 600; }
+.gchat-bubble .gchat-row .gdot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.gchat-bubble .gchat-status { margin-top: 4px; display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
 
 .gchat-btn { display: inline-block; padding: 8px 18px; font-size: 13px; font-weight: 600; color: var(--accent); border: 1px solid var(--accent); border-radius: 8px; text-decoration: none; cursor: pointer; background: transparent; transition: background 0.2s, color 0.2s; font-family: "DM Sans", sans-serif; align-self: flex-start; }
 
@@ -394,13 +401,22 @@ footer .footer-sub { font-size: 12px; color: var(--text-muted); margin-top: 6px;
           <div class="alert-chip"><span class="num">0</span>open</div>
           <span class="status-badge badge-green">🟢 All clear</span>
         </div>
-        <div class="gchat-bubble"><span class="gchat-header">🔔 [P&amp;P BACKEND] Daily On-Call Report · May 25</span>
-On-call: Arjun Mehta
-Alerts: 4 created · 4 resolved · 0 open
-SLA: ✅ No breaches
-MTTR: 1h 12m
-Status: 🟢 All clear</div>
-        <button class="gchat-btn">Open in GChat</button>
+        <div class="gchat-bubble">
+          <div class="gchat-head">
+            <span style="font-size:15px;">🔔</span>
+            <span class="gchat-title">Coupons · Daily On-Call</span>
+            <span class="gchat-date">May 25</span>
+          </div>
+          <div class="gchat-body">
+            <div class="gchat-row">👤 <strong>Arjun Mehta</strong> <span>on-call</span></div>
+            <div class="gchat-row"><span class="gdot" style="background:#22c55e"></span> <strong>2</strong> created &nbsp;<span style="font-size:10px;opacity:.6">≤5 · green</span></div>
+            <div class="gchat-row"><span class="gdot" style="background:#22c55e"></span> <strong>2</strong> resolved &nbsp;<span style="font-size:10px;opacity:.6">≥90% · green</span></div>
+            <div class="gchat-row"><span class="gdot" style="background:#22c55e"></span> <strong>0</strong> open &nbsp;<span style="font-size:10px;opacity:.6">≤2 · green</span></div>
+            <div class="gchat-row"><span class="gdot" style="background:#22c55e"></span> SLA <strong>✅ No breaches</strong></div>
+            <div class="gchat-row">⏱ MTTR <strong>0h 30m</strong></div>
+            <div class="gchat-status" style="color:#4ade80;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);">🟢 All clear</div>
+          </div>
+        </div><button class="gchat-btn">Open in GChat</button>
       </div>
 
       <!-- P&P Data Science — YELLOW -->
@@ -421,12 +437,22 @@ Status: 🟢 All clear</div>
           <div class="alert-chip"><span class="num">4</span>open</div>
           <span class="status-badge badge-yellow">🟡 Needs attention</span>
         </div>
-        <div class="gchat-bubble"><span class="gchat-header">🔔 [P&amp;P DATA SCIENCE] Daily On-Call Report · May 25</span>
-On-call: Priya Nair
-Alerts: 8 created · 6 resolved · 4 open
-SLA: ⚠️ 1 breach
-MTTR: 2h 48m
-Status: 🟡 Needs attention</div>
+        <div class="gchat-bubble">
+          <div class="gchat-head">
+            <span style="font-size:15px;">🔔</span>
+            <span class="gchat-title">P&amp;P Data Science · Daily On-Call</span>
+            <span class="gchat-date">May 25</span>
+          </div>
+          <div class="gchat-body">
+            <div class="gchat-row">👤 <strong>Priya Nair</strong> <span>on-call</span></div>
+            <div class="gchat-row"><span class="gdot" style="background:#facc15"></span> <strong>8</strong> created &nbsp;<span style="font-size:10px;opacity:.6">6–10 · yellow</span></div>
+            <div class="gchat-row"><span class="gdot" style="background:#facc15"></span> <strong>6</strong> resolved &nbsp;<span style="font-size:10px;opacity:.6">70–89% · yellow</span></div>
+            <div class="gchat-row"><span class="gdot" style="background:#facc15"></span> <strong>4</strong> open &nbsp;<span style="font-size:10px;opacity:.6">3–5 · yellow</span></div>
+            <div class="gchat-row"><span class="gdot" style="background:#facc15"></span> SLA <strong>⚠️ 1 breach</strong></div>
+            <div class="gchat-row">⏱ MTTR <strong>2h 45m</strong></div>
+            <div class="gchat-status" style="color:#fbbf24;background:rgba(250,204,21,.1);border:1px solid rgba(250,204,21,.25);">🟡 Elevated</div>
+          </div>
+        </div>
         <button class="gchat-btn">Open in GChat</button>
       </div>
 
@@ -448,12 +474,22 @@ Status: 🟡 Needs attention</div>
           <div class="alert-chip"><span class="num">0</span>open</div>
           <span class="status-badge badge-green">🟢 All clear</span>
         </div>
-        <div class="gchat-bubble"><span class="gchat-header">🔔 [MC COMMERCIAL] Daily On-Call Report · May 25</span>
-On-call: Sofia Reyes
-Alerts: 3 created · 3 resolved · 0 open
-SLA: ✅ No breaches
-MTTR: 0h 47m
-Status: 🟢 All clear</div>
+        <div class="gchat-bubble">
+          <div class="gchat-head">
+            <span style="font-size:15px;">🔔</span>
+            <span class="gchat-title">MC Commercial · Daily On-Call</span>
+            <span class="gchat-date">May 25</span>
+          </div>
+          <div class="gchat-body">
+            <div class="gchat-row">👤 <strong>Sofia Reyes</strong> <span>on-call</span></div>
+            <div class="gchat-row"><span class="gdot" style="background:#22c55e"></span> <strong>3</strong> created &nbsp;<span style="font-size:10px;opacity:.6">≤5 · green</span></div>
+            <div class="gchat-row"><span class="gdot" style="background:#22c55e"></span> <strong>3</strong> resolved &nbsp;<span style="font-size:10px;opacity:.6">≥90% · green</span></div>
+            <div class="gchat-row"><span class="gdot" style="background:#22c55e"></span> <strong>0</strong> open &nbsp;<span style="font-size:10px;opacity:.6">≤2 · green</span></div>
+            <div class="gchat-row"><span class="gdot" style="background:#22c55e"></span> SLA <strong>✅ No breaches</strong></div>
+            <div class="gchat-row">⏱ MTTR <strong>0h 48m</strong></div>
+            <div class="gchat-status" style="color:#4ade80;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);">🟢 All clear</div>
+          </div>
+        </div>
         <button class="gchat-btn">Open in GChat</button>
       </div>
 
@@ -475,12 +511,22 @@ Status: 🟢 All clear</div>
           <div class="alert-chip"><span class="num">7</span>open</div>
           <span class="status-badge badge-red">🔴 Critical</span>
         </div>
-        <div class="gchat-bubble"><span class="gchat-header">🔔 [MC DELIVERABILITY] Daily On-Call Report · May 25</span>
-On-call: Tanvir Hossain
-Alerts: 14 created · 9 resolved · 7 open
-SLA: ⚠️ 3 breaches
-MTTR: 5h 20m
-Status: 🔴 Critical — EM escalated</div>
+        <div class="gchat-bubble">
+          <div class="gchat-head">
+            <span style="font-size:15px;">🔔</span>
+            <span class="gchat-title">MC Deliverability · Daily On-Call</span>
+            <span class="gchat-date">May 25</span>
+          </div>
+          <div class="gchat-body">
+            <div class="gchat-row">👤 <strong>Tanvir Hossain</strong> <span>on-call</span></div>
+            <div class="gchat-row"><span class="gdot" style="background:#ef4444"></span> <strong>14</strong> created &nbsp;<span style="font-size:10px;opacity:.6">>10 · red</span></div>
+            <div class="gchat-row"><span class="gdot" style="background:#ef4444"></span> <strong>9</strong> resolved &nbsp;<span style="font-size:10px;opacity:.6"><70% · red</span></div>
+            <div class="gchat-row"><span class="gdot" style="background:#ef4444"></span> <strong>6</strong> open &nbsp;<span style="font-size:10px;opacity:.6">>5 · red</span></div>
+            <div class="gchat-row"><span class="gdot" style="background:#ef4444"></span> SLA <strong>⚠️ 3 breaches</strong></div>
+            <div class="gchat-row">⏱ MTTR <strong>4h 20m</strong></div>
+            <div class="gchat-status" style="color:#f87171;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);">🔴 Critical</div>
+          </div>
+        </div>
         <button class="gchat-btn">Open in GChat</button>
       </div>
 
@@ -502,12 +548,22 @@ Status: 🔴 Critical — EM escalated</div>
           <div class="alert-chip"><span class="num">3</span>open</div>
           <span class="status-badge badge-yellow">🟡 Needs attention</span>
         </div>
-        <div class="gchat-bubble"><span class="gchat-header">🔔 [PAID MARKETING] Daily On-Call Report · May 25</span>
-On-call: Aisha Okonkwo
-Alerts: 7 created · 5 resolved · 3 open
-SLA: ⚠️ 2 breaches
-MTTR: 3h 05m
-Status: 🟡 Needs attention</div>
+        <div class="gchat-bubble">
+          <div class="gchat-head">
+            <span style="font-size:15px;">🔔</span>
+            <span class="gchat-title">Paid Marketing · Daily On-Call</span>
+            <span class="gchat-date">May 25</span>
+          </div>
+          <div class="gchat-body">
+            <div class="gchat-row">👤 <strong>Aisha Okonkwo</strong> <span>on-call</span></div>
+            <div class="gchat-row"><span class="gdot" style="background:#facc15"></span> <strong>6</strong> created &nbsp;<span style="font-size:10px;opacity:.6">6–10 · yellow</span></div>
+            <div class="gchat-row"><span class="gdot" style="background:#facc15"></span> <strong>5</strong> resolved &nbsp;<span style="font-size:10px;opacity:.6">70–89% · yellow</span></div>
+            <div class="gchat-row"><span class="gdot" style="background:#22c55e"></span> <strong>2</strong> open &nbsp;<span style="font-size:10px;opacity:.6">≤2 · green</span></div>
+            <div class="gchat-row"><span class="gdot" style="background:#facc15"></span> SLA <strong>⚠️ 1 breach</strong></div>
+            <div class="gchat-row">⏱ MTTR <strong>1h 55m</strong></div>
+            <div class="gchat-status" style="color:#fbbf24;background:rgba(250,204,21,.1);border:1px solid rgba(250,204,21,.25);">🟡 Elevated</div>
+          </div>
+        </div>
         <button class="gchat-btn">Open in GChat</button>
       </div>
 
@@ -529,12 +585,22 @@ Status: 🟡 Needs attention</div>
           <div class="alert-chip"><span class="num">0</span>open</div>
           <span class="status-badge badge-green">🟢 All clear</span>
         </div>
-        <div class="gchat-bubble"><span class="gchat-header">🔔 [ADS &amp; SPONSORED] Daily On-Call Report · May 25</span>
-On-call: James Ofoegbu
-Alerts: 5 created · 5 resolved · 0 open
-SLA: ✅ No breaches
-MTTR: 1h 33m
-Status: 🟢 All clear</div>
+        <div class="gchat-bubble">
+          <div class="gchat-head">
+            <span style="font-size:15px;">🔔</span>
+            <span class="gchat-title">Ads &amp; Sponsored · Daily On-Call</span>
+            <span class="gchat-date">May 25</span>
+          </div>
+          <div class="gchat-body">
+            <div class="gchat-row">👤 <strong>James Ofoegbu</strong> <span>on-call</span></div>
+            <div class="gchat-row"><span class="gdot" style="background:#22c55e"></span> <strong>4</strong> created &nbsp;<span style="font-size:10px;opacity:.6">≤5 · green</span></div>
+            <div class="gchat-row"><span class="gdot" style="background:#22c55e"></span> <strong>4</strong> resolved &nbsp;<span style="font-size:10px;opacity:.6">≥90% · green</span></div>
+            <div class="gchat-row"><span class="gdot" style="background:#22c55e"></span> <strong>0</strong> open &nbsp;<span style="font-size:10px;opacity:.6">≤2 · green</span></div>
+            <div class="gchat-row"><span class="gdot" style="background:#22c55e"></span> SLA <strong>✅ No breaches</strong></div>
+            <div class="gchat-row">⏱ MTTR <strong>1h 05m</strong></div>
+            <div class="gchat-status" style="color:#4ade80;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);">🟢 All clear</div>
+          </div>
+        </div>
         <button class="gchat-btn">Open in GChat</button>
       </div>
 
@@ -556,12 +622,22 @@ Status: 🟢 All clear</div>
           <div class="alert-chip"><span class="num">0</span>open</div>
           <span class="status-badge badge-green">🟢 All clear</span>
         </div>
-        <div class="gchat-bubble"><span class="gchat-header">🔔 [COUPONS] Daily On-Call Report · May 25</span>
-On-call: Lena Fischer
-Alerts: 2 created · 2 resolved · 0 open
-SLA: ✅ No breaches
-MTTR: 0h 31m
-Status: 🟢 All clear</div>
+        <div class="gchat-bubble">
+          <div class="gchat-head">
+            <span style="font-size:15px;">🔔</span>
+            <span class="gchat-title">Coupons · Daily On-Call</span>
+            <span class="gchat-date">May 25</span>
+          </div>
+          <div class="gchat-body">
+            <div class="gchat-row">👤 <strong>Lena Fischer</strong> <span>on-call</span></div>
+            <div class="gchat-row"><span class="gdot" style="background:#22c55e"></span> <strong>2</strong> created &nbsp;<span style="font-size:10px;opacity:.6">≤5 · green</span></div>
+            <div class="gchat-row"><span class="gdot" style="background:#22c55e"></span> <strong>2</strong> resolved &nbsp;<span style="font-size:10px;opacity:.6">≥90% · green</span></div>
+            <div class="gchat-row"><span class="gdot" style="background:#22c55e"></span> <strong>0</strong> open &nbsp;<span style="font-size:10px;opacity:.6">≤2 · green</span></div>
+            <div class="gchat-row"><span class="gdot" style="background:#22c55e"></span> SLA <strong>✅ No breaches</strong></div>
+            <div class="gchat-row">⏱ MTTR <strong>0h 30m</strong></div>
+            <div class="gchat-status" style="color:#4ade80;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);">🟢 All clear</div>
+          </div>
+        </div>
         <button class="gchat-btn">Open in GChat</button>
       </div>
 
