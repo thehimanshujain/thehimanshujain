@@ -585,6 +585,7 @@ header.scrolled #header-slim { display:flex; }
           <div class="section-title">Alerts &amp; Reliability Intelligence</div>
           <div class="section-desc">Daily On-Call OpsGenie Team Alert Summary — alerts created, resolved, open, and SLA breaches. Posted daily 9 AM to various Engineering Team GChat.</div>
           <span class="auto-badge">⚙ n8n · Daily 09:00 AM IST</span>
+          <div class="section-badge" id="oncallCount"></div>
         </div>
       </div>
       <div style="width:100%;padding-top:12px;border-top:1px solid var(--border);">
@@ -599,17 +600,14 @@ header.scrolled #header-slim { display:flex; }
         </div>
       </div>
     </div>
-    <div class="section-right" style="justify-content:flex-start;">
+    <div class="section-right" id="oncallBody">
       <div class="report-row-head">
         <span class="report-row-label">View Reports</span>
       </div>
-      <a href="oncall-report.html" style="display:inline-flex;align-items:center;gap:7px;padding:9px 20px;border-radius:10px;border:1px solid rgba(249,115,22,.4);background:rgba(249,115,22,.08);color:rgba(249,115,22,.95);font-size:13px;font-weight:700;text-decoration:none;transition:background .15s;align-self:flex-start;" onmouseover="this.style.background='rgba(249,115,22,.16)'" onmouseout="this.style.background='rgba(249,115,22,.08)'">
-        View Report →
-      </a>
-      <span id="oncallLastRun" style="font-size:12px;color:var(--text-muted);margin-top:8px;display:block;">
-        <span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 3px rgba(34,197,94,.2);margin-right:6px;vertical-align:middle;"></span>
-        Last run: <span id="oncallLastRunDate"></span> · 09:00 AM IST
-      </span>
+      <div id="oncallSkeleton" class="skeleton-wrap"><div class="skeleton-label"></div><div style="display:flex;gap:8px;flex-wrap:wrap"><div class="skeleton-chip wide"></div><div class="skeleton-chip narrow"></div></div></div>
+      <div class="chips-wrap" id="oncallLatest"></div>
+      <div class="older-chips hidden" id="oncallPast" style="max-height:200px"></div>
+      <div class="older-wrap"><button class="older-toggle" id="oncallOlderBtn" style="display:none" onclick="toggleOlder('oncall')"><span class="toggle-icon">▼</span>&nbsp;<span id="oncallOlderText">Show older</span></button></div>
     </div>
   </div>
 
@@ -631,7 +629,8 @@ const state = {
   incentive: { collapsed: false, olderOpen: false },
   graphlens: { collapsed: false, olderOpen: false },
   service:   { collapsed: false, olderOpen: false },
-  bw:        { collapsed: false, olderOpen: false }
+  bw:        { collapsed: false, olderOpen: false },
+  oncall:    { collapsed: false, olderOpen: false }
 };
 
 const SECTION_DESC = {
@@ -657,18 +656,7 @@ function daysAgo(n){const d=parseDate(n);if(!d)return '';const diff=Math.floor((
   // Auto-update "Last run" for Alerts & Reliability Intelligence
   // The n8n job runs daily at 09:00 AM IST; show today's date (updated each page load)
   (function(){
-    const el = document.getElementById('oncallLastRunDate');
-    if (!el) return;
-    const ist = new Date(now.toLocaleString('en-US', {timeZone:'Asia/Kolkata'}));
-    // If current IST time is before 09:00, last run was yesterday
-    const cutoff = new Date(ist); cutoff.setHours(9,0,0,0);
-    const runDate = ist < cutoff ? new Date(ist.setDate(ist.getDate()-1)) : ist;
-    el.textContent = runDate.toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric'});
-  })();
-  const bd=document.getElementById('bannerDate'); if(bd) bd.textContent=now.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-  const ft2=document.getElementById('footerDate2');
-  if(ft2)ft2.textContent='Refreshed '+now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
-})();
+
 
 function makeChip(file, isLatest, key){
   if(isLatest){
@@ -791,7 +779,16 @@ function loadFiles(){
   renderSection('service',  sFiles,'serviceSection',  'serviceCount');
   renderSection('bw',       bFiles,'bwSection',       'bwCount');
 
-  const total=iFiles.length+gFiles.length+sFiles.length+bFiles.length;
+  const oncallFiles=[
+    {name:'oncall-report-2026-05-26-mock.html', _url:BASE+'/oncall-report-2026-05-26-mock.html'},
+    {name:'oncall-report-2026-05-25-mock.html', _url:BASE+'/oncall-report-2026-05-25-mock.html'},
+    {name:'oncall-report-2026-05-24-mock.html', _url:BASE+'/oncall-report-2026-05-24-mock.html'},
+    {name:'oncall-report-2026-05-23-mock.html', _url:BASE+'/oncall-report-2026-05-23-mock.html'},
+    {name:'oncall-report-2026-05-22-mock.html', _url:BASE+'/oncall-report-2026-05-22-mock.html'},
+  ];
+  renderSection('oncall',   oncallFiles,'oncallSection', 'oncallCount');
+
+  const total=iFiles.length+gFiles.length+sFiles.length+bFiles.length+oncallFiles.length;
   document.getElementById('reportCountChip') && (document.getElementById('reportCountChip').textContent=total+' reports');
   document.getElementById('b1') && (document.getElementById('b1').textContent=total);
 }
