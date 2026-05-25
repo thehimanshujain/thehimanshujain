@@ -395,10 +395,8 @@ footer{position:relative;z-index:2;border-top:3px solid var(--accent);background
 /* ── SCROLLED HEADER ── */
 header { transition: padding .25s ease, box-shadow .25s ease; }
 header.scrolled { padding: 10px 48px; box-shadow: 0 4px 24px rgba(0,0,0,.4); }
-#header-slim { display: none; flex: 1; align-items: center; gap: 10px; }
-header.scrolled #header-slim { display: flex; }
-header.scrolled .header-photo-wrap { display: none; }
-header.scrolled .header-text { display: none; }
+#header-slim { display:none; flex:1; align-items:center; gap:10px; }
+header.scrolled #header-slim { display:flex; }
 </style>
 </head>
 <body>
@@ -804,15 +802,28 @@ loadFiles();
 (function(){
   var hdr = document.querySelector('header');
   var wrap = hdr.querySelector('.header-inner-wrap');
+  var photoWrap = hdr.querySelector('.header-photo-wrap');
+  var headerText = hdr.querySelector('.header-text');
   var slim = document.createElement('div');
   slim.id = 'header-slim';
   slim.innerHTML = '<span style="font-size:15px;font-weight:700;color:#22c55e;">Himanshu Jain</span>'
     + '<span style="color:rgba(34,197,94,.4);font-size:14px;margin:0 6px;">·</span>'
     + '<span style="font-size:13px;color:#a0bfaa;">Director of Software Engineering &nbsp;&middot;&nbsp; Marketing &amp; Ads Platform</span>';
   wrap.insertBefore(slim, hdr.querySelector('.header-links'));
+  var collapsed = false;
   window.addEventListener('scroll', function(){
-    if(window.scrollY > 60) hdr.classList.add('scrolled');
-    else hdr.classList.remove('scrolled');
+    var y = window.scrollY;
+    if (!collapsed && y > 140) {
+      collapsed = true;
+      hdr.classList.add('scrolled');
+      photoWrap.style.display = 'none';
+      headerText.style.display = 'none';
+    } else if (collapsed && y < 60) {
+      collapsed = false;
+      hdr.classList.remove('scrolled');
+      photoWrap.style.display = '';
+      headerText.style.display = '';
+    }
   }, {passive:true});
 })();
 </script></body>
