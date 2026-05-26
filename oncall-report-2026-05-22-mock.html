@@ -221,6 +221,29 @@ footer .footer-sub { font-size: 12px; color: var(--text-muted); margin-top: 6px;
 .header-link{display:flex;align-items:center;gap:6px;padding:8px 16px;border-radius:9px;font-size:12px;font-weight:600;text-decoration:none;transition:all .15s;border:1px solid var(--border);color:var(--text-muted);background:rgba(255,255,255,.03);}
 .header-link.primary{background:var(--accent);border-color:var(--accent);color:#030b08;font-weight:700;}
 .header-link.primary:hover{background:#16a34a;}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1400px) {
+  main { padding: 36px 20px 20px; }
+}
+@media (max-width: 1280px) {
+  main { max-width: 100%; padding: 32px 18px 18px; }
+  .grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+}
+@media (max-width: 1024px) {
+  main { padding: 24px 14px 14px; }
+  .grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+  .hero h1 { font-size: clamp(22px, 3vw, 36px); }
+  .kpi-chips { gap: 8px; }
+  header { padding: 12px 16px; }
+  header .owner .title { font-size: 12px; }
+}
+@media (max-width: 768px) {
+  .grid { grid-template-columns: 1fr; }
+  header .owner .title { display: none; }
+  header { padding: 10px 14px; }
+}
+
 </style>
 </head>
 <body>
