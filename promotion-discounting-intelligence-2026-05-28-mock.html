@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2322c55e'/%3E%3Ctext x='16' y='23' font-family='system-ui,sans-serif' font-size='18' font-weight='700' fill='%23030b08' text-anchor='middle'%3EH%3C/text%3E%3C/svg%3E">
+<style>
+.mock-header{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(3,11,8,.95);border-bottom:3px solid #22c55e;backdrop-filter:blur(10px);padding:14px 32px;display:flex;align-items:center;justify-content:space-between;}
+.mock-header a.back-link{color:#22c55e;text-decoration:none;font-size:14px;font-weight:500;display:flex;align-items:center;gap:6px;transition:opacity .2s;}
+.mock-header a.back-link::before{content:"←";font-size:16px;}
+.mock-header a.back-link:hover{opacity:.75;}
+.mock-header .owner{position:absolute;left:50%;transform:translateX(-50%);white-space:nowrap;display:flex;align-items:center;gap:6px;}
+.mock-header .owner .name{font-size:15px;font-weight:700;background:linear-gradient(90deg,#22c55e,#4ade80);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.mock-header .owner .title{font-size:14px;color:#4a7a63;font-weight:400;}
+.mock-header a.mock-li{display:inline-flex;align-items:center;gap:7px;background:#22c55e;color:#030b08;font-size:12px;font-weight:700;padding:8px 16px;border-radius:9px;text-decoration:none;flex-shrink:0;}
+.mock-header a.mock-li:hover{background:#16a34a;}
+.mock-page-body{display:block;flex:1;min-height:0;}
+#sidebar{width:240px;background:var(--surface);border-right:1px solid var(--border);position:fixed;top:58px;left:0;height:calc(100vh - 58px);overflow-y:auto;flex-shrink:0;z-index:100;}
+#main{flex:1;padding:32px 40px;max-width:1140px;margin-left:240px;}
+@media(max-width:768px){.mock-header{padding:10px 14px;} .mock-header .owner .title{display:none;}}
+</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Promotion &amp; Discounting Intelligence &mdash; 2026-05-28</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#030b08;color:#ffffff;font-family:'DM Sans',system-ui,sans-serif;display:flex;min-height:100vh}
+  :root{--acc:#22c55e;--amber:#f59e0b;--red:#f43f5e;--violet:#8b5cf6;--cyan:#06b6d4;--green:#10b981;
+    --surface:#071210;--border:#122318;--muted:#4a7a63;--sec:#d1fae5}
+  #sidebar{width:240px;min-height:100vh;background:#040e08;border-right:1px solid var(--border);
+    position:fixed;top:0;left:0;overflow-y:auto;display:flex;flex-direction:column}
+  #main{margin-left:240px;flex:1;padding:32px 40px;max-width:1400px}
+  .section{margin-bottom:48px}
+  h1{font-size:24px;font-weight:700;color:#ffffff;margin-bottom:4px}
+  h2{font-size:18px;font-weight:600;color:#d1fae5;margin-bottom:16px;border-bottom:1px solid var(--border);padding-bottom:8px}
+  h3{font-size:14px;font-weight:600;color:#a7f3d0;margin-bottom:12px}
+  .kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:24px}
+  .kpi{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center}
+  .kpi .val{font-size:28px;font-weight:700;color:var(--acc)}
+  .kpi .lbl{font-size:11px;color:var(--muted);margin-top:4px}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:16px}
+  .card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+  .chart-wrap{position:relative;height:280px}
+  .chart-wrap-sm{position:relative;height:220px}
+  .donut-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:16px}
+  .donut-wrap{position:relative;height:180px}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th{text-align:left;padding:10px 12px;font-size:11px;font-weight:600;color:var(--muted);
+    text-transform:uppercase;letter-spacing:.05em;background:#050f0a;border-bottom:1px solid var(--border)}
+  td{padding:10px 12px;border-bottom:1px solid #0a1a10;color:#c7eed8}
+  tr:last-child td{border-bottom:none}
+  tr:hover td{background:rgba(34,197,94,.03)}
+  .pill{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:600}
+  .pill-green{background:rgba(34,197,94,.15);color:#22c55e;border:1px solid rgba(34,197,94,.3)}
+  .pill-amber{background:rgba(245,158,11,.15);color:#f59e0b;border:1px solid rgba(245,158,11,.3)}
+  .pill-red{background:rgba(244,63,94,.15);color:#f43f5e;border:1px solid rgba(244,63,94,.3)}
+  .pill-cyan{background:rgba(6,182,212,.15);color:#06b6d4;border:1px solid rgba(6,182,212,.3)}
+  .nav-link{display:block;padding:8px 20px;font-size:12px;color:#4a7a63;text-decoration:none;
+    border-left:2px solid transparent;transition:all .15s}
+  .nav-link:hover,.nav-link.active{color:#22c55e;border-left-color:#22c55e;background:rgba(34,197,94,.05)}
+  .nav-section{padding:12px 20px 4px;font-size:10px;font-weight:700;color:#1f4b2e;text-transform:uppercase;letter-spacing:.1em}
+  .insight-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .insight{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px}
+  .insight .badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;margin-bottom:8px;display:inline-block}
+  .insight h4{font-size:13px;font-weight:600;color:#d1fae5;margin-bottom:6px}
+  .insight p{font-size:12px;color:#4a7a63;line-height:1.5}
+  .insight .action{margin-top:8px;font-size:11px;color:#22c55e;font-weight:500}
+  .hub-o7-wrap{position:relative;display:inline-flex;border-radius:99px;padding:1.5px}
+  .hub-o7-inner{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:500;color:#4a7a63;
+    text-decoration:none;padding:5px 14px;border-radius:99px;background:#0c1a14;position:relative;z-index:1;white-space:nowrap}
+  .hub-o7-inner:hover{color:#22c55e}
+  .acc-item{border:1px solid var(--border);border-radius:8px;margin-bottom:8px;overflow:hidden}
+  .acc-header{padding:12px 16px;cursor:pointer;font-size:13px;font-weight:500;color:#a7f3d0;background:var(--surface);display:flex;justify-content:space-between}
+  .acc-body{padding:12px 16px;font-size:12px;color:#4a7a63;line-height:1.6;display:none}
+</style></head><body><div id="sidebar">
+  <div style="padding:16px 20px 20px;border-bottom:1px solid #122318;margin-bottom:10px;display:flex;align-items:center;gap:12px;">
+    <div style="width:40px;height:40px;border-radius:10px;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 0 16px rgba(34,197,94,.2);">
+      <svg width="24" height="24" viewBox="0 0 28 28" fill="none">
+        <rect x="2" y="16" width="4" height="10" rx="1.5" fill="rgba(34,197,94,.4)"/>
+        <rect x="8" y="11" width="4" height="15" rx="1.5" fill="rgba(34,197,94,.65)"/>
+        <rect x="14" y="5"  width="4" height="21" rx="1.5" fill="#22c55e"/>
+        <rect x="20" y="9"  width="4" height="17" rx="1.5" fill="rgba(34,197,94,.75)"/>
+        <polyline points="4,15 10,10 16,4 22,8" stroke="#86efac" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="16" cy="4" r="2" fill="white"/>
+      </svg>
+    </div>
+    <div>
+      <div style="font-size:13px;font-weight:700;color:#22c55e;">Promo Intelligence</div>
+      <div style="font-size:11px;color:#4a7a63;margin-top:1px;">2026-05-28 &middot; 13 Markets</div>
+    </div>
+  </div>
+  <div style="padding:10px 16px 12px;border-bottom:1px solid #122318;margin-bottom:2px;display:flex;align-items:flex-start;">
+    <div class="hub-o7-wrap" id="hub-comet"><span class="hub-o7-inner" onclick="location.href='https://thehimanshujain.github.io/thehimanshujain/'" style="cursor:pointer;">&#8592; Engineering Intelligence Hub</span></div>
+  </div>
+  <div style="padding:0 0 8px">
+    <div class="nav-section">Overview</div>
+    <a class="nav-link" href="#s00">Executive Summary</a>
+    <a class="nav-link" href="#s01">Global Portfolio</a>
+    <a class="nav-link" href="#s02">Portfolio Health</a>
+    <div class="nav-section">Metrics</div>
+    <a class="nav-link" href="#s03">Discount Depth</a>
+    <a class="nav-link" href="#s04">Purple Price</a>
+    <a class="nav-link" href="#s05">OD vs ILS</a>
+    <a class="nav-link" href="#s06">Financial KPIs</a>
+    <div class="nav-section">Deep Dives</div>
+    <a class="nav-link" href="#s07">Country Deep Dive</a>
+    <a class="nav-link" href="#s08">Vintage &amp; Expiry</a>
+    <a class="nav-link" href="#s09">Campaign Taxonomy</a>
+    <a class="nav-link" href="#s10">NA Performance</a>
+    <a class="nav-link" href="#s11">EMEA Performance</a>
+    <div class="nav-section">Insights</div>
+    <a class="nav-link" href="#s12">Strategic Insights</a>
+    <a class="nav-link" href="#s13">Red Flags</a>
+    <a class="nav-link" href="#s14">Glossary</a>
+  </div>
+</div><div id="main">
+<section id="s00" class="section">
+<div style="margin-bottom:24px">
+  <h1>Promotion &amp; Discounting Intelligence</h1>
+  <div style="color:#4a7a63;font-size:13px;margin-top:4px">2026-05-28 &middot; Live IS API data &middot; 13 markets</div>
+  <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+    <span class="pill pill-green">1420 Active Incentives</span>
+    <span class="pill pill-cyan">95% OD Coverage</span>
+    <span class="pill pill-amber">PP Avg 36.4%</span>
+    <span class="pill pill-red">142 Expiring 2026</span>
+    <span class="pill pill-green">13 Markets Live</span>
+  </div>
+</div>
+<div class="kpi-grid">
+  <div class="kpi"><div class="val">1420</div><div class="lbl">Total Incentives</div></div>
+  <div class="kpi"><div class="val">319</div><div class="lbl">NA Markets</div></div>
+  <div class="kpi"><div class="val">1101</div><div class="lbl">EMEA Markets</div></div>
+  <div class="kpi"><div class="val" style="color:#f59e0b">20.3%</div><div class="lbl">Avg Discount</div></div>
+  <div class="kpi"><div class="val" style="color:#8b5cf6">36.4%</div><div class="lbl">Purple Price %</div></div>
+  <div class="kpi"><div class="val" style="color:#06b6d4">94.6%</div><div class="lbl">OD Coverage</div></div>
+  <div class="kpi"><div class="val" style="color:#f43f5e">142</div><div class="lbl">Expiring 2026</div></div>
+  <div class="kpi"><div class="val" style="color:#f59e0b">430</div><div class="lbl">Expiring 2027</div></div>
+</div>
+</section>
+<section id="s01" class="section">
+<h2>Global Portfolio</h2>
+<div class="card-grid">
+  <div class="card" style="grid-column:span 2">
+    <h3>Incentive Count by Market</h3>
+    <div class="chart-wrap"><canvas id="cCB"></canvas></div>
+  </div>
+  <div class="card">
+    <h3>NA vs EMEA Split</h3>
+    <div class="chart-wrap"><canvas id="cNA"></canvas></div>
+  </div>
+</div>
+<div class="card-grid">
+  <div class="card">
+    <h3>Average Discount % by Market</h3>
+    <div class="chart-wrap"><canvas id="cCD"></canvas></div>
+  </div>
+</div>
+</section>
+<section id="s02" class="section">
+<h2>Portfolio Health</h2>
+<div class="donut-grid">
+  <div class="card"><h3>Promo Type</h3><div class="donut-wrap"><canvas id="d1"></canvas></div></div>
+  <div class="card"><h3>Discount Band</h3><div class="donut-wrap"><canvas id="d2"></canvas></div></div>
+  <div class="card"><h3>Purple Price Adoption</h3><div class="donut-wrap"><canvas id="d3"></canvas></div></div>
+  <div class="card"><h3>OD vs ILS Split</h3><div class="donut-wrap"><canvas id="d4"></canvas></div></div>
+  <div class="card"><h3>NA vs EMEA</h3><div class="donut-wrap"><canvas id="d5"></canvas></div></div>
+  <div class="card"><h3>Vintage (Create Year)</h3><div class="donut-wrap"><canvas id="d6"></canvas></div></div>
+</div>
+</section>
+<section id="s03" class="section">
+<h2>Discount Depth</h2>
+<div class="card-grid">
+  <div class="card">
+    <h3>Global Discount Band Distribution</h3>
+    <div class="chart-wrap"><canvas id="cDB"></canvas></div>
+  </div>
+  <div class="card">
+    <h3>Discount Band by Country (Stacked)</h3>
+    <div class="chart-wrap"><canvas id="cDS"></canvas></div>
+  </div>
+</div>
+</section>
+<section id="s04" class="section">
+<h2>Purple Price Intelligence</h2>
+<div class="card">
+  <h3>PP Adoption by Market (%) &mdash; Green &ge;50%, Amber &ge;20%, Red &lt;20%</h3>
+  <div class="chart-wrap"><canvas id="cPP"></canvas></div>
+</div>
+</section>
+<section id="s05" class="section">
+<h2>OD vs ILS Deep Dive</h2>
+<div class="card-grid">
+  <div class="card">
+    <h3>OD Coverage by Market (%)</h3>
+    <div class="chart-wrap"><canvas id="cOD"></canvas></div>
+  </div>
+  <div class="card">
+    <h3>Mechanics Reference</h3>
+    <table>
+      <tr><th>Type</th><th>Definition</th><th>Signal</th></tr>
+      <tr><td style="color:#06b6d4">OD (On-Demand)</td><td>Promo code qualification</td><td style="color:#22c55e">95% of portfolio</td></tr>
+      <tr><td style="color:#22c55e">ILS</td><td>No promo code required</td><td style="color:#f59e0b">5.4% opportunity</td></tr>
+      <tr><td style="color:#8b5cf6">Purple Price</td><td>purplePriceEnabled=true</td><td style="color:#8b5cf6">36.4% adoption</td></tr>
+    </table>
+  </div>
+</div>
+</section>
+<section id="s06" class="section">
+<h2>Financial KPIs <span style="font-size:11px;color:#4a7a63;font-weight:400">(as of Apr 2026 &mdash; Google Sheets benchmarks)</span></h2>
+<div class="card-grid">
+  <div class="card">
+    <h3>NA KPIs (Wk20 Apr 2026)</h3>
+    <table>
+      <tr><th>Metric</th><th>Value</th></tr>
+      <tr><td>OD Attach Rate</td><td style="color:#22c55e">~28.9% Wk20</td></tr>
+      <tr><td>ILS Attach Rate</td><td style="color:#22c55e">~30.4%</td></tr>
+      <tr><td>Stack Rate</td><td style="color:#f59e0b">~13.8%</td></tr>
+      <tr><td>GBV/Order</td><td style="color:#06b6d4">$0.90</td></tr>
+      <tr><td>NOR%GGR</td><td style="color:#22c55e">~55–56%</td></tr>
+      <tr><td>PS%GGB</td><td style="color:#22c55e">~19–20%</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h3>IPA Opportunity (NA Local)</h3>
+    <table>
+      <tr><th>Metric</th><th>Value</th></tr>
+      <tr><td>IPA Opportunity Range</td><td style="color:#22c55e">$2.3M–$3.0M</td></tr>
+      <tr><td>Min-Price Deals</td><td style="color:#f59e0b">96,777</td></tr>
+      <tr><td>Primary Lever</td><td style="color:#06b6d4">Price floor optimization</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h3>EMEA NOB Snapshot (Feb 2026)</h3>
+    <table>
+      <tr><th>Market</th><th>OD NOB</th></tr>
+      <tr><td>AE</td><td style="color:#22c55e">$0.1K</td></tr>
+      <tr><td>AU</td><td style="color:#22c55e">$0.1K</td></tr>
+      <tr><td>Other EMEA</td><td style="color:#4a7a63">See Sheets</td></tr>
+    </table>
+  </div>
+</div>
+</section>
+<section id="s07" class="section">
+<h2>Country Deep Dive</h2>
+<div class="card">
+  <table>
+    <thead><tr>
+      <th>Market</th><th>Count</th><th>Avg Disc</th>
+      <th>Purple Price %</th><th>OD Coverage %</th>
+    </tr></thead>
+    <tbody><tr>
+          <td style="font-weight:600;color:#d1fae5">US</td>
+          <td style="text-align:right">273</td>
+          <td style="text-align:right">18.3%</td>
+          <td><div style="display:flex;align-items:center;gap:8px">
+            <div style="flex:1;background:#0a1f15;border-radius:4px;height:6px;overflow:hidden">
+              <div style="width:76.2%;height:100%;background:#22c55e"></div></div>
+            <span style="color:#22c55e;width:38px;text-align:right;font-size:12px">76.2%</span>
+          </div></td>
+          <td><div style="display:flex;align-items:center;gap:8px">
+            <div style="flex:1;background:#0a1f15;border-radius:4px;height:6px;overflow:hidden">
+              <div style="width:82.8%;height:100%;background:#06b6d4"></div></div>
+            <span style="color:#06b6d4;width:38px;text-align:right;font-size:12px">82.8%</span>
+          </div></td>
+        </tr>
+<tr>
+          <td style="font-weight:600;color:#d1fae5">ES</td>
+          <td style="text-align:right">181</td>
+          <td style="text-align:right">19.9%</td>
+          <td><div style="display:flex;align-items:center;gap:8px">
+            <div style="flex:1;background:#0a1f15;border-radius:4px;height:6px;overflow:hidden">
+              <div style="width:26.0%;height:100%;background:#f59e0b"></div></div>
+            <span style="color:#f59e0b;width:38px;text-align:right;font-size:12px">26.0%</span>
+          </div></td>
+          <td><div style="display:flex;align-items:center;gap:8px">
+            <div style="flex:1;background:#0a1f15;border-radius:4px;height:6px;overflow:hidden">
+              <div style="width:98.9%;height:100%;background:#06b6d4"></div></div>
+            <span style="color:#06b6d4;width:38px;text-align:right;font-size:12px">98.9%</span>
+          </div></td>
+        </tr>
+<tr>
+          <td style="font-weight:600;color:#d1fae5">GB</td>
+          <td style="text-align:right">178</td>
+          <td style="text-align:right">20.8%</td>
+          <td><div style="display:flex;align-items:center;gap:8px">
+            <div style="flex:1;background:#0a1f15;border-radius:4px;height:6px;overflow:hidden">
+              <div style="width:30.9%;height:100%;background:#f59e0b"></div></div>
+            <span style="color:#f59e0b;width:38px;text-align:right;font-size:12px">30.9%</span>
+          </div></td>
+          <td><div style="display:flex;align-items:center;gap:8px">
+            <div style="flex:1;background:#0a1f15;border-radius:4px;height:6px;overflow:hidden">
+              <div style="width:96.1%;height:100%;background:#06b6d4"></div></div>
+            <span style="color:#06b6d4;width:38px;text-align:right;font-size:12px">96.1%</span>
+          </div></td>
+        </tr>
+<tr>
+          <td style="font-weight:600;color:#d1fae5">DE</td>
+          <td style="text-align:right">153</td>
+          <td style="text-align:right">21.2%</td>
+          <td><div style="display:flex;align-items:center;gap:8px">
+            <div style="flex:1;background:#0a1f15;border-radius:4px;height:6px;overflow:hidden">
+              <div style="width:18.3%;height:100%;background:#f43f5e"></div></div>
+            <span style="color:#f43f5e;width:38px;text-align:right;font-size:12px">18.3%</span>
+          </div></td>
+          <td><div style="display:flex;align-items:center;gap:8px">
+            <div style="flex:1;background:#0a1f15;border-radius:4px;height:6px;overflow:hidden">
+              <div style="width:97.4%;height:100%;background:#06b6d4"></div></div>
+            <span style="color:#06b6d4;width:38px;text-align:right;font-size:12px">97.4%</span>
+          </div></td>
+        </tr>
+<tr>
+          <td style="font-weight:600;color:#d1fae5">FR</td>
+          <td style="text-align:right">130</td>
+          <td style="text-align:right">20.9%</td>
+          <td><div style="display:flex;align-items:center;gap:8px">
+            <div style="flex:1;background:#0a1f15;border-radius:4px;height:6px;overflow:hidden">
+              <div style="width:43.8%;height:100%;background:#f59e0b"></div></div>
+            <span style="color:#f59e0b;width:38px;text-align:right;font-size:12px">43.8%</span>
+          </div></td>
+          <td><div style="display:flex;align-items:center;gap:8px">
+            <div style="flex:1;background:#0a1f15;border-radius:4px;height:6px;overflow:hidden">
+              <div style="width:98.5%;height:100%;background:#06b6d4"></div></div>
+            <span style="color:#06b6d4;width:38px;text-align:right;font-size:12px">98.5%</span>
+          </div></td>
+        </tr>
+<tr>
+          <td style="font-weight:600;color:#d1fae5">NL</td>
+          <td style="text-align:right">119</td>
+          <td style="text-align:right">21.1%</td>
+          <td><div style="display:flex;align-items:center;gap:8px">
+            <div style="flex:1;background:#0a1f15;border-radius:4px;height:6px;overflow:hidden">
+              <div style="width:17.6%;height:100%;background:#f43f5e"></div></div>
+            <span style="color:#f43f5e;width:38px;text-align:right;font-size:12px">17.6%</span>
+          </div></td>
+          <td><div style="display:flex;align-items:center;gap:8px">
+            <div style="flex:1;background:#0a1f15;border-radius:4px;height:6px;overflow:hidden">
+              <div style="width:98.3%;height:100%;background:#06b6d4"></div></div>
+            <span style="color:#06b6d4;width:38px;text-align:right;font-size:12px">98.3%</span>
+          </div></td>
+        </tr>
+<tr>
+          <td style="font-weight:600;color:#d1fae5">BE</td>
+          <td style="text-align:right">114</td>
+          <td style="text-align:right">20.7%</td>
+          <td><div style="display:flex;align-items:center;gap:8px">
+            <div style="flex:1;background:#0a1f15;border-radius:4px;height:6px;overflow:hidden">
+              <div style="width:18.4%;height:100%;background:#f43f5e"></div></div>
+            <span style="color:#f43f5e;width:38px;text-align:right;font-size:12px">18.4%</span>
+          </div></td>
+          <td><div style="display:flex;align-items:center;gap:8px">
+            <div style="flex:1;background:#0a1f15;border-radius:4px;height:6px;overflow:hidden">
+              <div style="width:98.2%;height:100%;background:#06b6d4"></div></div>
+            <span style="color:#06b6d4;width:38px;text-align:right;font-size:12px">98.2%</span>
+          </div></td>
+        </tr>
+<tr>
+          <td style="font-weight:600;color:#d1fae5">PL</td>
+          <td style="text-align:right">87</td>
+          <td style="text-align:right">22.2%</td>
+          <td><div style="display:flex;align-items:center;gap:8px">
+            <div style="flex:1;background:#0a1f15;border-radius:4px;height:6px;overflow:hidden">
+              <div style="width:28.7%;height:100%;background:#f59e0b"></div></div>
+            <span style="color:#f59e0b;width:38px;text-align:right;font-size:12px">28.7%</span>
+          </div></td>
+          <td><div style="display:flex;align-items:center;gap:8px">
+            <div style="flex:1;background:#0a1f15;border-radius:4px;height:6px;overflow:hidden">
+              <div style="width:97.7%;height:100%;background:#06b6d4"></div></div>
+            <span style="color:#06b6d4;width:38px;text-align:right;font-size:12px">97.7%</span>
+          </div></td>
+        </tr>
+<tr>
+          <td style="font-weight:600;color:#d1fae5">IE</td>
+          <td style="text-align:right">79</td>
+          <td style="text-align:right">22.9%</td>
+          <td><div style="display:flex;align-items:center;gap:8px">
+            <div style="flex:1;background:#0a1f15;border-radius:4px;height:6px;overflow:hidden">
+              <div style="width:15.2%;height:100%;background:#f43f5e"></div></div>
+            <span style="color:#f43f5e;width:38px;text-align:right;font-size:12px">15.2%</span>
+          </div></td>
+          <td><div style="display:flex;align-items:center;gap:8px">
+            <div style="flex:1;background:#0a1f15;border-radius:4px;height:6px;overflow:hidden">
+              <div style="width:97.5%;height:100%;background:#06b6d4"></div></div>
+            <span style="color:#06b6d4;width:38px;text-align:right;font-size:12px">97.5%</span>
+          </div></td>
+        </tr>
+<tr>
+          <td style="font-weight:600;color:#d1fae5">AU</td>
+          <td style="text-align:right">45</td>
+          <td style="text-align:right">17.3%</td>
+          <td><div style="display:flex;align-items:center;gap:8px">
+            <div style="flex:1;background:#0a1f15;border-radius:4px;height:6px;overflow:hidden">
+              <div style="width:44.4%;height:100%;background:#f59e0b"></div></div>
+            <span style="color:#f59e0b;width:38px;text-align:right;font-size:12px">44.4%</span>
+          </div></td>
+          <td><div style="display:flex;align-items:center;gap:8px">
+            <div style="flex:1;background:#0a1f15;border-radius:4px;height:6px;overflow:hidden">
+              <div style="width:93.3%;height:100%;background:#06b6d4"></div></div>
+            <span style="color:#06b6d4;width:38px;text-align:right;font-size:12px">93.3%</span>
+          </div></td>
+        </tr>
+<tr>
+          <td style="font-weight:600;color:#d1fae5">AE</td>
+          <td style="text-align:right">37</td>
+          <td style="text-align:right">23.0%</td>
+          <td><div style="display:flex;align-items:center;gap:8px">
+            <div style="flex:1;background:#0a1f15;border-radius:4px;height:6px;overflow:hidden">
+              <div style="width:35.1%;height:100%;background:#f59e0b"></div></div>
+            <span style="color:#f59e0b;width:38px;text-align:right;font-size:12px">35.1%</span>
+          </div></td>
+          <td><div style="display:flex;align-items:center;gap:8px">
+            <div style="flex:1;background:#0a1f15;border-radius:4px;height:6px;overflow:hidden">
+              <div style="width:94.6%;height:100%;background:#06b6d4"></div></div>
+            <span style="color:#06b6d4;width:38px;text-align:right;font-size:12px">94.6%</span>
+          </div></td>
+        </tr>
+<tr>
+          <td style="font-weight:600;color:#d1fae5">IT</td>
+          <td style="text-align:right">23</td>
+          <td style="text-align:right">13.5%</td>
+          <td><div style="display:flex;align-items:center;gap:8px">
+            <div style="flex:1;background:#0a1f15;border-radius:4px;height:6px;overflow:hidden">
+              <div style="width:43.5%;height:100%;background:#f59e0b"></div></div>
+            <span style="color:#f59e0b;width:38px;text-align:right;font-size:12px">43.5%</span>
+          </div></td>
+          <td><div style="display:flex;align-items:center;gap:8px">
+            <div style="flex:1;background:#0a1f15;border-radius:4px;height:6px;overflow:hidden">
+              <div style="width:95.7%;height:100%;background:#06b6d4"></div></div>
+            <span style="color:#06b6d4;width:38px;text-align:right;font-size:12px">95.7%</span>
+          </div></td>
+        </tr>
+<tr>
+          <td style="font-weight:600;color:#d1fae5">JP</td>
+          <td style="text-align:right">1</td>
+          <td style="text-align:right">25.0%</td>
+          <td><div style="display:flex;align-items:center;gap:8px">
+            <div style="flex:1;background:#0a1f15;border-radius:4px;height:6px;overflow:hidden">
+              <div style="width:0.0%;height:100%;background:#f43f5e"></div></div>
+            <span style="color:#f43f5e;width:38px;text-align:right;font-size:12px">0.0%</span>
+          </div></td>
+          <td><div style="display:flex;align-items:center;gap:8px">
+            <div style="flex:1;background:#0a1f15;border-radius:4px;height:6px;overflow:hidden">
+              <div style="width:0.0%;height:100%;background:#f59e0b"></div></div>
+            <span style="color:#f59e0b;width:38px;text-align:right;font-size:12px">0.0%</span>
+          </div></td>
+        </tr>
+    </tbody>
+  </table>
+</div>
+</section>
+<section id="s08" class="section">
+<h2>Vintage &amp; Expiry</h2>
+<div class="card-grid">
+  <div class="card"><h3>Created by Year (Vintage)</h3><div class="chart-wrap"><canvas id="cV"></canvas></div></div>
+  <div class="card"><h3>Expiry by Year (2026=red, 2027=amber)</h3><div class="chart-wrap"><canvas id="cE"></canvas></div></div>
+</div>
+</section>
+<section id="s09" class="section">
+<h2>Campaign Taxonomy</h2>
+<div class="card-grid">
+  <div class="card">
+    <h3>Promo Type Distribution</h3>
+    <div class="chart-wrap"><canvas id="cPT"></canvas></div>
+  </div>
+  <div class="card">
+    <h3>Naming Conventions</h3>
+    <div class="acc-item"><div class="acc-header" onclick="this.nextSibling.style.display=this.nextSibling.style.display=='block'?'none':'block'">OD (On-Demand) Campaigns <span>+</span></div><div class="acc-body">Campaigns with promotionCode qualification. Used when merchants want to control redemption. Naming pattern: {MARKET}_{CATEGORY}_{TYPE}_{DISCOUNT}.</div></div>
+    <div class="acc-item"><div class="acc-header" onclick="this.nextSibling.style.display=this.nextSibling.style.display=='block'?'none':'block'">ILS Campaigns <span>+</span></div><div class="acc-body">No promo code required. Automatic attach at checkout. Higher conversion; lower merchant control.</div></div>
+    <div class="acc-item"><div class="acc-header" onclick="this.nextSibling.style.display=this.nextSibling.style.display=='block'?'none':'block'">Purple Price <span>+</span></div><div class="acc-body">metadata.purplePriceEnabled=true. Visual pricing signal in UI. US leads at 76.2% adoption; IE/NL/BE lag below 20%.</div></div>
+  </div>
+</div>
+</section>
+<section id="s10" class="section">
+<h2>NA Performance</h2>
+<div class="card-grid">
+  <div class="card">
+    <h3>NA Portfolio Overview</h3>
+    <div class="chart-wrap-sm"><canvas id="cNA2"></canvas></div>
+  </div>
+  <div class="card">
+    <h3>NA KPI Summary</h3>
+    <table>
+      <tr><th>Market</th><th>Count</th><th>Avg Disc</th><th>PP%</th><th>OD%</th></tr>
+      <tr><td style="color:#22c55e">US</td><td>273</td><td>18.3%</td><td style="color:#22c55e">76.2%</td><td style="color:#06b6d4">82.8%</td></tr>
+      <tr><td style="color:#f59e0b">AU</td><td>45</td><td>17.3%</td><td style="color:#f59e0b">44.4%</td><td style="color:#06b6d4">93.3%</td></tr>
+      <tr><td style="color:#f43f5e">JP</td><td>1</td><td>25.0%</td><td style="color:#f43f5e">0.0%</td><td style="color:#f43f5e">0.0%</td></tr>
+    </table>
+  </div>
+</div>
+</section>
+<section id="s11" class="section">
+<h2>EMEA Performance</h2>
+<div class="card-grid">
+  <div class="card">
+    <h3>Top 5 EMEA Markets by Count</h3>
+    <div class="chart-wrap-sm"><canvas id="cEMEA"></canvas></div>
+  </div>
+  <div class="card">
+    <h3>EMEA Summary Table</h3>
+    <table>
+      <tr><th>Market</th><th>Count</th><th>Avg Disc</th><th>PP%</th><th>OD%</th></tr><tr><td style="color:#d1fae5">ES</td><td>181</td><td>19.9%</td><td style="color:#f59e0b">26.0%</td><td style="color:#06b6d4">98.9%</td></tr><tr><td style="color:#d1fae5">GB</td><td>178</td><td>20.8%</td><td style="color:#f59e0b">30.9%</td><td style="color:#06b6d4">96.1%</td></tr><tr><td style="color:#d1fae5">DE</td><td>153</td><td>21.2%</td><td style="color:#f43f5e">18.3%</td><td style="color:#06b6d4">97.4%</td></tr><tr><td style="color:#d1fae5">FR</td><td>130</td><td>20.9%</td><td style="color:#f59e0b">43.8%</td><td style="color:#06b6d4">98.5%</td></tr><tr><td style="color:#d1fae5">NL</td><td>119</td><td>21.1%</td><td style="color:#f43f5e">17.6%</td><td style="color:#06b6d4">98.3%</td></tr><tr><td style="color:#d1fae5">BE</td><td>114</td><td>20.7%</td><td style="color:#f43f5e">18.4%</td><td style="color:#06b6d4">98.2%</td></tr><tr><td style="color:#d1fae5">PL</td><td>87</td><td>22.2%</td><td style="color:#f59e0b">28.7%</td><td style="color:#06b6d4">97.7%</td></tr><tr><td style="color:#d1fae5">IE</td><td>79</td><td>22.9%</td><td style="color:#f43f5e">15.2%</td><td style="color:#06b6d4">97.5%</td></tr><tr><td style="color:#d1fae5">AE</td><td>37</td><td>23.0%</td><td style="color:#f59e0b">35.1%</td><td style="color:#06b6d4">94.6%</td></tr><tr><td style="color:#d1fae5">IT</td><td>23</td><td>13.5%</td><td style="color:#f59e0b">43.5%</td><td style="color:#06b6d4">95.7%</td></tr>
+    </table>
+  </div>
+</div>
+</section>
+<section id="s12" class="section">
+<h2>Strategic Insights</h2>
+<div class="insight-grid">
+  <div class="insight">
+    <span class="badge" style="background:rgba(139,92,246,.15);color:#8b5cf6;border:1px solid rgba(139,92,246,.3)">HIGH PRIORITY</span>
+    <h4>Purple Price Gap</h4>
+    <p>US leads at 76.2% PP adoption vs EMEA average 27.0%. Markets below 20%: JP, DE, NL, BE, IE. PP drives conversion uplift est. +8-12%.</p>
+    <div class="action">&#8594; Accelerate PP rollout in IE, NL, DE, BE</div>
+  </div>
+  <div class="insight">
+    <span class="badge" style="background:rgba(244,63,94,.15);color:#f43f5e;border:1px solid rgba(244,63,94,.3)">URGENT</span>
+    <h4>Expiry Risk</h4>
+    <p>142 incentives expire in 2026, 430 in 2027. Total 572 requiring renewal pipeline review in next 18 months.</p>
+    <div class="action">&#8594; Build renewal pipeline now for 2026 tranche</div>
+  </div>
+  <div class="insight">
+    <span class="badge" style="background:rgba(6,182,212,.15);color:#06b6d4;border:1px solid rgba(6,182,212,.3)">OPPORTUNITY</span>
+    <h4>OD Coverage vs ILS</h4>
+    <p>Global OD coverage at 94.6%. ILS opportunity at 5.4% of portfolio. Higher ILS = higher attach at no friction cost.</p>
+    <div class="action">&#8594; Target ILS conversion in JP (0% OD) and AU</div>
+  </div>
+  <div class="insight">
+    <span class="badge" style="background:rgba(245,158,11,.15);color:#f59e0b;border:1px solid rgba(245,158,11,.3)">WATCH</span>
+    <h4>Discount Concentration</h4>
+    <p>Global avg 20.3%. JP leads at 25.0%. 11-20% band is most common globally. Deep discounts (40%+) in 40 incentives.</p>
+    <div class="action">&#8594; Monitor margin impact in high-discount markets</div>
+  </div>
+  <div class="insight">
+    <span class="badge" style="background:rgba(34,197,94,.15);color:#22c55e;border:1px solid rgba(34,197,94,.3)">INFO</span>
+    <h4>Portfolio Skew</h4>
+    <p>EMEA dominates at 78% of global portfolio (1101 vs NA 319). ES and GB are the largest EMEA markets by count.</p>
+    <div class="action">&#8594; Ensure NA has proportional feature investment</div>
+  </div>
+  <div class="insight">
+    <span class="badge" style="background:rgba(16,185,129,.15);color:#10b981;border:1px solid rgba(16,185,129,.3)">POSITIVE</span>
+    <h4>Vintage Freshness</h4>
+    <p>50.1% of portfolio created in 2025–2026. 174 older (2021–2022) incentives still active — review for staleness.</p>
+    <div class="action">&#8594; Audit 2021-2022 vintage for relevance</div>
+  </div>
+</div>
+</section>
+<section id="s13" class="section">
+<h2>Red Flags &amp; Anomalies</h2>
+<div class="card">
+  <table>
+    <thead><tr><th>Market</th><th>Flag</th><th>Value</th><th>Threshold</th><th>Recommended Action</th></tr></thead>
+    <tbody><tr style="background:rgba(244,63,94,.05)"><td style="color:#f43f5e">JP</td><td>Purple Price below threshold</td><td style="color:#f43f5e">0.0%</td><td style="color:#8b90a0">≥ 20%</td><td style="color:#f59e0b">Accelerate PP rollout</td></tr>
+<tr style="background:rgba(244,63,94,.05)"><td style="color:#f43f5e">DE</td><td>Purple Price below threshold</td><td style="color:#f43f5e">18.3%</td><td style="color:#8b90a0">≥ 20%</td><td style="color:#f59e0b">Accelerate PP rollout</td></tr>
+<tr style="background:rgba(244,63,94,.05)"><td style="color:#f43f5e">NL</td><td>Purple Price below threshold</td><td style="color:#f43f5e">17.6%</td><td style="color:#8b90a0">≥ 20%</td><td style="color:#f59e0b">Accelerate PP rollout</td></tr>
+<tr style="background:rgba(244,63,94,.05)"><td style="color:#f43f5e">BE</td><td>Purple Price below threshold</td><td style="color:#f43f5e">18.4%</td><td style="color:#8b90a0">≥ 20%</td><td style="color:#f59e0b">Accelerate PP rollout</td></tr>
+<tr style="background:rgba(244,63,94,.05)"><td style="color:#f43f5e">IE</td><td>Purple Price below threshold</td><td style="color:#f43f5e">15.2%</td><td style="color:#8b90a0">≥ 20%</td><td style="color:#f59e0b">Accelerate PP rollout</td></tr>
+<tr style="background:rgba(244,63,94,.05)"><td style="color:#f43f5e">Global</td><td>Incentives expiring 2026</td><td style="color:#f43f5e">142</td><td style="color:#8b90a0">≤ 50</td><td style="color:#f59e0b">Review renewal pipeline</td></tr>
+<tr><td style="color:#8b90a0">All</td><td style="color:#8b90a0">IS API live data</td><td style="color:#22c55e">✓ Live</td><td style="color:#8b90a0">—</td><td style="color:#4a7a63">Google Sheets benchmarks as of Apr 2026</td></tr>
+    </tbody>
+  </table>
+</div>
+</section>
+<section id="s14" class="section">
+<h2>Glossary</h2>
+<div class="card-grid">
+  <div class="card">
+    <h3>Business Metrics</h3>
+    <div class="acc-item"><div class="acc-header" onclick="this.nextSibling.style.display=this.nextSibling.style.display=='block'?'none':'block'">OD Attach Rate <span>+</span></div><div class="acc-body">% of orders where an On-Demand promo code was applied at checkout.</div></div>
+    <div class="acc-item"><div class="acc-header" onclick="this.nextSibling.style.display=this.nextSibling.style.display=='block'?'none':'block'">ILS Attach Rate <span>+</span></div><div class="acc-body">% of orders where an Incentive-Led Sale discount was automatically applied (no code required).</div></div>
+    <div class="acc-item"><div class="acc-header" onclick="this.nextSibling.style.display=this.nextSibling.style.display=='block'?'none':'block'">Purple Price <span>+</span></div><div class="acc-body">Visual UI signal (purple badge) indicating a promotional price. metadata.purplePriceEnabled=true in IS API.</div></div>
+    <div class="acc-item"><div class="acc-header" onclick="this.nextSibling.style.display=this.nextSibling.style.display=='block'?'none':'block'">NOR%GGR <span>+</span></div><div class="acc-body">Net Order Revenue as % of Gross Groupon Revenue. Key profitability metric. NA target ~55-56%.</div></div>
+  </div>
+  <div class="card">
+    <h3>Data Sources</h3>
+    <table>
+      <tr><th>Source</th><th>Coverage</th><th>Freshness</th></tr>
+      <tr><td style="color:#22c55e">IS API (Incentive Service)</td><td>13 markets, all active incentives</td><td style="color:#22c55e">Live (2026-05-28)</td></tr>
+      <tr><td style="color:#f59e0b">Google Sheets</td><td>KPI benchmarks, NOB, IPA</td><td style="color:#f59e0b">As of Apr 2026</td></tr>
+    </table>
+  </div>
+</div>
+</section></div>
+<script>
+(function(){
+  // Hub comet animation
+  var el=document.getElementById('hub-comet');
+  if(el){var deg=0;function tick(){el.style.background='conic-gradient(from '+deg+'deg, rgba(34,197,94,.05) 0%, rgba(34,197,94,.4) 70%, #22c55e 88%, rgba(255,255,255,.9) 92%, transparent 96%, transparent 100%)';deg=(deg+2.4)%360;requestAnimationFrame(tick);}tick();}
+
+  // IntersectionObserver for nav
+  var sections=document.querySelectorAll('section[id]');
+  var links=document.querySelectorAll('.nav-link');
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){if(e.isIntersecting){var id=e.target.id;links.forEach(function(l){l.classList.toggle('active',l.getAttribute('href')==='#'+id);});}});
+  },{threshold:0.2});
+  sections.forEach(function(s){obs.observe(s);});
+
+  var COLORS=["#22c55e", "#06b6d4", "#8b5cf6", "#f59e0b", "#f43f5e", "#10b981", "#3b82f6", "#ec4899", "#14b8a6", "#a855f7", "#ef4444", "#84cc16", "#fb923c"];
+
+  // cCB - Country bar (horizontal)
+  new Chart(document.getElementById('cCB').getContext('2d'),{
+    type:'bar',
+    data:{labels:["US", "ES", "GB", "DE", "FR", "NL", "BE", "PL", "IE", "AU", "AE", "IT", "JP"],datasets:[{label:'Incentives',data:[273, 181, 178, 153, 130, 119, 114, 87, 79, 45, 37, 23, 1],backgroundColor:COLORS,borderRadius:4}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#4a7a63'}},y:{grid:{display:false},ticks:{color:'#d1fae5',font:{weight:'600'}}}}}
+  });
+
+  // cNA - NA vs EMEA donut
+  new Chart(document.getElementById('cNA').getContext('2d'),{
+    type:'doughnut',
+    data:{labels:['NA','EMEA'],datasets:[{data:[319, 1101],backgroundColor:['#22c55e','#06b6d4'],borderWidth:0}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:'#4a7a63',padding:12}}}}
+  });
+
+  // cCD - avg disc bar
+  new Chart(document.getElementById('cCD').getContext('2d'),{
+    type:'bar',
+    data:{labels:["US", "ES", "GB", "DE", "FR", "NL", "BE", "PL", "IE", "AU", "AE", "IT", "JP"],datasets:[{label:'Avg Disc %',data:[18.3, 19.9, 20.8, 21.2, 20.9, 21.1, 20.7, 22.2, 22.9, 17.3, 23.0, 13.5, 25.0],backgroundColor:["#22c55e", "#22c55e", "#f59e0b", "#f59e0b", "#f59e0b", "#f59e0b", "#f59e0b", "#f59e0b", "#f59e0b", "#22c55e", "#f59e0b", "#22c55e", "#f43f5e"],borderRadius:4}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#4a7a63',callback:function(v){return v+'%';}}},y:{grid:{display:false},ticks:{color:'#d1fae5'}}}}
+  });
+
+  // d1 - promo type donut
+  new Chart(document.getElementById('d1').getContext('2d'),{
+    type:'doughnut',
+    data:{labels:["Closed", "Open", "Closed Marketing Channel"],datasets:[{data:[1005, 367, 48],backgroundColor:COLORS,borderWidth:0}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:'#4a7a63',padding:8,font:{size:10}}}}}
+  });
+
+  // d2 - discount band donut
+  new Chart(document.getElementById('d2').getContext('2d'),{
+    type:'doughnut',
+    data:{labels:["0-10%", "11-20%", "21-30%", "31-40%", "40%+", "Fixed/Other"],datasets:[{data:[326, 376, 497, 10, 40, 171],backgroundColor:['#22c55e','#06b6d4','#f59e0b','#f43f5e','#8b5cf6','#4a7a63'],borderWidth:0}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:'#4a7a63',padding:8,font:{size:10}}}}}
+  });
+
+  // d3 - PP donut
+  new Chart(document.getElementById('d3').getContext('2d'),{
+    type:'doughnut',
+    data:{labels:['PP Enabled','PP Disabled'],datasets:[{data:[36,64],backgroundColor:['#8b5cf6','#122318'],borderWidth:0}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:'#4a7a63'}}}}
+  });
+
+  // d4 - OD vs ILS donut
+  new Chart(document.getElementById('d4').getContext('2d'),{
+    type:'doughnut',
+    data:{labels:['OD','ILS'],datasets:[{data:[95,5],backgroundColor:['#06b6d4','#22c55e'],borderWidth:0}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:'#4a7a63'}}}}
+  });
+
+  // d5 - NA vs EMEA donut (duplicate for health section)
+  new Chart(document.getElementById('d5').getContext('2d'),{
+    type:'doughnut',
+    data:{labels:['NA','EMEA'],datasets:[{data:[319, 1101],backgroundColor:['#22c55e','#f59e0b'],borderWidth:0}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:'#4a7a63'}}}}
+  });
+
+  // d6 - vintage donut (top 4 years)
+  var vt_years=["2023", "2024", "2025", "2026"];
+  var vt_vals=[420, 109, 374, 337];
+  new Chart(document.getElementById('d6').getContext('2d'),{
+    type:'doughnut',
+    data:{labels:vt_years,datasets:[{data:vt_vals,backgroundColor:['#4a7a63','#06b6d4','#22c55e','#f59e0b'],borderWidth:0}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:'#4a7a63',padding:8,font:{size:10}}}}}
+  });
+
+  // cDB - global discount bands bar
+  new Chart(document.getElementById('cDB').getContext('2d'),{
+    type:'bar',
+    data:{labels:["0-10%", "11-20%", "21-30%", "31-40%", "40%+", "Fixed/Other"],datasets:[{label:'Count',data:[326, 376, 497, 10, 40, 171],backgroundColor:['#22c55e','#06b6d4','#f59e0b','#f43f5e','#8b5cf6','#4a7a63'],borderRadius:4}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{color:'#4a7a63'}},y:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#4a7a63'}}}}
+  });
+
+  // cDS - stacked bands by country
+  new Chart(document.getElementById('cDS').getContext('2d'),{
+    type:'bar',
+    data:{labels:["US", "ES", "GB", "DE", "FR", "NL", "BE", "PL", "IE", "AU", "AE", "IT", "JP"],datasets:[
+      {label:'0-10%',data:[96, 40, 34, 27, 27, 25, 27, 11, 11, 9, 5, 14, 0],backgroundColor:'#22c55e',stack:'s'},
+      {label:'11-20%',data:[37, 53, 49, 47, 38, 35, 31, 32, 19, 22, 10, 3, 0],backgroundColor:'#06b6d4',stack:'s'},
+      {label:'21-30%',data:[66, 71, 71, 63, 53, 46, 38, 33, 31, 7, 15, 2, 1],backgroundColor:'#f59e0b',stack:'s'},
+      {label:'31-40%',data:[9, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],backgroundColor:'#f43f5e',stack:'s'},
+      {label:'40%+',data:[12, 2, 3, 3, 3, 3, 3, 4, 3, 1, 2, 1, 0],backgroundColor:'#8b5cf6',stack:'s'}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:'#4a7a63',font:{size:10}}}},scales:{x:{grid:{display:false},ticks:{color:'#d1fae5',font:{size:10}}},y:{stacked:true,grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#4a7a63'}}}}
+  });
+
+  // cPP - PP adoption bar
+  new Chart(document.getElementById('cPP').getContext('2d'),{
+    type:'bar',
+    data:{labels:["US", "AU", "FR", "IT", "AE", "GB", "PL", "ES", "BE", "DE", "NL", "IE", "JP"],datasets:[{label:'PP %',data:[76.2, 44.4, 43.8, 43.5, 35.1, 30.9, 28.7, 26.0, 18.4, 18.3, 17.6, 15.2, 0.0],backgroundColor:["#22c55e", "#f59e0b", "#f59e0b", "#f59e0b", "#f59e0b", "#f59e0b", "#f59e0b", "#f59e0b", "#f43f5e", "#f43f5e", "#f43f5e", "#f43f5e", "#f43f5e"],borderRadius:4}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{max:100,grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#4a7a63',callback:function(v){return v+'%';}}},y:{grid:{display:false},ticks:{color:'#d1fae5',font:{weight:'600'}}}}}
+  });
+
+  // cOD - OD coverage bar
+  new Chart(document.getElementById('cOD').getContext('2d'),{
+    type:'bar',
+    data:{labels:["ES", "FR", "NL", "BE", "PL", "IE", "DE", "GB", "IT", "AE", "AU", "US", "JP"],datasets:[{label:'OD %',data:[98.9, 98.5, 98.3, 98.2, 97.7, 97.5, 97.4, 96.1, 95.7, 94.6, 93.3, 82.8, 0.0],backgroundColor:'#06b6d4',borderRadius:4}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{color:'#d1fae5',font:{size:11}}},y:{max:100,grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#4a7a63',callback:function(v){return v+'%';}}}}}
+  });
+
+  // cV - vintage bar
+  new Chart(document.getElementById('cV').getContext('2d'),{
+    type:'bar',
+    data:{labels:["2021", "2022", "2023", "2024", "2025", "2026"],datasets:[{label:'Created',data:[47, 127, 420, 109, 374, 337],backgroundColor:['#4a7a63','#06b6d4','#10b981','#22c55e','#a7f3d0','#f59e0b'],borderRadius:4}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{color:'#d1fae5'}},y:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#4a7a63'}}}}
+  });
+
+  // cE - expiry bar
+  new Chart(document.getElementById('cE').getContext('2d'),{
+    type:'bar',
+    data:{labels:["2025", "2026", "2027", "2028"],datasets:[{label:'Expiring',data:[0, 142, 430, 246],backgroundColor:["#3b82f6", "#f43f5e", "#f59e0b", "#3b82f6"],borderRadius:4}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{color:'#d1fae5'}},y:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#4a7a63'}}}}
+  });
+
+  // cNA2 - NA bar
+  new Chart(document.getElementById('cNA2').getContext('2d'),{
+    type:'bar',
+    data:{labels:["US", "AU", "JP"],datasets:[
+      {label:'Count',data:[273, 45, 1],backgroundColor:['#22c55e','#f59e0b','#f43f5e'],borderRadius:4,yAxisID:'y'},
+      {label:'Avg Disc %',data:[18.3, 17.3, 25.0],backgroundColor:['rgba(34,197,94,.3)','rgba(245,158,11,.3)','rgba(244,63,94,.3)'],borderRadius:4,yAxisID:'y1'}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:'#4a7a63'}}},scales:{x:{grid:{display:false},ticks:{color:'#d1fae5'}},y:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#4a7a63'}},y1:{position:'right',grid:{display:false},ticks:{color:'#4a7a63',callback:function(v){return v+'%';}}}}}
+  });
+
+  // cEMEA - top 5 EMEA bar
+  new Chart(document.getElementById('cEMEA').getContext('2d'),{
+    type:'bar',
+    data:{labels:["ES", "GB", "DE", "FR", "NL"],datasets:[{label:'Count',data:[181, 178, 153, 130, 119],backgroundColor:COLORS,borderRadius:4}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{color:'#d1fae5'}},y:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#4a7a63'}}}}
+  });
+
+  // cPT - promo type bar
+  new Chart(document.getElementById('cPT').getContext('2d'),{
+    type:'bar',
+    data:{labels:["Closed", "Open", "Closed Marketing Channel"],datasets:[{label:'Count',data:[1005, 367, 48],backgroundColor:COLORS,borderRadius:4}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#4a7a63'}},y:{grid:{display:false},ticks:{color:'#d1fae5',font:{size:10}}}}}
+  });
+
+})();
+</script>
+</div><!-- end mock-page-body -->
+<footer style="border-top:1px solid #1a3025;padding:14px 32px;text-align:center;background:var(--bg,#030b08);margin-left:240px;">
+  <div style="font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#2a5a3a;margin-bottom:7px;">Engineering Intelligence Hub</div>
+  <div style="display:flex;align-items:center;justify-content:center;gap:10px;">
+    <span style="font-size:17px;font-weight:700;background:linear-gradient(90deg,#22c55e,#4ade80);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Himanshu Jain</span>
+    <span style="color:#1a3025;font-size:12px;">·</span>
+    <span style="font-size:12px;color:#4a7a63;">Director &middot; Global Marketing &amp; Ads Platforms</span>
+    <span style="color:#1a3025;font-size:12px;">·</span>
+    <a href="https://www.linkedin.com/in/thehimanshujain/" target="_blank" style="font-size:11px;color:#4a7a63;text-decoration:none;font-weight:500;border:1px solid #1a3025;padding:3px 9px;border-radius:20px;">LinkedIn &#8599;</a>
+  </div>
+</footer>
+</body></html>
