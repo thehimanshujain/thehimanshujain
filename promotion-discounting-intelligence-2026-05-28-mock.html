@@ -12,8 +12,8 @@
 .mock-header .owner .title{font-size:14px;color:#4a7a63;font-weight:400;}
 .mock-header a.mock-li{display:inline-flex;align-items:center;gap:7px;background:#22c55e;color:#030b08;font-size:12px;font-weight:700;padding:8px 16px;border-radius:9px;text-decoration:none;flex-shrink:0;}
 .mock-header a.mock-li:hover{background:#16a34a;}
-.mock-page-body{display:block;flex:1;min-height:0;}
-#sidebar{width:240px;background:var(--surface);border-right:1px solid var(--border);position:fixed;top:58px;left:0;height:calc(100vh - 58px);overflow-y:auto;flex-shrink:0;z-index:100;}
+.mock-page-body{display:flex;flex:1;min-height:0;}
+#sidebar{width:240px!important;background:var(--surface);border-right:1px solid var(--border);position:fixed!important;top:58px!important;left:0!important;height:calc(100vh - 58px)!important;overflow-y:auto;flex-shrink:0;z-index:100!important;min-height:unset!important;}
 #main{flex:1;padding:32px 40px;max-width:1140px;margin-left:240px;}
 @media(max-width:768px){.mock-header{padding:10px 14px;} .mock-header .owner .title{display:none;}}
 </style>
@@ -28,8 +28,8 @@
   body{background:#030b08;color:#ffffff;font-family:'DM Sans',system-ui,sans-serif;display:flex;min-height:100vh}
   :root{--acc:#22c55e;--amber:#f59e0b;--red:#f43f5e;--violet:#8b5cf6;--cyan:#06b6d4;--green:#10b981;
     --surface:#071210;--border:#122318;--muted:#4a7a63;--sec:#d1fae5}
-  #sidebar{width:240px;min-height:100vh;background:#040e08;border-right:1px solid var(--border);
-    position:fixed;top:0;left:0;overflow-y:auto;display:flex;flex-direction:column}
+  #sidebar{width:240px;min-height:calc(100vh - 58px);background:#040e08;border-right:1px solid var(--border);
+    position:fixed;top:58px;left:0;overflow-y:auto;display:flex;flex-direction:column}
   #main{margin-left:240px;flex:1;padding:32px 40px;max-width:1400px}
   .section{margin-bottom:48px}
   h1{font-size:24px;font-weight:700;color:#ffffff;margin-bottom:4px}
