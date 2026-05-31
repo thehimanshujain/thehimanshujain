@@ -124,7 +124,7 @@ new Chart(document.getElementById('sdeLevelChart'), {
 new Chart(document.getElementById('sdeLevelSquadChart'), {
   type: 'bar',
   data: {
-    labels: ['P&P BE','P&P DS','MC Comm','MC Deliv','Paid Mktg','Ads','Coupons'],
+    labels: ['P&P BE','P&P DS','MC Promo','MC Deliv','Ext Mktg','Ads','Coupons'],
     datasets: [
       { label: 'SDE4 IC', data: [2,1,2,1,1,1,1], backgroundColor: '#f97316' },
       { label: 'SDE3',    data: [4,2,4,3,3,3,2], backgroundColor: '#8b5cf6' },
@@ -161,8 +161,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 .nav-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
 .sidebar-footer{margin-top:auto;padding:12px 14px;font-size:10px;color:var(--text-muted);border-top:1px solid var(--border);line-height:1.7}
 
-.main{margin-left:var(--sidebar-w);flex:1;padding:24px 30px;max-width:1400px}
-.page-header{margin-bottom:20px}
+.main{margin-left:var(--sidebar-w);flex:1;padding:24px 30px 24px 40px;max-width:1400px}
+.page-header{margin-bottom:20px;scroll-margin-top:72px}
 .page-header h1{font-size:20px;font-weight:700}
 .page-header .subtitle{font-size:12px;color:var(--text-muted);margin-top:3px}
 .meta-tags{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
@@ -262,7 +262,7 @@ tbody tr:hover td{background:#f8f9fc}
 .bw-header{font-size:9px;font-weight:700;color:var(--text-muted);padding:3px 5px;text-align:center}
 .bw-name{font-weight:600;padding:4px 7px;display:flex;align-items:center;gap:5px;font-size:10px}
 .bw-cell{padding:4px 3px;border-radius:4px;text-align:center;font-weight:700;font-size:10px}
-.bw-squad-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:6px 7px;color:var(--text-muted);grid-column:1/-1;border-top:1px solid var(--border);margin-top:2px}
+.bw-squad-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:3px 7px;color:var(--text-muted);grid-column:1/-1;border-top:1px solid var(--border);margin-top:1px}
 
 /* PRIORITIES */
 .priorities-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
@@ -402,7 +402,7 @@ footer { position: relative; z-index: 1; border-top: 3px solid #38bdf8; padding:
 footer .footer-brand { font-size: 15px; font-weight: 700; background: linear-gradient(90deg,#38bdf8,#7dd3fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
 footer .footer-sub { font-size: 12px; color: #7a9ab8; margin-top: 6px; }
 
-.page-wrap{display:flex;min-height:calc(100vh - 58px);}
+.page-wrap{display:flex;min-height:auto;}
 
 
   header { padding: 12px 16px; }
@@ -458,7 +458,7 @@ footer .footer-sub { font-size: 12px; color: #7a9ab8; margin-top: 6px; }
   margin-right: 10px;
 }
 
-.page-wrap{display:flex;min-height:calc(100vh - 58px);}
+.page-wrap{display:flex;min-height:auto;}
 </style>
 </head>
 <body>
@@ -505,9 +505,9 @@ footer .footer-sub { font-size: 12px; color: #7a9ab8; margin-top: 6px; }
     <div class="nav-section-title">Squads</div>
     <a class="nav-link" data-tab="squad-pp" onclick="switchTab('squad-pp')"><span class="nav-dot" style="background:#4f6ef7"></span>P&P Backend</a>
     <a class="nav-link" data-tab="squad-ds" onclick="switchTab('squad-ds')"><span class="nav-dot" style="background:#6366f1"></span>P&P Data Science</a>
-    <a class="nav-link" data-tab="squad-mc1" onclick="switchTab('squad-mc1')"><span class="nav-dot" style="background:#10b981"></span>MC — Commercial</a>
+    <a class="nav-link" data-tab="squad-mc1" onclick="switchTab('squad-mc1')"><span class="nav-dot" style="background:#10b981"></span>MC — Promotional</a>
     <a class="nav-link" data-tab="squad-mc2" onclick="switchTab('squad-mc2')"><span class="nav-dot" style="background:#14b8a6"></span>MC — Deliverability</a>
-    <a class="nav-link" data-tab="squad-pm" onclick="switchTab('squad-pm')"><span class="nav-dot" style="background:#f97316"></span>Paid Marketing</a>
+    <a class="nav-link" data-tab="squad-pm" onclick="switchTab('squad-pm')"><span class="nav-dot" style="background:#f97316"></span>External Marketing</a>
     <a class="nav-link" data-tab="squad-ads" onclick="switchTab('squad-ads')"><span class="nav-dot" style="background:#8b5cf6"></span>Ads & Sponsored</a>
     <a class="nav-link" data-tab="squad-cpn" onclick="switchTab('squad-cpn')"><span class="nav-dot" style="background:#ec4899"></span>Coupons</a>
   </div>
@@ -609,7 +609,7 @@ footer .footer-sub { font-size: 12px; color: #7a9ab8; margin-top: 6px; }
           <div class="org-node em2">
             <div class="role" style="color:var(--green)">EM2</div>
             <div class="name">Alex Thompson</div>
-            <div class="squad-name">MC — Commercial</div>
+            <div class="squad-name">MC — Promotional</div>
             <div class="headcount" style="background:#d1fae5;color:#059669">11 reports</div>
           </div>
         </div>
@@ -629,7 +629,7 @@ footer .footer-sub { font-size: 12px; color: #7a9ab8; margin-top: 6px; }
           <div class="org-node sm">
             <div class="role" style="color:var(--orange)">Sr Manager</div>
             <div class="name">Rachel Kim</div>
-            <div class="squad-name">Paid Marketing</div>
+            <div class="squad-name">External Marketing</div>
             <div class="headcount" style="background:#fff7ed;color:var(--orange)">9 reports</div>
           </div>
         </div>
@@ -715,7 +715,7 @@ footer .footer-sub { font-size: 12px; color: #7a9ab8; margin-top: 6px; }
             <td>0</td>
           </tr>
           <tr>
-            <td><span class="badge badge-green">MC — Commercial</span></td>
+            <td><span class="badge badge-green">MC — Promotional</span></td>
             <td>Alex Thompson</td><td>Kenji Nakamura</td><td>11</td>
             <td>51</td><td class="util-ok">91%</td><td>3.0</td>
             <td>560h</td><td>105h</td><td>44h</td>
@@ -731,7 +731,7 @@ footer .footer-sub { font-size: 12px; color: #7a9ab8; margin-top: 6px; }
             <td>3</td>
           </tr>
           <tr>
-            <td><span class="badge badge-orange">Paid Marketing</span></td>
+            <td><span class="badge badge-orange">External Marketing</span></td>
             <td>Rachel Kim</td><td>Danny Chen</td><td>9</td>
             <td>38</td><td class="util-ok">97%</td><td>2.5</td>
             <td>490h</td><td>95h</td><td>8h</td>
@@ -785,7 +785,7 @@ footer .footer-sub { font-size: 12px; color: #7a9ab8; margin-top: 6px; }
         <thead>
           <tr>
             <th>Level</th><th>Role</th><th>Count</th><th>% of ICs</th>
-            <th>P&amp;P BE</th><th>P&amp;P DS</th><th>MC Comm</th><th>MC Deliv</th><th>Paid Mktg</th><th>Ads</th><th>Coupons</th>
+            <th>P&amp;P BE</th><th>P&amp;P DS</th><th>MC Promo</th><th>MC Deliv</th><th>Ext Mktg</th><th>Ads</th><th>Coupons</th>
             <th>Engineers</th>
           </tr>
         </thead>
@@ -872,7 +872,7 @@ footer .footer-sub { font-size: 12px; color: #7a9ab8; margin-top: 6px; }
       <span style="display:flex;align-items:center;gap:4px"><span style="width:13px;height:13px;border-radius:3px;background:#fca5a5;display:inline-block"></span>≥125% Critical</span>
       <span style="display:flex;align-items:center;gap:4px"><span style="width:13px;height:13px;border-radius:3px;background:#f3f4f6;display:inline-block"></span>OOO/No data</span>
     </div>
-    <div class="bw-grid" id="heatmapGrid" style="grid-template-columns:160px repeat(6,1fr)">
+    <div class="bw-grid" id="heatmapGrid" style="grid-template-columns:160px repeat(6,80px);min-width:640px">
       <!-- rendered by JS -->
     </div>
   </div>
@@ -890,9 +890,9 @@ footer .footer-sub { font-size: 12px; color: #7a9ab8; margin-top: 6px; }
     <button class="squad-btn active" style="background:#4f6ef7;border-color:#4f6ef7;color:#fff" onclick="filterSquad('all',this)">All Squads</button>
     <button class="squad-btn" style="border-color:#4f6ef7;color:#4f6ef7" onclick="filterSquad('pp',this)">P&P Backend</button>
     <button class="squad-btn" style="border-color:#6366f1;color:#6366f1" onclick="filterSquad('ds',this)">P&P Data Sci</button>
-    <button class="squad-btn" style="border-color:#10b981;color:#10b981" onclick="filterSquad('mc1',this)">MC — Commercial</button>
+    <button class="squad-btn" style="border-color:#10b981;color:#10b981" onclick="filterSquad('mc1',this)">MC — Promotional</button>
     <button class="squad-btn" style="border-color:#14b8a6;color:#14b8a6" onclick="filterSquad('mc2',this)">MC — Deliverability</button>
-    <button class="squad-btn" style="border-color:#f97316;color:#f97316" onclick="filterSquad('pm',this)">Paid Marketing</button>
+    <button class="squad-btn" style="border-color:#f97316;color:#f97316" onclick="filterSquad('pm',this)">External Marketing</button>
     <button class="squad-btn" style="border-color:#8b5cf6;color:#8b5cf6" onclick="filterSquad('ads',this)">Ads &amp; Sponsored</button>
     <button class="squad-btn" style="border-color:#ec4899;color:#ec4899" onclick="filterSquad('cpn',this)">Coupons</button>
   </div>
@@ -929,15 +929,15 @@ footer .footer-sub { font-size: 12px; color: #7a9ab8; margin-top: 6px; }
           <tr class="ai-high"><td><span class="priority-badge high">HIGH</span></td><td>Staffing — IC Req</td><td><span class="badge badge-teal">MC—Deliv</span></td><td>Open IC3 (Engineer) req — Kafka-based deliverability pipeline needs bandwidth. Squad running lean with 10 engineers and no EM2. IC3 to accelerate subscription mgmt rework.</td><td>Deepika R.</td><td>Q3 start</td></tr>
           <tr class="ai-medium"><td><span class="priority-badge medium">MED</span></td><td>Staffing — IC Req</td><td><span class="badge badge-purple">Ads</span></td><td>Open IC5 (Staff Engineer) req — Ads bidding engine and ML-heavy attribution work requires a staff-level technical owner. Current TL (Priya) is overloaded at 102% util. IC5 will take tech lead ownership on sponsored ranking.</td><td>Marcus J.</td><td>Q3 start</td></tr>
           <tr class="ai-medium"><td><span class="priority-badge medium">MED</span></td><td>Staffing — IC Req</td><td><span class="badge badge-pink">Coupons</span></td><td>Open IC3 (Engineer) req — backfill after headcount rebalance. Legacy redemption service hardening and coupon analytics dashboard require additional bandwidth. New grad pipeline being evaluated.</td><td>Diana P.</td><td>Q3 start</td></tr>
-                    <tr class="ai-high"><td><span class="priority-badge high">HIGH</span></td><td>Utilization</td><td><span class="badge badge-green">MC—Comm</span></td><td>Squad at 110% avg util for 3 consecutive sprints — on-call concentrated on Kenji + embedded SRE Kavya Reddy. Redistribute on-call rotation and push 2 non-critical tickets to next sprint.</td><td>Alex T.</td><td>This sprint</td></tr>
-          <tr class="ai-high"><td><span class="priority-badge high">HIGH</span></td><td>Utilization</td><td><span class="badge badge-purple">Ads</span></td><td>Marcus's squad at 113% — Q2 sponsored listing crunch. Tom Eriksson (SRE, shared with Paid Mktg) handling infra stabilization. 1 engineer flagged for potential burnout — monitor.</td><td>Marcus J.</td><td>This sprint</td></tr>
+                    <tr class="ai-high"><td><span class="priority-badge high">HIGH</span></td><td>Utilization</td><td><span class="badge badge-green">MC—Promo</span></td><td>Squad at 110% avg util for 3 consecutive sprints — on-call concentrated on Kenji + embedded SRE Kavya Reddy. Redistribute on-call rotation and push 2 non-critical tickets to next sprint.</td><td>Alex T.</td><td>This sprint</td></tr>
+          <tr class="ai-high"><td><span class="priority-badge high">HIGH</span></td><td>Utilization</td><td><span class="badge badge-purple">Ads</span></td><td>Marcus's squad at 113% — Q2 sponsored listing crunch. Tom Eriksson (SRE, shared with Ext Mktg) handling infra stabilization. 1 engineer flagged for potential burnout — monitor.</td><td>Marcus J.</td><td>This sprint</td></tr>
           <tr class="ai-medium"><td><span class="priority-badge medium">MED</span></td><td>Architecture</td><td><span class="badge badge-blue">P&P Backend</span></td><td>Supriya flagged coupling risk in incentive-service ↔ pricing-control-center. RFC needs review before S12. Block calendar for 2hr arch review with Sarah's team.</td><td>Supriya V.</td><td>S12</td></tr>
-          <tr class="ai-medium"><td><span class="priority-badge medium">MED</span></td><td>Architecture</td><td><span class="badge badge-orange">Paid Mktg</span></td><td>Greg's data arch review for affiliate attribution pipeline outstanding. Current design won't scale past 10M events/day. Decision needed: batch vs streaming.</td><td>Greg H.</td><td>S12</td></tr>
-          <tr class="ai-medium"><td><span class="priority-badge medium">MED</span></td><td>SRE Rotation</td><td>All</td><td>Q2 SRE loan expires Jul 1. Confirm Q3 SRE allocation: Luca (P&amp;P), Kavya (MC Comm), Tom (Ads+PM shared). Request all 3 for continuity — each owns active infra work.</td><td>HPJ</td><td>Jun 15</td></tr>
+          <tr class="ai-medium"><td><span class="priority-badge medium">MED</span></td><td>Architecture</td><td><span class="badge badge-orange">Ext Mktg</span></td><td>Greg's data arch review for affiliate attribution pipeline outstanding. Current design won't scale past 10M events/day. Decision needed: batch vs streaming.</td><td>Greg H.</td><td>S12</td></tr>
+          <tr class="ai-medium"><td><span class="priority-badge medium">MED</span></td><td>SRE Rotation</td><td>All</td><td>Q2 SRE loan expires Jul 1. Confirm Q3 SRE allocation: Luca (P&amp;P), Kavya (MC Promo), Tom (Ads+PM shared). Request all 3 for continuity — each owns active infra work.</td><td>HPJ</td><td>Jun 15</td></tr>
           <tr class="ai-medium"><td><span class="priority-badge medium">MED</span></td><td>Infra Blocker</td><td><span class="badge badge-teal">MC—Deliv</span></td><td>3 tickets blocked on Kafka partition limit increase — infra ticket raised 2 weeks ago, no ETA from platform team. Escalate to platform director.</td><td>Deepika R.</td><td>Immediate</td></tr>
           <tr class="ai-medium"><td><span class="priority-badge medium">MED</span></td><td>Promotions</td><td>All</td><td>5 engineers eligible for promo cycle (2× IC4→IC5, 1× IC5→IC6, 2× IC3→IC4). Promo packets due Jul 15. Calibration session needed with EM2s week of Jul 7.</td><td>HPJ</td><td>Jul 15</td></tr>
           <tr class="ai-low"><td><span class="priority-badge low">LOW</span></td><td>Tech Debt</td><td><span class="badge badge-pink">Coupons</span></td><td>Ravi flagged legacy coupon redemption service — no test coverage, 3 incidents in last quarter. Diana to allocate 20% capacity for hardening in S13.</td><td>Diana P.</td><td>S13</td></tr>
-          <tr class="ai-low"><td><span class="priority-badge low">LOW</span></td><td>Onboarding</td><td><span class="badge badge-orange">Paid Mktg</span></td><td>2 new hires (IC3) joining next sprint — pair programming plan needed. Rachel to assign buddy engineers. Ramp target: first solo ticket by S13.</td><td>Rachel K.</td><td>S12</td></tr>
+          <tr class="ai-low"><td><span class="priority-badge low">LOW</span></td><td>Onboarding</td><td><span class="badge badge-orange">Ext Mktg</span></td><td>2 new hires (IC3) joining next sprint — pair programming plan needed. Rachel to assign buddy engineers. Ramp target: first solo ticket by S13.</td><td>Rachel K.</td><td>S12</td></tr>
           <tr class="ai-low"><td><span class="priority-badge low">LOW</span></td><td>Tooling</td><td><span class="badge badge-blue">P&P Backend</span></td><td>Raj proposed migrating test suite to Testcontainers — 40% reduction in flaky tests in POC. Sarah to review capacity trade-off and green-light in S13 planning.</td><td>Sarah C.</td><td>S13</td></tr>
         </tbody>
       </table>
@@ -1124,7 +1124,7 @@ footer .footer-sub { font-size: 12px; color: #7a9ab8; margin-top: 6px; }
 
 <div id="tab-squad-mc1" class="tab-content">
   <div class="page-header">
-    <h1>MC — Commercial &amp; Triggered Messages</h1>
+    <h1>MC — Promotional &amp; Triggered Messages</h1>
     <div class="subtitle">EM2: Alex Thompson · TL: Kenji Nakamura · 9 engineers + 1 SRE (Kavya Reddy) · Bloomreach Integration, SMS 2-way, Campaign Engine</div>
   </div>
   <div class="kpi-strip">
@@ -1306,7 +1306,7 @@ footer .footer-sub { font-size: 12px; color: #7a9ab8; margin-top: 6px; }
 
 <div id="tab-squad-pm" class="tab-content">
   <div class="page-header">
-    <h1>Paid Marketing — External &amp; Affiliates</h1>
+    <h1>External Marketing — External &amp; Affiliates</h1>
     <div class="subtitle">Sr Manager: Rachel Kim · TL: Danny Chen · 9 engineers + 1 SRE (Tom Eriksson, shared with Ads) · Affiliate Attribution, External Channels, Marketing Automation</div>
   </div>
   <div class="kpi-strip">
@@ -1591,7 +1591,7 @@ footer .footer-sub { font-size: 12px; color: #7a9ab8; margin-top: 6px; }
   <!-- LEADERSHIP HEATMAP -->
   <div class="section">
     <h2 class="section-title">Leadership Bandwidth Heatmap <span class="section-badge">S7–S12 · 6 sprints</span></h2>
-    <div class="chart-card">
+    <div class="chart-card" style="overflow-x:auto">
       <div style="display:flex;gap:12px;font-size:10px;color:var(--text-muted);margin-bottom:12px;align-items:center;flex-wrap:wrap">
         <span style="display:flex;align-items:center;gap:4px"><span style="width:12px;height:12px;border-radius:3px;background:#d1fae5;display:inline-block"></span>&lt;70% Under</span>
         <span style="display:flex;align-items:center;gap:4px"><span style="width:12px;height:12px;border-radius:3px;background:#bbf7d0;display:inline-block"></span>70–89% Good</span>
@@ -1600,7 +1600,7 @@ footer .footer-sub { font-size: 12px; color: #7a9ab8; margin-top: 6px; }
         <span style="display:flex;align-items:center;gap:4px"><span style="width:12px;height:12px;border-radius:3px;background:#fca5a5;display:inline-block"></span>≥125% Critical</span>
         <span style="font-size:9px;color:var(--text-muted);margin-left:auto">EM2/SM util reflects 1:1s, planning, hiring + squad mgmt overhead. TL util includes IC work + tech design.</span>
       </div>
-      <div class="bw-grid" id="leaderHeatmapGrid" style="grid-template-columns:180px repeat(6,1fr)"><!-- JS --></div>
+      <div class="bw-grid" id="leaderHeatmapGrid" style="grid-template-columns:200px repeat(6,80px);min-width:680px"><!-- JS --></div>
     </div>
   </div>
 
@@ -1629,7 +1629,7 @@ footer .footer-sub { font-size: 12px; color: #7a9ab8; margin-top: 6px; }
           <tr>
             <td style="font-weight:700">Alex Thompson</td>
             <td><span class="badge badge-green">EM2</span></td>
-            <td><span class="badge badge-green">MC—Comm</span></td>
+            <td><span class="badge badge-green">MC—Promo</span></td>
             <td>4</td><td class="compl-ok">89%</td><td>22h</td><td>31h</td><td>0h</td><td>11 × 30min</td><td>11</td>
             <td class="util-high"><div class="bar-wrap"><div class="bar" style="width:100%;background:#f97316"></div><span>110%</span></div></td>
             <td style="font-size:10px;color:var(--orange);font-weight:600">High mtg load; on-call rotation review due</td>
@@ -1662,7 +1662,7 @@ footer .footer-sub { font-size: 12px; color: #7a9ab8; margin-top: 6px; }
           <tr style="background:#fff7ed">
             <td style="font-weight:700">Rachel Kim</td>
             <td><span class="badge badge-orange">Sr Manager</span></td>
-            <td><span class="badge badge-orange">Paid Marketing</span></td>
+            <td><span class="badge badge-orange">External Marketing</span></td>
             <td>4</td><td class="compl-ok">97%</td><td>20h</td><td>30h</td><td>0h</td><td>9 × 30min</td><td>9</td>
             <td class="util-ok"><div class="bar-wrap"><div class="bar" style="width:71%;background:#10b981"></div><span>71%</span></div></td>
             <td style="font-size:10px;color:var(--text-muted)">2 new hires onboarding; arch review Q3</td>
@@ -1687,7 +1687,7 @@ footer .footer-sub { font-size: 12px; color: #7a9ab8; margin-top: 6px; }
           <tr style="background:#f5f3ff">
             <td style="font-weight:700">Kenji Nakamura</td>
             <td><span class="badge badge-purple">Tech Lead</span> <span class="badge" style="background:#fff7ed;color:#f97316;font-size:9px">SDE4</span></td>
-            <td><span class="badge badge-green">MC—Comm</span></td>
+            <td><span class="badge badge-green">MC—Promo</span></td>
             <td>12</td><td class="compl-ok">92%</td><td>50h</td><td>28h</td><td>8h</td><td>—</td><td>—</td>
             <td class="util-high"><div class="bar-wrap"><div class="bar" style="width:100%;background:#f97316"></div><span>123%</span></div></td>
             <td style="font-size:10px;color:var(--orange);font-weight:600">On-call + TL = overload; rotate oncall</td>
@@ -1703,7 +1703,7 @@ footer .footer-sub { font-size: 12px; color: #7a9ab8; margin-top: 6px; }
           <tr style="background:#f5f3ff">
             <td style="font-weight:700">Danny Chen</td>
             <td><span class="badge badge-purple">Tech Lead</span> <span class="badge" style="background:#fff7ed;color:#f97316;font-size:9px">SDE4</span></td>
-            <td><span class="badge badge-orange">Paid Marketing</span></td>
+            <td><span class="badge badge-orange">External Marketing</span></td>
             <td>13</td><td class="compl-perfect">100%</td><td>50h</td><td>22h</td><td>0h</td><td>—</td><td>—</td>
             <td class="util-ok"><div class="bar-wrap"><div class="bar" style="width:97%;background:#10b981"></div><span>97%</span></div></td>
             <td style="font-size:10px;color:var(--text-muted)">Affiliate streaming arch lead</td>
@@ -1867,7 +1867,7 @@ footer .footer-sub { font-size: 12px; color: #7a9ab8; margin-top: 6px; }
             <div class="eng-meta">
               <span class="badge badge-green">EM2</span>
               <span class="badge badge-orange">110% util</span>
-              <span class="badge badge-green">MC—Commercial</span>
+              <span class="badge badge-green">MC—Promotional</span>
             </div>
           </div>
         </div>
@@ -1915,10 +1915,12 @@ function switchTab(id) {
   document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.nav-link').forEach(l=>l.classList.remove('active'));
   const el = document.getElementById('tab-'+id);
-  if(el) el.classList.add('active');
+  if(el) {
+    el.classList.add('active');
+    window.scrollTo({top: 0, left: 0, behavior: 'instant'});
+  }
   const link = document.querySelector('.nav-link[data-tab="'+id+'"]');
   if(link) link.classList.add('active');
-  window.scrollTo({top: 0, behavior: 'instant'});
 }
 
 // ──────────────────────────────────────────────────────────
@@ -1947,17 +1949,17 @@ const HEATMAP = [
   ['ds','P&P Data Sci','Sneha Kulkarni · SDE3',[87,91,86,94,90,88]],
   ['ds','P&P Data Sci','Nathan Cole · SDE2',[92,89,91,88,87,90]],
   ['ds','P&P Data Sci','Vikram Sharma (TL · SDE4)',[98,102,99,105,101,97]],
-  ['mc1','MC—Commercial','Bhargav Khamar · SDE4',[103,108,113,104,110,115]],
-  ['mc1','MC—Commercial','Ankur Ojha · SDE4',[98,114,129,103,114,108]],
-  ['mc1','MC—Commercial','Petr Holecek · SDE3',[69,73,44,53,26,50]],
-  ['mc1','MC—Commercial','Prateek Srivastava · SDE3',[86,102,120,86,125,96]],
-  ['mc1','MC—Commercial','Niamh O\'Brien · SDE2',[90,88,92,95,89,93]],
-  ['mc1','MC—Commercial','Rahul Gupta · SDE1',[88,91,87,90,93,88]],
-  ['mc1','MC—Commercial','Lucie Dvorak · SDE2',[92,89,94,87,91,90]],
-  ['mc1','MC—Commercial','Conor Doyle · SDE1',[85,90,88,92,87,91]],
-  ['mc1','MC—Commercial','Karthik Subramanian · SDE1',[0,88,91,89,93,87]],  // OOO S7
-  ['mc1','MC—Commercial','Kenji Nakamura (TL · SDE4)',[105,110,108,115,112,109]],
-  ['mc1','MC—Commercial','Alex Thompson (EM2)',[71,74,70,72,75,70]],
+  ['mc1','MC—Promotional','Bhargav Khamar · SDE4',[103,108,113,104,110,115]],
+  ['mc1','MC—Promotional','Ankur Ojha · SDE4',[98,114,129,103,114,108]],
+  ['mc1','MC—Promotional','Petr Holecek · SDE3',[69,73,44,53,26,50]],
+  ['mc1','MC—Promotional','Prateek Srivastava · SDE3',[86,102,120,86,125,96]],
+  ['mc1','MC—Promotional','Niamh O\'Brien · SDE2',[90,88,92,95,89,93]],
+  ['mc1','MC—Promotional','Rahul Gupta · SDE1',[88,91,87,90,93,88]],
+  ['mc1','MC—Promotional','Lucie Dvorak · SDE2',[92,89,94,87,91,90]],
+  ['mc1','MC—Promotional','Conor Doyle · SDE1',[85,90,88,92,87,91]],
+  ['mc1','MC—Promotional','Karthik Subramanian · SDE1',[0,88,91,89,93,87]],  // OOO S7
+  ['mc1','MC—Promotional','Kenji Nakamura (TL · SDE4)',[105,110,108,115,112,109]],
+  ['mc1','MC—Promotional','Alex Thompson (EM2)',[71,74,70,72,75,70]],
   ['mc2','MC—Deliverability','Arjun Mehta · SDE4',[88,90,87,92,89,91]],
   ['mc2','MC—Deliverability','Siobhan Gallagher · SDE3',[85,88,90,87,92,88]],
   ['mc2','MC—Deliverability','Saurabh Tiwari · SDE3',[92,89,94,91,88,90]],
@@ -1970,16 +1972,16 @@ const HEATMAP = [
   ['mc2','MC—Deliverability','Aarti Kapoor · SDE1',[86,88,91,90,88,87]],
   ['mc2','MC—Deliverability','TBH — IC3 (Open Req)',[0,0,0,0,0,0]],
   ['mc2','MC—Deliverability','Deepika Rao (TL · SDE4 · Act.EM)',[102,108,105,110,107,104]],
-  ['pm','Paid Marketing','Amit Sharma · SDE4',[88,85,90,87,91,88]],
-  ['pm','Paid Marketing','Aisha Patel · SDE3',[90,92,88,93,89,90]],
-  ['pm','Paid Marketing','Vaclav Mares · SDE3',[86,89,91,88,90,87]],
-  ['pm','Paid Marketing','Meera Pillai · SDE1',[0,0,87,90,88,86]],  // New hire
-  ['pm','Paid Marketing','Ryan O\'Connor · SDE3',[91,88,92,86,93,89]],
-  ['pm','Paid Marketing','Jessica Morgan · SDE2',[89,91,87,90,88,91]],
-  ['pm','Paid Marketing','Deepak Nair · SDE2',[87,90,89,87,92,88]],
-  ['pm','Paid Marketing','Eimear Byrne · SDE1',[92,88,91,89,87,90]],
-  ['pm','Paid Marketing','Danny Chen (TL · SDE4)',[95,99,97,101,98,96]],
-  ['pm','Paid Marketing','Rachel Kim (SM)',[68,72,70,74,71,69]],
+  ['pm','External Marketing','Amit Sharma · SDE4',[88,85,90,87,91,88]],
+  ['pm','External Marketing','Aisha Patel · SDE3',[90,92,88,93,89,90]],
+  ['pm','External Marketing','Vaclav Mares · SDE3',[86,89,91,88,90,87]],
+  ['pm','External Marketing','Meera Pillai · SDE1',[0,0,87,90,88,86]],  // New hire
+  ['pm','External Marketing','Ryan O\'Connor · SDE3',[91,88,92,86,93,89]],
+  ['pm','External Marketing','Jessica Morgan · SDE2',[89,91,87,90,88,91]],
+  ['pm','External Marketing','Deepak Nair · SDE2',[87,90,89,87,92,88]],
+  ['pm','External Marketing','Eimear Byrne · SDE1',[92,88,91,89,87,90]],
+  ['pm','External Marketing','Danny Chen (TL · SDE4)',[95,99,97,101,98,96]],
+  ['pm','External Marketing','Rachel Kim (SM)',[68,72,70,74,71,69]],
   ['ads','Ads & Sponsored','Rahul Khanna · SDE4',[95,102,108,99,110,113]],
   ['ads','Ads & Sponsored','Pavlina Kucera · SDE3',[90,95,98,92,105,108]],
   ['ads','Ads & Sponsored','Aarav Shah · SDE3',[88,91,94,89,97,101]],
@@ -2001,7 +2003,7 @@ const HEATMAP = [
   ['cpn','Coupons','Diana Park (EM1)',[69,72,71,74,70,73]],
   // SRE
   ['sre','SRE (Loaned)','Luca Bianchi (P&P)',[88,92,90,87,93,91]],
-  ['sre','SRE (Loaned)','Kavya Reddy (MC Comm)',[91,89,93,90,88,92]],
+  ['sre','SRE (Loaned)','Kavya Reddy (MC Promo)',[91,89,93,90,88,92]],
   ['sre','SRE (Loaned)','Tom Eriksson (Ads+PM)',[86,90,88,92,91,89]],
 ];
 
@@ -2019,8 +2021,8 @@ const SQUAD_COLORS={
   pm:'#f97316',ads:'#8b5cf6',cpn:'#ec4899',sre:'#f59e0b'
 };
 const SQUAD_LABELS={
-  pp:'P&P Backend',ds:'P&P Data Science',mc1:'MC — Commercial',mc2:'MC — Deliverability',
-  pm:'Paid Marketing',ads:'Ads & Sponsored',cpn:'Coupons',sre:'SRE (Loaned)'
+  pp:'P&P Backend',ds:'P&P Data Science',mc1:'MC — Promotional',mc2:'MC — Deliverability',
+  pm:'External Marketing',ads:'Ads & Sponsored',cpn:'Coupons',sre:'SRE (Loaned)'
 };
 
 (function buildHeatmap(){
@@ -2052,7 +2054,7 @@ const BASE={responsive:true,plugins:{legend:{position:'top',labels:{font:{size:1
 new Chart(document.getElementById('squadUtilChart'),{
   type:'bar',
   data:{
-    labels:['P&P Backend','P&P DS','MC—Comm','MC—Deliv','Paid Mktg','Ads','Coupons'],
+    labels:['P&P Backend','P&P DS','MC—Promo','MC—Deliv','Ext Mktg','Ads','Coupons'],
     datasets:[{label:'Utilization %',data:[92,88,110,86,84,113,91],
       backgroundColor:['#4f6ef7','#6366f1','#f97316','#14b8a6','#f97316','#ef4444','#ec4899']}]
   },
@@ -2062,7 +2064,7 @@ new Chart(document.getElementById('squadUtilChart'),{
 new Chart(document.getElementById('headcountChart'),{
   type:'doughnut',
   data:{
-    labels:['P&P Backend (12)','P&P DS (6)','MC—Comm (11)','MC—Deliv (12)','Paid Mktg (9)','Ads (10)','Coupons (7)','SRE Loaned (3)'],
+    labels:['P&P Backend (12)','P&P DS (6)','MC—Promo (11)','MC—Deliv (12)','Ext Mktg (9)','Ads (10)','Coupons (7)','SRE Loaned (3)'],
     datasets:[{data:[12,6,11,12,9,10,7,3],
       backgroundColor:['#4f6ef7','#6366f1','#10b981','#14b8a6','#f97316','#8b5cf6','#ec4899','#f59e0b']}]
   },
@@ -2076,9 +2078,9 @@ new Chart(document.getElementById('ticketTrendChart'),{
     datasets:[
       {label:'P&P BE',data:[38,40,39,41,42,42],borderColor:'#4f6ef7',backgroundColor:'rgba(79,110,247,.1)',tension:.3,fill:false,pointRadius:3},
       {label:'P&P DS',data:[24,25,26,27,27,28],borderColor:'#6366f1',backgroundColor:'rgba(99,102,241,.1)',tension:.3,fill:false,pointRadius:3},
-      {label:'MC—Comm',data:[44,47,49,48,51,51],borderColor:'#10b981',backgroundColor:'rgba(16,185,129,.1)',tension:.3,fill:false,pointRadius:3},
+      {label:'MC—Promo',data:[44,47,49,48,51,51],borderColor:'#10b981',backgroundColor:'rgba(16,185,129,.1)',tension:.3,fill:false,pointRadius:3},
       {label:'MC—Deliv',data:[38,40,41,43,44,44],borderColor:'#14b8a6',backgroundColor:'rgba(20,184,166,.1)',tension:.3,fill:false,pointRadius:3},
-      {label:'Paid Mktg',data:[32,34,35,36,37,38],borderColor:'#f97316',backgroundColor:'rgba(249,115,22,.1)',tension:.3,fill:false,pointRadius:3},
+      {label:'Ext Mktg',data:[32,34,35,36,37,38],borderColor:'#f97316',backgroundColor:'rgba(249,115,22,.1)',tension:.3,fill:false,pointRadius:3},
       {label:'Ads',data:[28,29,31,32,34,35],borderColor:'#8b5cf6',backgroundColor:'rgba(139,92,246,.1)',tension:.3,fill:false,pointRadius:3},
       {label:'Coupons',data:[25,26,27,28,29,30],borderColor:'#ec4899',backgroundColor:'rgba(236,72,153,.1)',tension:.3,fill:false,pointRadius:3},
     ]
@@ -2371,7 +2373,7 @@ new Chart(document.getElementById('sdeLevelChart'), {
 new Chart(document.getElementById('sdeLevelSquadChart'), {
   type: 'bar',
   data: {
-    labels: ['P&P BE','P&P DS','MC Comm','MC Deliv','Paid Mktg','Ads','Coupons'],
+    labels: ['P&P BE','P&P DS','MC Promo','MC Deliv','Ext Mktg','Ads','Coupons'],
     datasets: [
       { label: 'SDE4 IC', data: [2,1,2,1,1,1,1], backgroundColor: '#f97316' },
       { label: 'SDE3',    data: [4,2,4,3,3,3,2], backgroundColor: '#8b5cf6' },
