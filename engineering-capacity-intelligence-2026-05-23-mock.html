@@ -1918,6 +1918,7 @@ function switchTab(id) {
   if(el) el.classList.add('active');
   const link = document.querySelector('.nav-link[data-tab="'+id+'"]');
   if(link) link.classList.add('active');
+  window.scrollTo({top: 0, behavior: 'instant'});
 }
 
 // ──────────────────────────────────────────────────────────
