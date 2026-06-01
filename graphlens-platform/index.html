@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>GraphLens — Engineering Architecture Intelligence Platform</title>
+<style>
+:root{--bg:#020610;--s1:rgba(255,255,255,.04);--s2:rgba(255,255,255,.07);--bd:rgba(255,255,255,.075);--bd2:rgba(255,255,255,.14);--tx:#dde8f8;--mt:#4a6585;--mt2:#263650;--ai:#6366f1;--ai2:#818cf8;--ai3:#a5b4fc;--teal:#2dd4bf;--cyan:#22d3ee;--green:#10b981;--orange:#f59e0b;--red:#f87171;--purple:#a78bfa;--pink:#f472b6;--yellow:#fbbf24;}
+*{box-sizing:border-box;margin:0;padding:0;}html{scroll-behavior:smooth;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 75% 55% at 50% -5%,rgba(99,102,241,.1) 0%,transparent 60%),radial-gradient(ellipse 45% 35% at 90% 60%,rgba(45,212,191,.06) 0%,transparent 55%);}
+nav{position:sticky;top:0;z-index:100;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 36px;background:rgba(2,6,16,.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--bd);}
+.nav-logo{display:flex;align-items:center;gap:9px;text-decoration:none;}
+.nli{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--ai),var(--teal));display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff;}
+.nlt{font-size:15px;font-weight:800;color:var(--tx);} .nlt em{color:var(--ai2);font-style:normal;}
+.nav-links{display:flex;gap:4px;}
+.nl{padding:5px 12px;border-radius:7px;font-size:12px;font-weight:500;color:var(--mt);text-decoration:none;transition:all .15s;}
+.nl:hover{color:var(--tx);background:rgba(255,255,255,.05);}
+.page{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:40px 36px 60px;}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--ai2);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.eyebrow::before{content:'';width:18px;height:2px;background:linear-gradient(90deg,var(--ai),transparent);border-radius:2px;}
+h1{font-size:clamp(28px,4vw,46px);font-weight:800;letter-spacing:-.8px;margin-bottom:14px;line-height:1.1;}
+.page-sub{font-size:15px;color:var(--mt);line-height:1.7;max-width:640px;margin-bottom:36px;}
+.card{background:var(--s1);border:1px solid var(--bd);border-radius:14px;overflow:hidden;}
+.ch{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--bd);background:rgba(255,255,255,.02);}
+.cht{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;}
+.ci{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;}
+.cbd{padding:20px;}
+.cb{font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px;}
+.cb-o{background:rgba(245,158,11,.12);color:var(--orange);border:1px solid rgba(245,158,11,.2);}
+.cb-r{background:rgba(248,113,113,.12);color:var(--red);border:1px solid rgba(248,113,113,.2);}
+.cb-g{background:rgba(16,185,129,.12);color:var(--green);border:1px solid rgba(16,185,129,.2);}
+.cb-a{background:rgba(99,102,241,.12);color:var(--ai2);border:1px solid rgba(99,102,241,.2);}
+.cb-t{background:rgba(45,212,191,.12);color:var(--teal);border:1px solid rgba(45,212,191,.2);}
+.cb-p{background:rgba(167,139,250,.12);color:var(--purple);border:1px solid rgba(167,139,250,.2);}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+.cl{display:flex;gap:11px;padding:13px 15px;border-radius:10px;border-left:3px solid;margin-bottom:12px;}
+.cl:last-of-type{margin-bottom:0;}
+.cl-d{border-left-color:var(--red);background:rgba(248,113,113,.05);}
+.cl-w{border-left-color:var(--orange);background:rgba(245,158,11,.05);}
+.cl-i{border-left-color:var(--cyan);background:rgba(34,211,238,.05);}
+.cl-g{border-left-color:var(--green);background:rgba(16,185,129,.05);}
+.cl-a{border-left-color:var(--ai);background:rgba(99,102,241,.05);}
+.cl-p{border-left-color:var(--purple);background:rgba(167,139,250,.05);}
+.clico{font-size:16px;flex-shrink:0;margin-top:1px;}
+.clt{font-size:12px;font-weight:700;margin-bottom:3px;}
+.cld{font-size:11px;color:var(--mt);line-height:1.6;}
+.pipe{display:flex;align-items:stretch;gap:0;overflow-x:auto;padding-bottom:4px;}
+.ps{flex:1;min-width:100px;background:rgba(255,255,255,.03);border:1px solid var(--bd);border-radius:9px;padding:12px 10px;display:flex;flex-direction:column;gap:4px;transition:all .2s;}
+.ps:hover{background:rgba(255,255,255,.06);border-color:var(--bd2);}
+.pnum{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;color:#fff;flex-shrink:0;}
+.ptitle{font-size:11px;font-weight:700;}
+.psub{font-size:10px;color:var(--mt);line-height:1.4;}
+.pchip{font-size:9px;font-weight:700;padding:2px 5px;border-radius:4px;width:fit-content;margin-top:2px;}
+.pc-f{background:rgba(16,185,129,.1);color:var(--green);}
+.pc-m{background:rgba(245,158,11,.1);color:var(--orange);}
+.pc-s{background:rgba(248,113,113,.1);color:var(--red);}
+.parr{display:flex;align-items:center;justify-content:center;width:18px;flex-shrink:0;color:var(--mt2);font-size:13px;align-self:center;}
+.divider{height:1px;background:var(--bd);margin:20px 0;}
+.back-btn{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--mt);text-decoration:none;padding:7px 14px;border:1px solid var(--bd);border-radius:8px;margin-bottom:24px;background:var(--s1);transition:all .15s;}
+.back-btn:hover{color:var(--tx);border-color:var(--bd2);}
+.svc-chain{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:20px;}
+.svc-pill{font-size:11px;font-weight:700;padding:5px 12px;border-radius:8px;font-family:monospace;}
+::-webkit-scrollbar{width:4px;height:4px;} ::-webkit-scrollbar-track{background:transparent;} ::-webkit-scrollbar-thumb{background:var(--mt2);border-radius:4px;}
+@media(max-width:640px){.g2,.g3{grid-template-columns:1fr;}.pipe{flex-direction:column;gap:6px;}.parr{transform:rotate(90deg);align-self:flex-start;}.page{padding:24px 18px 40px;}}
+</style>
+
+<style>
+body::before{background:radial-gradient(ellipse 80% 60% at 50% -10%,rgba(99,102,241,.12) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 90% 50%,rgba(45,212,191,.07) 0%,transparent 55%),radial-gradient(ellipse 40% 35% at 0% 80%,rgba(167,139,250,.06) 0%,transparent 50%);}
+.hero{text-align:center;padding:80px 36px 60px;max-width:1100px;margin:0 auto;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.25);border-radius:20px;padding:6px 16px;font-size:11px;font-weight:700;color:var(--ai3);letter-spacing:.5px;text-transform:uppercase;margin-bottom:28px;}
+.hero h1{font-size:clamp(36px,5vw,64px);font-weight:800;letter-spacing:-1.5px;line-height:1.06;margin-bottom:20px;}
+.grad{background:linear-gradient(135deg,var(--ai3) 0%,var(--teal) 45%,var(--purple) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero-sub{font-size:16px;color:var(--mt);line-height:1.7;max-width:660px;margin:0 auto 36px;}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.btn-p{background:linear-gradient(135deg,var(--ai),var(--ai2));color:#fff;border:none;border-radius:10px;padding:12px 26px;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 0 22px rgba(99,102,241,.35);transition:all .2s;text-decoration:none;display:inline-block;}
+.btn-p:hover{transform:translateY(-1px);box-shadow:0 0 34px rgba(99,102,241,.55);}
+.btn-g{background:rgba(255,255,255,.06);border:1px solid var(--bd2);color:var(--tx);border-radius:10px;padding:12px 26px;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;text-decoration:none;display:inline-block;}
+.btn-g:hover{background:rgba(255,255,255,.1);}
+.mstrip{display:flex;border:1px solid var(--bd);border-radius:14px;overflow:hidden;max-width:880px;margin:44px auto 0;background:rgba(255,255,255,.025);}
+.mi{flex:1;padding:20px;border-right:1px solid var(--bd);transition:background .15s;}
+.mi:last-child{border-right:none;} .mi:hover{background:rgba(255,255,255,.04);}
+.mv{font-size:24px;font-weight:800;letter-spacing:-.4px;background:linear-gradient(135deg,var(--ai3),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.ml{font-size:10px;color:var(--mt);margin-top:3px;font-weight:500;}
+.mod-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.mc{background:var(--s1);border:1px solid var(--bd);border-radius:14px;padding:22px;transition:all .25s;text-decoration:none;display:block;color:var(--tx);position:relative;overflow:hidden;}
+.mc::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--ai),transparent);opacity:0;transition:opacity .25s;}
+.mc:hover{border-color:rgba(99,102,241,.35);background:rgba(255,255,255,.06);transform:translateY(-2px);box-shadow:0 8px 36px rgba(99,102,241,.1);}
+.mc:hover::before{opacity:1;}
+.mc-ico{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:14px;}
+.mc-title{font-size:14px;font-weight:700;margin-bottom:5px;}
+.mc-desc{font-size:11px;color:var(--mt);line-height:1.5;margin-bottom:12px;}
+.mc-foot{display:flex;align-items:center;justify-content:space-between;font-size:11px;}
+.repos-g{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;}
+.rc{background:var(--s1);border:1px solid var(--bd);border-radius:11px;padding:16px;transition:all .2s;text-decoration:none;display:block;color:var(--tx);}
+.rc:hover{border-color:var(--bd2);background:rgba(255,255,255,.055);transform:translateY(-1px);}
+.rci{font-size:20px;margin-bottom:8px;}
+.rcn{font-size:11px;font-weight:700;font-family:monospace;margin-bottom:3px;}
+.rcd{font-size:9px;color:var(--mt);margin-bottom:8px;line-height:1.4;}
+.rcs{display:flex;gap:4px;flex-wrap:wrap;}
+.rst{font-size:8px;font-weight:700;padding:2px 5px;border-radius:3px;}
+.ins-g{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.ic{background:linear-gradient(135deg,rgba(99,102,241,.06),rgba(255,255,255,.03));border:1px solid rgba(99,102,241,.15);border-radius:12px;padding:18px;display:flex;gap:12px;transition:all .2s;}
+.ic:hover{border-color:rgba(99,102,241,.3);}
+.ic-ico{width:32px;height:32px;border-radius:8px;background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.25);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.is{font-size:9px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;margin-bottom:4px;}
+.it{font-size:12px;font-weight:700;margin-bottom:4px;line-height:1.3;}
+.id{font-size:11px;color:var(--mt);line-height:1.6;}
+.sev-c{color:var(--red);} .sev-h{color:var(--orange);} .sev-m{color:var(--ai2);} .sev-ok{color:var(--green);}
+.cs-g{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.csc{background:var(--s1);border:1px solid var(--bd);border-radius:13px;padding:20px;transition:all .2s;text-decoration:none;display:block;color:var(--tx);}
+.csc:hover{border-color:var(--bd2);transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.25);}
+.csn{font-size:10px;font-weight:700;color:var(--mt2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;}
+.cst{font-size:13px;font-weight:800;margin-bottom:6px;line-height:1.3;}
+.csd{font-size:11px;color:var(--mt);line-height:1.5;margin-bottom:12px;}
+.css{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:12px;}
+.css span{font-size:9px;font-weight:600;padding:2px 6px;border-radius:3px;background:rgba(255,255,255,.05);border:1px solid var(--bd);color:var(--mt);font-family:monospace;}
+footer{border-top:1px solid var(--bd);padding:26px 36px;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--mt);background:rgba(2,6,16,.7);position:relative;z-index:1;}
+footer a{color:var(--mt);text-decoration:none;} footer a:hover{color:var(--tx);}
+.fl{display:flex;gap:20px;}
+@media(max-width:900px){.mod-grid{grid-template-columns:repeat(2,1fr);}.repos-g{grid-template-columns:repeat(3,1fr);}.cs-g{grid-template-columns:repeat(2,1fr);}.ins-g{grid-template-columns:1fr;}}
+@media(max-width:600px){.mod-grid,.repos-g,.cs-g{grid-template-columns:1fr;}.mstrip{flex-direction:column;}.mi{border-right:none;border-bottom:1px solid var(--bd);}nav{padding:0 16px;}}
+
+/* ── Public-site header/footer layout fix ── */
+body{display:flex !important;flex-direction:column !important;min-height:100vh;margin:0;}
+body > header.pub-header{flex-shrink:0;width:100%;box-sizing:border-box;}
+body > footer.pub-footer{flex-shrink:0;width:100%;box-sizing:border-box;margin-top:auto;}
+.pub-body-wrap{display:flex;flex-direction:row;flex:1;min-width:0;width:100%;}
+/* Ensure footer 3-zone children don't get overridden */
+.pub-footer .pub-footer-row{display:flex !important;align-items:center !important;}
+.pub-footer .pub-footer-center{flex:1 !important;justify-content:center !important;}
+</style>
+</head>
+<body>
+<header class="pub-header" style="position:sticky;top:0;z-index:1000;background:rgba(8,14,26,0.97);border-bottom:3px solid #38bdf8;backdrop-filter:blur(10px);padding:14px 32px;display:flex;align-items:center;gap:16px;font-family:'DM Sans',system-ui,sans-serif;">
+<a class="pub-header-left back-link" href="https://thehimanshujain.com/" style="color:#38bdf8;text-decoration:none;font-size:14px;font-weight:500;flex-shrink:0;white-space:nowrap;">&#8592; Engineering Intelligence Hub</a>
+<span class="pub-header-center" style="flex:1;text-align:center;font-size:13px;color:#7a9ab8;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"><span style="color:#fff;font-weight:700;">Himanshu Jain</span> &middot; Director of Software Engineering</span>
+<a class="pub-header-right" href="https://www.linkedin.com/in/thehimanshujain/" target="_blank" style="display:inline-flex;align-items:center;gap:7px;background:#38bdf8;color:#080e1a;text-decoration:none;font-size:12px;font-weight:700;padding:7px 14px;border-radius:9px;flex-shrink:0;"><svg fill="currentColor" height="13" viewBox="0 0 24 24" width="13"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>LinkedIn <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;"><path d="M7 17L17 7"/><path d="M8 7h9v9"/></svg></a>
+</header>
+
+<div class="pub-body-wrap">
+
+
+<nav>
+  <a class="nav-logo" href="index.html"><div class="nli">✦</div><div class="nlt">Graph<em>Lens</em></div></a>
+  <div class="nav-links">
+    <a class="nl" href="index.html">Home</a>
+    <a class="nl" href="../graphlens.html">Explorer</a>
+    <a class="nl" href="../platform-architecture.html">Architecture</a>
+    <a class="nl" href="../engineering-copilot.html">AI Copilot</a>
+    <a class="nl" href="index.html#case-studies">Case Studies</a>
+  </div>
+</nav>
+
+
+<section style="position:relative;z-index:1;">
+<div class="hero">
+  <div class="hero-badge">✦ AI-Powered Engineering Intelligence</div>
+  <h1>Architecture Intelligence<br>for <span class="grad">Distributed Commerce</span></h1>
+  <p class="hero-sub">GraphLens analyzes 42,479 nodes and 96,397 dependency edges across 10 repositories — surfacing architectural risks, service dependencies, and engineering insights that would take weeks to discover manually.</p>
+  <div class="hero-btns">
+    <a class="btn-p" href="../engineering-copilot.html">✦ Launch AI Copilot</a>
+    <a class="btn-g" href="../platform-architecture.html">View Architecture Map →</a>
+    <a class="btn-g" href="../graphlens.html">Explore Repos</a>
+  </div>
+</div>
+<div class="mstrip">
+  <div class="mi"><div class="mv">42,479</div><div class="ml">Total graph nodes</div></div>
+  <div class="mi"><div class="mv">96,397</div><div class="ml">Dependency edges</div></div>
+  <div class="mi"><div class="mv">10</div><div class="ml">Repositories analyzed</div></div>
+  <div class="mi"><div class="mv">11</div><div class="ml">Critical risks detected</div></div>
+  <div class="mi"><div class="mv">94%</div><div class="ml">AI confidence</div></div>
+</div>
+</section>
+
+<!-- MODULES -->
+<div class="page">
+<div class="eyebrow">Platform Modules</div>
+<div style="font-size:28px;font-weight:800;letter-spacing:-.5px;margin-bottom:8px;">Everything you need to understand<br>your distributed architecture</div>
+<p style="font-size:13px;color:var(--mt);max-width:540px;line-height:1.6;margin-bottom:30px;">Six integrated intelligence modules — interactive graphs to AI-powered insights and real-time impact simulation.</p>
+<div class="mod-grid" style="margin-bottom:48px;">
+  <a class="mc" href="../graphlens.html"><div class="mc-ico" style="background:rgba(99,102,241,.12);border:1px solid rgba(99,102,241,.2);">🗂️</div><div class="mc-title">Repository Explorer</div><div class="mc-desc">Browse all 10 repos with node counts, tech stacks, god-node analysis, and per-service graph visualizations.</div><div class="mc-foot"><span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;background:rgba(99,102,241,.12);color:var(--ai2);">10 repos</span><span style="color:var(--ai2);">↗</span></div></a>
+  <a class="mc" href="../platform-architecture.html"><div class="mc-ico" style="background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.2);">🌐</div><div class="mc-title">Platform Architecture</div><div class="mc-desc">Cross-repository architecture map with interactive impact simulator — select any repo to see blast radius, APIs, and workflows.</div><div class="mc-foot"><span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;background:rgba(245,158,11,.12);color:var(--orange);">Interactive</span><span style="color:var(--orange);">↗</span></div></a>
+  <a class="mc" href="../engineering-copilot.html"><div class="mc-ico" style="background:rgba(99,102,241,.12);border:1px solid rgba(99,102,241,.2);">✦</div><div class="mc-title">AI Engineering Copilot</div><div class="mc-desc">Graph-grounded conversational AI. Ask "What breaks if dynamic_pricing changes?" and get answers from 42K+ real code nodes.</div><div class="mc-foot"><span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;background:rgba(99,102,241,.12);color:var(--ai2);">94% confidence</span><span style="color:var(--ai2);">↗</span></div></a>
+  <a class="mc" href="../dynamic-pricing-analysis.html"><div class="mc-ico" style="background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.2);">💲</div><div class="mc-title">Service Intelligence</div><div class="mc-desc">Deep-dive per-service analysis with lifecycle flows, bottleneck tables, API maps, and Kafka event visualizations.</div><div class="mc-foot"><span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;background:rgba(251,191,36,.12);color:var(--yellow);">3 services</span><span style="color:var(--yellow);">↗</span></div></a>
+  <a class="mc" href="#case-studies"><div class="mc-ico" style="background:rgba(45,212,191,.12);border:1px solid rgba(45,212,191,.2);">📚</div><div class="mc-title">Architecture Case Studies</div><div class="mc-desc">5 illustrated case studies tracing real flows — how pricing works, subscription discounts, ML → pricing decisions.</div><div class="mc-foot"><span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;background:rgba(45,212,191,.12);color:var(--teal);">5 studies</span><span style="color:var(--teal);">↗</span></div></a>
+  <a class="mc" href="../platform-architecture.html#insights"><div class="mc-ico" style="background:rgba(248,113,113,.12);border:1px solid rgba(248,113,113,.2);">🔮</div><div class="mc-title">Risk &amp; Insights Engine</div><div class="mc-desc">11 auto-detected architectural risks — from retry storms to circular dependencies and silent ML failures.</div><div class="mc-foot"><span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;background:rgba(248,113,113,.12);color:var(--red);">11 risks</span><span style="color:var(--red);">↗</span></div></a>
+</div>
+
+<!-- REPOS -->
+<div class="eyebrow">Repositories</div>
+<div style="font-size:24px;font-weight:800;margin-bottom:8px;">10 Repositories Analyzed</div>
+<p style="font-size:13px;color:var(--mt);margin-bottom:20px;">Click any repository to open its full graph intelligence report.</p>
+<div class="repos-g" style="margin-bottom:48px;">
+  <a class="rc" href="../dynamic-pricing-analysis.html"><div class="rci">💲</div><div class="rcn">dynamic_pricing</div><div class="rcd">Tier-1 · Java 21 · GCP+AWS</div><div class="rcs"><span class="rst" style="background:rgba(248,113,113,.1);color:var(--red);">Tier-1</span><span class="rst" style="background:rgba(255,255,255,.05);color:var(--mt);">6,204 nodes</span></div></a>
+  <a class="rc" href="../incentive-service-analysis.html"><div class="rci">🎁</div><div class="rcn">incentive-service</div><div class="rcd">Core incentive engine · Checkout critical</div><div class="rcs"><span class="rst" style="background:rgba(248,113,113,.1);color:var(--red);">Tier-1</span><span class="rst" style="background:rgba(255,255,255,.05);color:var(--mt);">22,346 nodes</span></div></a>
+  <a class="rc" href="../message-service-analysis.html"><div class="rci">📨</div><div class="rcn">message-service</div><div class="rcd">CRM messaging · Campaign delivery</div><div class="rcs"><span class="rst" style="background:rgba(245,158,11,.1);color:var(--orange);">Tier-2</span><span class="rst" style="background:rgba(255,255,255,.05);color:var(--mt);">8,821 nodes</span></div></a>
+  <a class="rc" href="../platform-architecture.html"><div class="rci">🧠</div><div class="rcn">machine-learning-toolkit</div><div class="rcd">Airflow · Bayesian · GCP Composer</div><div class="rcs"><span class="rst" style="background:rgba(244,114,182,.1);color:var(--pink);">Data</span><span class="rst" style="background:rgba(255,255,255,.05);color:var(--mt);">420 nodes</span></div></a>
+  <a class="rc" href="../platform-architecture.html"><div class="rci">🔄</div><div class="rcn">subscription-programs-app</div><div class="rcd">KillBill · Membership lifecycle</div><div class="rcs"><span class="rst" style="background:rgba(45,212,191,.1);color:var(--teal);">Tier-2</span><span class="rst" style="background:rgba(255,255,255,.05);color:var(--mt);">2,417 nodes</span></div></a>
+  <a class="rc" href="../platform-architecture.html"><div class="rci">🎛️</div><div class="rcn">pricing-control-center-jtier</div><div class="rcd">ILS · 11 Quartz jobs · PostgreSQL</div><div class="rcs"><span class="rst" style="background:rgba(248,113,113,.1);color:var(--red);">Tier-2</span><span class="rst" style="background:rgba(255,255,255,.05);color:var(--mt);">1,360 nodes</span></div></a>
+  <a class="rc" href="../platform-architecture.html"><div class="rci">🖥️</div><div class="rcn">pricing-control-center-ui</div><div class="rcd">React · ILS creation · SOX</div><div class="rcs"><span class="rst" style="background:rgba(129,140,248,.1);color:var(--ai2);">Tier-3</span><span class="rst" style="background:rgba(255,255,255,.05);color:var(--mt);">267 nodes</span></div></a>
+  <a class="rc" href="../platform-architecture.html"><div class="rci">⚙️</div><div class="rcn">dynamic-pricing-nginx</div><div class="rcd">Nginx proxy · TLS · Rate limiting</div><div class="rcs"><span class="rst" style="background:rgba(16,185,129,.1);color:var(--green);">Infra</span></div></a>
+  <a class="rc" href="../platform-architecture.html"><div class="rci">🏷️</div><div class="rcn">badges</div><div class="rcd">Trending badge display</div><div class="rcs"><span class="rst" style="background:rgba(129,140,248,.1);color:var(--ai2);">Tier-4</span><span class="rst" style="background:rgba(255,255,255,.05);color:var(--mt);">Isolated</span></div></a>
+  <a class="rc" href="../platform-architecture.html"><div class="rci">🔢</div><div class="rcn">Badges-Trending-Calc</div><div class="rcd">Score engine · feeds badges UI</div><div class="rcs"><span class="rst" style="background:rgba(129,140,248,.1);color:var(--ai2);">Tier-4</span></div></a>
+</div>
+
+<!-- INSIGHTS -->
+<div id="insights">
+<div class="eyebrow">AI Insights</div>
+<div style="font-size:24px;font-weight:800;margin-bottom:8px;">Platform Intelligence Highlights</div>
+<p style="font-size:13px;color:var(--mt);margin-bottom:20px;">Graph-derived insights from 96,397 dependency edges.</p>
+<div class="ins-g" style="margin-bottom:48px;">
+  <div class="ic"><div class="ic-ico">⚡</div><div><div class="is sev-c">● CRITICAL · Dependency Fanout</div><div class="it">dynamic_pricing has the highest dependency fanout across all pricing workflows</div><div class="id">5+ upstream callers with no isolation layer. Bidirectional coupling with PCC JTier creates circular failure modes. Any outage cascades to TPIS, VIS, PCC, and the incentive evaluation path simultaneously.</div></div></div>
+  <div class="ic"><div class="ic-ico">🔁</div><div><div class="is sev-c">● CRITICAL · Retry Cascade</div><div class="it">message-service retry behavior may create cascading failures</div><div class="id">No dead-letter queue for Rocketman delivery failures. Retried messages re-enter the same path, amplifying load 3× on both Rocketman and Cassandra simultaneously under degradation.</div></div></div>
+  <div class="ic"><div class="ic-ico">🧠</div><div><div class="is sev-h">● HIGH · Silent Data Dependency</div><div class="it">machine-learning-toolkit affects runtime pricing decisions silently</div><div class="id">ML Toolkit Airflow DAGs feed min-price floors directly to dynamic_pricing. A DAG failure causes silent price miscalculation with zero Grafana alerting — invisible to oncall until an SLA breach.</div></div></div>
+  <div class="ic"><div class="ic-ico">🔗</div><div><div class="is sev-h">● HIGH · API Over-Coupling</div><div class="it">pricing-control-center-ui depends on multiple tightly coupled APIs</div><div class="id">3-layer chain: UI → PCC JTier → dynamic_pricing. Any middle-layer failure blocks the entire revenue management workflow with no anti-corruption layer between UI and backend pricing logic.</div></div></div>
+</div>
+</div>
+
+<!-- CASE STUDIES -->
+<div id="case-studies">
+<div class="eyebrow">Architecture Case Studies</div>
+<div style="font-size:24px;font-weight:800;margin-bottom:8px;">Illustrated System Flows</div>
+<p style="font-size:13px;color:var(--mt);margin-bottom:20px;">Detailed walkthroughs tracing real flows through the code graph.</p>
+<div class="cs-g">
+  <a class="csc" href="case-dynamic-pricing.html"><div class="csn">Case Study 01</div><div class="cst">How Dynamic Pricing Works</div><div class="csd">8-stage flow from Nginx through price resolution, incentive evaluation, to bulk response assembly. P99 latency at each step.</div><div class="css"><span>dynamic-pricing-nginx</span><span>dynamic_pricing</span><span>incentive-service</span><span>PCC JTier</span></div><div style="font-size:11px;font-weight:700;color:var(--orange);">Read case study →</div></a>
+  <a class="csc" href="case-subscription-discount.html"><div class="csn">Case Study 02</div><div class="cst">Subscription Discount Lifecycle</div><div class="csd">How subscription-programs-app gates membership activation on incentive eligibility, KillBill plan enrollment, and discount calculation.</div><div class="css"><span>subscription-programs-app</span><span>incentive-service</span><span>KillBill</span></div><div style="font-size:11px;font-weight:700;color:var(--teal);">Read case study →</div></a>
+  <a class="csc" href="case-badge-pipeline.html"><div class="csn">Case Study 03</div><div class="cst">Badge Calculation Pipeline</div><div class="csd">How Badges-Trending-Calculator computes trending scores and feeds the badges UI — the platform's most isolated, lowest-risk subsystem.</div><div class="css"><span>Badges-Trending-Calculator</span><span>badges</span></div><div style="font-size:11px;font-weight:700;color:var(--ai2);">Read case study →</div></a>
+  <a class="csc" href="case-message-retry.html"><div class="csn">Case Study 04</div><div class="cst">Message Delivery &amp; Retry Flow</div><div class="csd">Campaign creation through audience import, Rocketman delivery, the retry ladder failure modes, and why no DLQ is a platform risk.</div><div class="css"><span>message-service</span><span>Rocketman</span><span>Kafka</span><span>Cassandra</span></div><div style="font-size:11px;font-weight:700;color:var(--cyan);">Read case study →</div></a>
+  <a class="csc" href="case-ml-pricing.html"><div class="csn">Case Study 05</div><div class="cst">ML-Based Pricing Optimization</div><div class="csd">How Bayesian elasticity models and min-price Airflow DAGs feed into dynamic_pricing runtime decisions — and why a silent failure is dangerous.</div><div class="css"><span>machine-learning-toolkit</span><span>dynamic_pricing</span><span>Airflow</span><span>BigQuery</span></div><div style="font-size:11px;font-weight:700;color:var(--pink);">Read case study →</div></a>
+  <a class="csc" href="../engineering-copilot.html"><div class="csn">AI Copilot</div><div class="cst">Ask Any Architecture Question</div><div class="csd">Graph-grounded AI copilot — 42,479 nodes analyzed, 94% confidence, real code answers to any architecture question.</div><div class="css"><span>All 10 repos</span><span>42K+ nodes</span><span>AI-powered</span></div><div style="font-size:11px;font-weight:700;color:var(--ai2);">✦ Open Copilot →</div></a>
+</div>
+</div>
+</div>
+
+
+
+</div>
+<footer class="pub-footer" style="border-top:1px solid #1a2540;padding:14px 32px;background:#080e1a;font-family:'DM Sans',system-ui,sans-serif;">
+<div class="pub-footer-row" style="display:flex;align-items:center;gap:16px;width:100%;">
+<div class="pub-footer-left" style="font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#2a4060;flex-shrink:0;">Engineering Intelligence Hub</div>
+<div class="pub-footer-center" style="flex:1;display:flex;align-items:center;justify-content:center;gap:10px;min-width:0;">
+<span style="font-size:15px;font-weight:700;background:linear-gradient(90deg,#38bdf8,#7dd3fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;white-space:nowrap;">Himanshu Jain</span>
+<span style="color:#1a2540;font-size:12px;">&middot;</span>
+<span style="font-size:12px;color:#7a9ab8;white-space:nowrap;">Director &middot; Global Marketing &amp; Ads Platforms</span>
+</div>
+<a class="pub-footer-right" href="https://www.linkedin.com/in/thehimanshujain/" target="_blank" style="font-size:11px;color:#7a9ab8;text-decoration:none;font-weight:500;border:1px solid #1a2540;padding:5px 10px;border-radius:20px;display:inline-flex;align-items:center;gap:5px;flex-shrink:0;">LinkedIn <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M8 7h9v9"/></svg></a>
+</div>
+</footer>
+
+</body></html>
