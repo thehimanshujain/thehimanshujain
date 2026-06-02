@@ -365,6 +365,14 @@ footer{position:relative;z-index:2;border-top:3px solid var(--accent);background
 #serviceSection:hover   { border-color: rgba(245,158,11,.8); box-shadow: 0 4px 32px rgba(245,158,11,.08); }
 #bwSection:hover        { border-color: rgba(56,189,248,.8); box-shadow: 0 4px 32px rgba(56,189,248,.08); }
 
+/* ── GraphLens: static report (not a daily feed) ── */
+#graphlensBody .gl-badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:rgba(165,180,252,.9);background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.3);border-radius:99px;padding:3px 10px;}
+#graphlensBody .gl-badge .dot{width:6px;height:6px;border-radius:50%;background:rgba(129,140,248,.9);}
+.gl-cta{display:inline-flex;align-items:center;gap:10px;padding:12px 22px;border-radius:12px;border:1px solid rgba(99,102,241,.45);background:rgba(99,102,241,.14);text-decoration:none;color:#fff;font-size:14px;font-weight:700;align-self:flex-start;transition:border-color .15s,background .15s,box-shadow .15s;}
+.gl-cta:hover{background:rgba(99,102,241,.24);border-color:rgba(99,102,241,.75);box-shadow:0 0 20px rgba(99,102,241,.22);}
+.gl-cta .arrow{font-size:13px;color:rgba(165,180,252,.9);}
+.gl-caption{font-size:12px;color:var(--text-muted);margin-top:2px;}
+
 
 /* ── Latest chip comet animation ── */
 
@@ -548,17 +556,12 @@ header.scrolled #header-slim { display:flex; }
       <div class="section-text">
         <div class="section-title">GraphLens — Architecture Intelligence</div>
         <div class="section-desc">Service dependency maps, knowledge graphs, and architectural analysis across pricing, incentive, and messaging services.</div>
-        <div class="section-badge" id="graphlensCount"></div>
+        <div class="section-badge" id="graphlensCount" style="margin-top:10px"><span class="gl-badge"><span class="dot"></span>Static report</span></div>
       </div>
     </div>
     <div class="section-right" id="graphlensBody">
-      <div class="report-row-head">
-        <span class="report-row-label">View Reports</span>
-      </div>
-      <div id="graphlensSkeleton" class="skeleton-wrap"><div class="skeleton-label"></div><div style="display:flex;gap:8px;flex-wrap:wrap"><div class="skeleton-chip wide"></div><div class="skeleton-chip narrow"></div></div></div>
-      <div class="chips-wrap" id="graphlensLatest"></div>
-      <div class="older-chips hidden" id="graphlensPast" style="max-height:200px"></div>
-      <div class="older-wrap"><button class="older-toggle" id="graphlensOlderBtn" style="display:none" onclick="toggleOlder('graphlens')"><span class="toggle-icon">▼</span>&nbsp;<span id="graphlensOlderText">Show older</span></button></div>
+      <a class="gl-cta" href="https://thehimanshujain.github.io/thehimanshujain/graphlens.html" target="_blank" rel="noopener noreferrer">Open GraphLens<span class="arrow">↗</span></a>
+      <div class="gl-caption">Static report · updated periodically</div>
     </div>
   </div>
 
@@ -802,7 +805,7 @@ function toggleOlder(key){
 
 
 function loadFiles(){
-  ['incentiveSkeleton','graphlensSkeleton','serviceSkeleton','bwSkeleton']
+  ['incentiveSkeleton','serviceSkeleton','bwSkeleton']
     .forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
   document.getElementById('emptyBox').style.display='none';
   document.getElementById('errorBox').style.display='none';
@@ -815,9 +818,7 @@ function loadFiles(){
     {name:'promotion-discounting-intelligence-2026-05-24-mock.html', _url:BASE+'/promotion-discounting-intelligence-2026-05-24-mock.html'},
     {name:'promotion-discounting-intelligence-2026-05-23-mock.html', _url:BASE+'/promotion-discounting-intelligence-2026-05-23-mock.html'},
   ];
-  const gFiles=[
-    {name:'graphlens.html', _url:BASE+'/graphlens.html', _label:'Open GraphLens'},
-  ];
+  // GraphLens is a static reference report — rendered directly in markup, not a daily feed.
   const sFiles=[
     {name:'platform-health-intelligence-2026-05-29-mock.html', _url:BASE+'/platform-health-intelligence-2026-05-29-mock.html'},
     {name:'platform-health-intelligence-2026-05-28-mock.html', _url:BASE+'/platform-health-intelligence-2026-05-28-mock.html'},
@@ -836,7 +837,6 @@ function loadFiles(){
   ];
 
   renderSection('incentive',iFiles,'incentiveSection','incentiveCount');
-  renderSection('graphlens',gFiles,'graphlensSection','graphlensCount');
   renderSection('service',  sFiles,'serviceSection',  'serviceCount');
   renderSection('bw',       bFiles,'bwSection',       'bwCount');
 
@@ -849,7 +849,7 @@ function loadFiles(){
   ];
   renderSection('oncall',   oncallFiles,'oncallSection', 'oncallCount');
 
-  const total=iFiles.length+gFiles.length+sFiles.length+bFiles.length+oncallFiles.length;
+  const total=iFiles.length+sFiles.length+bFiles.length+oncallFiles.length;
   document.getElementById('reportCountChip') && (document.getElementById('reportCountChip').textContent=total+' reports');
   document.getElementById('b1') && (document.getElementById('b1').textContent=total);
 }
