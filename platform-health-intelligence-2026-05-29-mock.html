@@ -167,6 +167,20 @@ tr:hover td{background:rgba(108,140,255,.03)}
 .si-risk-Med{color:#fbbf24;font-weight:600;font-size:11px}
 .si-risk-High{color:#f87171;font-weight:700;font-size:11px}
 .si-empty{padding:24px;text-align:center;color:#8b90a0;font-size:12px}
+
+/* sortable table + chart toggle */
+table.sortable thead th{cursor:pointer;user-select:none;white-space:nowrap;background:rgba(245,158,11,.07);color:#cdb98a;transition:background .15s,color .15s;position:relative}
+table.sortable thead th:hover{background:rgba(245,158,11,.16);color:#f59e0b}
+table.sortable thead th .sarr{display:inline-block;font-size:10px;opacity:.5;margin-left:5px;color:#f59e0b}
+table.sortable thead th:hover .sarr{opacity:.9}
+table.sortable thead th.sort-asc,table.sortable thead th.sort-desc{background:rgba(245,158,11,.2);color:#f59e0b}
+table.sortable thead th.sort-asc .sarr,table.sortable thead th.sort-desc .sarr{opacity:1;font-size:0}
+table.sortable thead th.sort-asc .sarr::after{content:"\2191";font-size:11px}
+table.sortable thead th.sort-desc .sarr::after{content:"\2193";font-size:11px}
+.sort-hint{font-size:10px;font-weight:500;color:#7a9ab8;background:rgba(122,154,184,.1);border:1px solid rgba(122,154,184,.25);padding:2px 8px;border-radius:99px;margin-left:8px;vertical-align:middle}
+.cc-toggle{display:inline-flex;background:#0b1322;border:1px solid #1a2540;border-radius:7px;padding:2px}
+.cc-toggle button{background:none;border:none;color:#7a9ab8;font-size:11px;font-weight:600;padding:4px 11px;border-radius:5px;cursor:pointer;font-family:inherit}
+.cc-toggle button.on{background:#f59e0b;color:#0f1117}
 </style></head><body><header>
   <a class="back-link" href="index.html">Engineering Intelligence Hub</a>
   <div class="hdr-owner">
@@ -275,9 +289,9 @@ tr:hover td{background:rgba(108,140,255,.03)}
   <div class="kpi-card green"><div class="val">4</div><div class="lbl">Engineering Leaders</div></div>
 </div>
 <div class="card-grid-2">
-  <div class="card"><h3>Squad Breakdown</h3>
-    <table><thead><tr><th>Squad</th><th>Engineers</th><th>Services</th><th>Monthly Spend</th><th>YoY</th></tr></thead><tbody><tr><td><span style="background:rgba(245,158,11,.12);color:#f59e0b;font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px">P&P Backend</span></td><td style="text-align:center;color:#e1e4ea">11</td><td style="text-align:center;color:#8b90a0">7</td><td style="color:#e1e4ea">$62K</td><td style="color:#34d399;font-weight:600">-12%</td></tr><tr><td><span style="background:rgba(245,158,11,.12);color:#f59e0b;font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px">P&P Data Science</span></td><td style="text-align:center;color:#e1e4ea">6</td><td style="text-align:center;color:#8b90a0">2</td><td style="color:#e1e4ea">$9K</td><td style="color:#34d399;font-weight:600">-5%</td></tr><tr><td><span style="background:rgba(245,158,11,.12);color:#f59e0b;font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px">MC Deliverability</span></td><td style="text-align:center;color:#e1e4ea">10</td><td style="text-align:center;color:#8b90a0">13</td><td style="color:#e1e4ea">$89K</td><td style="color:#34d399;font-weight:600">-37%</td></tr><tr><td><span style="background:rgba(245,158,11,.12);color:#f59e0b;font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px">MC Promotional</span></td><td style="text-align:center;color:#e1e4ea">10</td><td style="text-align:center;color:#8b90a0">15</td><td style="color:#e1e4ea">$44K</td><td style="color:#34d399;font-weight:600">-8%</td></tr><tr><td><span style="background:rgba(245,158,11,.12);color:#f59e0b;font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px">Coupons</span></td><td style="text-align:center;color:#e1e4ea">6</td><td style="text-align:center;color:#8b90a0">14</td><td style="color:#e1e4ea">$59K</td><td style="color:#34d399;font-weight:600">-2%</td></tr><tr><td><span style="background:rgba(245,158,11,.12);color:#f59e0b;font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px">External Marketing</span></td><td style="text-align:center;color:#e1e4ea">5</td><td style="text-align:center;color:#8b90a0">12</td><td style="color:#e1e4ea">$43K</td><td style="color:#34d399;font-weight:600">-7%</td></tr><tr><td><span style="background:rgba(245,158,11,.12);color:#f59e0b;font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px">AoG</span></td><td style="text-align:center;color:#e1e4ea">5</td><td style="text-align:center;color:#8b90a0">9</td><td style="color:#e1e4ea">$18K</td><td style="color:#34d399;font-weight:600">-5%</td></tr></tbody></table></div>
-  <div class="card"><h3>Cloud Spend by Squad</h3><div class="chart-wrap"><canvas id="cSquadCost"></canvas></div></div>
+  <div class="card"><h3>Squad Breakdown<span class="sort-hint">&#8597; click a column to sort</span></h3>
+    <table id="squadTable" class="sortable"><thead><tr><th data-k="0" data-type="text">Squad<span class="sarr">&#8597;</span></th><th data-k="1" data-type="num" style="text-align:center">Engineers<span class="sarr">&#8597;</span></th><th data-k="2" data-type="num" style="text-align:center">Services<span class="sarr">&#8597;</span></th><th data-k="3" data-type="num">Monthly Spend<span class="sarr">&#8597;</span></th><th data-k="4" data-type="num">YoY<span class="sarr">&#8597;</span></th></tr></thead><tbody><tr><td><span style="background:rgba(245,158,11,.12);color:#f59e0b;font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px">P&P Backend</span></td><td style="text-align:center;color:#e1e4ea">11</td><td style="text-align:center;color:#8b90a0">7</td><td style="color:#e1e4ea">$62K</td><td style="color:#34d399;font-weight:600">-12%</td></tr><tr><td><span style="background:rgba(245,158,11,.12);color:#f59e0b;font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px">P&P Data Science</span></td><td style="text-align:center;color:#e1e4ea">6</td><td style="text-align:center;color:#8b90a0">2</td><td style="color:#e1e4ea">$9K</td><td style="color:#34d399;font-weight:600">-5%</td></tr><tr><td><span style="background:rgba(245,158,11,.12);color:#f59e0b;font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px">MC Deliverability</span></td><td style="text-align:center;color:#e1e4ea">10</td><td style="text-align:center;color:#8b90a0">13</td><td style="color:#e1e4ea">$89K</td><td style="color:#34d399;font-weight:600">-37%</td></tr><tr><td><span style="background:rgba(245,158,11,.12);color:#f59e0b;font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px">MC Promotional</span></td><td style="text-align:center;color:#e1e4ea">10</td><td style="text-align:center;color:#8b90a0">15</td><td style="color:#e1e4ea">$44K</td><td style="color:#34d399;font-weight:600">-8%</td></tr><tr><td><span style="background:rgba(245,158,11,.12);color:#f59e0b;font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px">Coupons</span></td><td style="text-align:center;color:#e1e4ea">6</td><td style="text-align:center;color:#8b90a0">14</td><td style="color:#e1e4ea">$59K</td><td style="color:#34d399;font-weight:600">-2%</td></tr><tr><td><span style="background:rgba(245,158,11,.12);color:#f59e0b;font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px">External Marketing</span></td><td style="text-align:center;color:#e1e4ea">5</td><td style="text-align:center;color:#8b90a0">12</td><td style="color:#e1e4ea">$43K</td><td style="color:#34d399;font-weight:600">-7%</td></tr><tr><td><span style="background:rgba(245,158,11,.12);color:#f59e0b;font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px">AoG</span></td><td style="text-align:center;color:#e1e4ea">5</td><td style="text-align:center;color:#8b90a0">9</td><td style="color:#e1e4ea">$18K</td><td style="color:#34d399;font-weight:600">-5%</td></tr></tbody></table></div>
+  <div class="card"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><h3 style="margin:0">Cloud Spend by Squad</h3><div class="cc-toggle" id="squadCostToggle"><button data-t="bar" class="on">Bar</button><button data-t="doughnut">Donut</button></div></div><div class="chart-wrap"><canvas id="cSquadCost"></canvas></div></div>
 </div>
 </section>
 <section id="s03">
@@ -351,7 +365,7 @@ renderStats();render();
 </div>
 <div class="card-grid-3">
   <div class="card" style="border-left:3px solid #34d399">
-    <h3 style="color:#34d399">Top 5 Healthiest Services</h3><div style="padding:6px 0;border-bottom:1px solid #1a2030;font-size:12px;color:#34d399;font-weight:500">&#10003; incentive-service</div><div style="padding:6px 0;border-bottom:1px solid #1a2030;font-size:12px;color:#34d399;font-weight:500">&#10003; pricing_service</div><div style="padding:6px 0;border-bottom:1px solid #1a2030;font-size:12px;color:#34d399;font-weight:500">&#10003; dynamic_pricing</div><div style="padding:6px 0;border-bottom:1px solid #1a2030;font-size:12px;color:#34d399;font-weight:500">&#10003; pricing-control-center-jtier</div><div style="padding:6px 0;border-bottom:1px solid #1a2030;font-size:12px;color:#34d399;font-weight:500">&#10003; pricing-control-center-ui</div>  </div>
+    <h3 style="color:#34d399">Top 5 Healthiest Services</h3><div style="padding:6px 0;border-bottom:1px solid #1a2030;font-size:12px;color:#34d399;font-weight:500">&#10003; incentive-service <span style="color:#8b90a0;font-weight:400">(P&P Backend)</span></div><div style="padding:6px 0;border-bottom:1px solid #1a2030;font-size:12px;color:#34d399;font-weight:500">&#10003; mta <span style="color:#8b90a0;font-weight:400">(MC Deliverability)</span></div><div style="padding:6px 0;border-bottom:1px solid #1a2030;font-size:12px;color:#34d399;font-weight:500">&#10003; groupon-plus-service <span style="color:#8b90a0;font-weight:400">(Coupons)</span></div><div style="padding:6px 0;border-bottom:1px solid #1a2030;font-size:12px;color:#34d399;font-weight:500">&#10003; aog-ranking-service <span style="color:#8b90a0;font-weight:400">(AoG)</span></div><div style="padding:6px 0;border-bottom:1px solid #1a2030;font-size:12px;color:#34d399;font-weight:500">&#10003; google-ads-integration <span style="color:#8b90a0;font-weight:400">(External Marketing)</span></div>  </div>
   <div class="card" style="border-left:3px solid #f87171">
     <h3 style="color:#f87171">Services Requiring Attention</h3><div style="padding:6px 0;border-bottom:1px solid #1a2030;font-size:12px;color:#f87171;font-weight:500">&#9888; gdpr <span style="color:#8b90a0;font-weight:400">(MC Deliverability)</span></div><div style="padding:6px 0;border-bottom:1px solid #1a2030;font-size:12px;color:#f87171;font-weight:500">&#9888; gss-cerebro-job-cloud <span style="color:#8b90a0;font-weight:400">(MC Deliverability)</span></div><div style="padding:6px 0;border-bottom:1px solid #1a2030;font-size:12px;color:#fbbf24;font-weight:500">&#9679; loyalty-wallet <span style="color:#8b90a0;font-weight:400">(Coupons)</span></div><div style="padding:6px 0;border-bottom:1px solid #1a2030;font-size:12px;color:#fbbf24;font-weight:500">&#9679; expiry-notification-svc <span style="color:#8b90a0;font-weight:400">(Coupons)</span></div><div style="padding:6px 0;border-bottom:1px solid #1a2030;font-size:12px;color:#fbbf24;font-weight:500">&#9679; facebook-ads-integration <span style="color:#8b90a0;font-weight:400">(External Marketing)</span></div><div style="padding:6px 0;border-bottom:1px solid #1a2030;font-size:12px;color:#f87171;font-weight:500">&#9888; paid-channel-analytics <span style="color:#8b90a0;font-weight:400">(External Marketing)</span></div><div style="padding:6px 0;border-bottom:1px solid #1a2030;font-size:12px;color:#fbbf24;font-weight:500">&#9679; sponsored-search-service <span style="color:#8b90a0;font-weight:400">(AoG)</span></div>  </div>
   <div class="card">
@@ -584,16 +598,50 @@ renderStats();render();
 }());
 (function(){
 
-  var COLORS=['#6c8cff','#34d399','#f59e0b','#a78bfa','#fb923c','#f87171','#06b6d4','#84cc16','#fbbf24','#10b981','#e879f9'];
+  var COLORS=['#6c8cff','#34d399','#f59e0b','#a78bfa','#f87171','#06b6d4','#ec4899','#84cc16','#fbbf24','#10b981','#e879f9'];
   var SQUADS=["P&P Backend", "P&P Data Science", "MC Deliverability", "MC Promotional", "Coupons", "External Marketing", "AoG"];
   var SQUAD_MONTHLY=[62000, 9000, 89000, 44000, 59000, 43000, 18000];
 
   // cSquadCost
-  new Chart(document.getElementById('cSquadCost').getContext('2d'),{
-    type:'doughnut',
-    data:{labels:SQUADS,datasets:[{data:SQUAD_MONTHLY,backgroundColor:COLORS,borderWidth:0}]},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{color:'#8b90a0',font:{size:10},padding:8}}}}
-  });
+  var squadCostChart=null;
+  function renderSquadCost(kind){
+    if(squadCostChart) squadCostChart.destroy();
+    var isBar = kind==='bar';
+    if(isBar){
+      // sort squads high -> low for a clean ranked horizontal bar
+      var pairs=SQUADS.map(function(s,i){return {s:s,v:SQUAD_MONTHLY[i]};}).sort(function(a,b){return b.v-a.v;});
+      var labels=pairs.map(function(p){return p.s;}), vals=pairs.map(function(p){return p.v;});
+      squadCostChart=new Chart(document.getElementById('cSquadCost').getContext('2d'),{
+        type:'bar',
+        data:{labels:labels,datasets:[{label:'Monthly Spend',data:vals,backgroundColor:'#f59e0b',borderRadius:5,barThickness:18}]},
+        options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+          layout:{padding:{right:18}},
+          plugins:{legend:{display:false},
+            tooltip:{callbacks:{label:function(c){return '$'+c.parsed.x.toLocaleString()+'/mo';}}}},
+          scales:{
+            x:{ticks:{color:'#8b90a0',font:{size:10},callback:function(v){return '$'+(v/1000)+'K';}},grid:{color:'rgba(46,51,64,.5)'},border:{display:false}},
+            y:{ticks:{color:'#cfd6e0',font:{size:11}},grid:{display:false},border:{display:false}}
+          }}
+      });
+    } else {
+      squadCostChart=new Chart(document.getElementById('cSquadCost').getContext('2d'),{
+        type:'doughnut',
+        data:{labels:SQUADS,datasets:[{data:SQUAD_MONTHLY,backgroundColor:COLORS,borderColor:'#0f1117',borderWidth:2,hoverOffset:6}]},
+        options:{responsive:true,maintainAspectRatio:false,cutout:'58%',
+          plugins:{legend:{position:'right',labels:{color:'#cfd6e0',font:{size:11},padding:9,boxWidth:12,usePointStyle:true,pointStyle:'circle'}},
+            tooltip:{callbacks:{label:function(c){var t=c.dataset.data.reduce(function(a,b){return a+b;},0);return c.label+': $'+c.parsed.toLocaleString()+' ('+Math.round(c.parsed/t*100)+'%)';}}}}}
+      });
+    }
+  }
+  renderSquadCost('bar');
+  (function(){
+    var tg=document.getElementById('squadCostToggle');
+    if(tg) tg.addEventListener('click',function(e){
+      var b=e.target.closest('button'); if(!b) return;
+      Array.prototype.forEach.call(tg.children,function(x){x.classList.toggle('on',x===b);});
+      renderSquadCost(b.getAttribute('data-t'));
+    });
+  })();
 
   // cAvail
   new Chart(document.getElementById('cAvail').getContext('2d'),{
@@ -608,9 +656,9 @@ renderStats();render();
   new Chart(document.getElementById('cInc').getContext('2d'),{
     type:'bar',
     data:{labels:["Dec", "Jan", "Feb", "Mar", "Apr", "May"],datasets:[
-      {label:'P1',data:[2, 1, 3, 1, 0, 1],backgroundColor:'#f87171',stack:'s'},
-      {label:'P2',data:[5, 4, 6, 3, 2, 3],backgroundColor:'#fbbf24',stack:'s'},
-      {label:'P3',data:[8, 7, 9, 5, 4, 4],backgroundColor:'#f59e0b',stack:'s'}
+      {label:'P1',data:[2, 1, 3, 1, 0, 1],backgroundColor:'#ef4444',stack:'s'},
+      {label:'P2',data:[5, 4, 6, 3, 2, 3],backgroundColor:'#f59e0b',stack:'s'},
+      {label:'P3',data:[8, 7, 9, 5, 4, 4],backgroundColor:'#3b82f6',stack:'s'}
     ]},
     options:{responsive:true,maintainAspectRatio:false,
       plugins:{legend:{position:'bottom',labels:{color:'#8b90a0',font:{size:10}}}},
@@ -671,6 +719,32 @@ renderStats();render();
   function set(id,v){var el=document.getElementById(id);if(el)el.textContent=v;}
   set('scoreHealth',health);set('scoreReliab',reliab);set('scoreCost',cost);set('scoreOpex',opex);
   set('mHealth',health+'/100');set('mReliab',reliab+'/100');set('mCost',cost+'/100');set('mOpex',opex+'/100');
+})();
+</script>
+<script>
+(function(){
+  var table=document.getElementById('squadTable'); if(!table) return;
+  var tbody=table.querySelector('tbody');
+  var ths=table.querySelectorAll('thead th');
+  function cellVal(tr,k,type){
+    var td=tr.children[k]; var txt=(td.textContent||'').trim();
+    if(type==='num'){ var n=parseFloat(txt.replace(/[^0-9.\-]/g,'')); return isNaN(n)?0:n; }
+    return txt.toLowerCase();
+  }
+  ths.forEach(function(th){
+    th.addEventListener('click',function(){
+      var k=parseInt(th.getAttribute('data-k'),10), type=th.getAttribute('data-type');
+      var asc=!th.classList.contains('sort-asc');
+      ths.forEach(function(x){x.classList.remove('sort-asc','sort-desc');});
+      th.classList.add(asc?'sort-asc':'sort-desc');
+      var rows=Array.prototype.slice.call(tbody.querySelectorAll('tr'));
+      rows.sort(function(a,b){
+        var x=cellVal(a,k,type),y=cellVal(b,k,type);
+        if(x<y)return asc?-1:1; if(x>y)return asc?1:-1; return 0;
+      });
+      rows.forEach(function(r){tbody.appendChild(r);});
+    });
+  });
 })();
 </script>
 </body></html>
