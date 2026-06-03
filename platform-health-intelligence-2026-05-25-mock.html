@@ -37,7 +37,7 @@ footer{border-top:3px solid #f59e0b;padding:24px 32px;text-align:center;backgrou
 h1{font-size:22px;font-weight:700;margin-bottom:4px}
 h2{font-size:16px;font-weight:600;margin:32px 0 16px;padding-bottom:8px;border-bottom:1px solid var(--border);color:var(--text)}
 h3{font-size:13px;font-weight:600;margin:16px 0 8px;color:#c9a050}
-section{margin-bottom:40px}
+section{margin-bottom:40px;scroll-margin-top:70px}
 .subtitle{font-size:12px;color:var(--text-muted);margin-bottom:20px}
 .kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-bottom:20px}
 .kpi-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center}
@@ -202,30 +202,31 @@ tr:hover td{background:rgba(108,140,255,.03)}
     </div>
   </div>
   <div class="nav-section-title">Overview</div>
-  <a class="nav-link active" data-sec="s01" onclick="scrollTo('s01')">Executive Summary</a>
-  <a class="nav-link" data-sec="s02" onclick="scrollTo('s02')">Portfolio Overview</a>
-  <a class="nav-link" data-sec="s03" onclick="scrollTo('s03')">Service Inventory</a>
+  <a class="nav-link active" data-sec="s01" onclick="goToSection('s01')">Executive Summary</a>
+  <a class="nav-link" data-sec="s02" onclick="goToSection('s02')">Portfolio Overview</a>
+  <a class="nav-link" data-sec="s03" onclick="goToSection('s03')">Service Inventory</a>
   <div class="nav-section-title">Operations</div>
-  <a class="nav-link" data-sec="s04" onclick="scrollTo('s04')">Reliability Intelligence</a>
-  <a class="nav-link" data-sec="s05" onclick="scrollTo('s05')">Cost Intelligence</a>
-  <a class="nav-link" data-sec="s06" onclick="scrollTo('s06')">Engineering Capacity</a>
+  <a class="nav-link" data-sec="s04" onclick="goToSection('s04')">Reliability Intelligence</a>
+  <a class="nav-link" data-sec="s05" onclick="goToSection('s05')">Cost Intelligence</a>
+  <a class="nav-link" data-sec="s06" onclick="goToSection('s06')">Engineering Capacity</a>
   <div class="nav-section-title">Strategy</div>
-  <a class="nav-link" data-sec="s07" onclick="scrollTo('s07')">Strategic Initiatives</a>
-  <a class="nav-link" data-sec="s08" onclick="scrollTo('s08')">Technical Debt</a>
-  <a class="nav-link" data-sec="s09" onclick="scrollTo('s09')">Dependency Intelligence</a>
+  <a class="nav-link" data-sec="s07" onclick="goToSection('s07')">Strategic Initiatives</a>
+  <a class="nav-link" data-sec="s08" onclick="goToSection('s08')">Technical Debt</a>
+  <a class="nav-link" data-sec="s09" onclick="goToSection('s09')">Dependency Intelligence</a>
   <div class="nav-section-title">Scorecard</div>
-  <a class="nav-link" data-sec="s10" onclick="scrollTo('s10')">OpEx Scorecard</a>
-  <a class="nav-link" data-sec="s11" onclick="scrollTo('s11')">Leadership Insights</a>
-  <a class="nav-link" data-sec="s12" onclick="scrollTo('s12')">Next Quarter Recs</a>
+  <a class="nav-link" data-sec="s10" onclick="goToSection('s10')">OpEx Scorecard</a>
+  <a class="nav-link" data-sec="s11" onclick="goToSection('s11')">Leadership Insights</a>
+  <a class="nav-link" data-sec="s12" onclick="goToSection('s12')">Next Quarter Recs</a>
+  <a class="nav-link" data-sec="s13" onclick="goToSection('s13')">Score Methodology</a>
 </nav><div id="main">
 <section id="s01">
 <h1>Platform Health Intelligence &mdash; Himanshu Jain</h1>
 <div class="subtitle">Director, Global Marketing &amp; Ads Platforms &nbsp;&middot;&nbsp; 2026-05-25 &nbsp;&middot;&nbsp; 72 services &nbsp;&middot;&nbsp; 4 leaders &nbsp;&middot;&nbsp; 53 engineers &nbsp;&middot;&nbsp; MOCK DATA</div>
 <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px">
-  <span class="score-green">&#9679; Health Score 90/100</span>
-  <span class="score-blue">&#9679; Reliability 54/100</span>
-  <span class="score-yellow">&#9679; Cost Efficiency 82/100</span>
-  <span class="score-purple">&#9679; OpEx Maturity 78/100</span>
+  <span class="score-green">&#9679; Health Score <span id="scoreHealth">—</span>/100</span>
+  <span class="score-blue">&#9679; Reliability <span id="scoreReliab">—</span>/100</span>
+  <span class="score-yellow">&#9679; Cost Efficiency <span id="scoreCost">—</span>/100</span>
+  <span class="score-purple">&#9679; OpEx Maturity <span id="scoreOpex">—</span>/100</span>
 </div>
 <div class="kpi-grid">
   <div class="kpi-card"><div class="val">72</div><div class="lbl">Total Services</div></div>
@@ -517,6 +518,32 @@ renderStats();render();
   <div class="rec-tier" style="border-top:3px solid #f87171"><h3 style="color:#f87171">&#9650; Must Do</h3><p style="font-size:11px;color:#8b90a0;margin-bottom:12px">Highest impact &amp; urgency — address this quarter</p><div class="rec-item" style="border-left-color:#f87171"><div class="ri-title">1. Resolve 3 RED ORR services</div><div class="ri-meta">Impact: <span style="color:#e1e4ea">Risk</span> &nbsp;|&nbsp; Effort: <span style="color:#e1e4ea">Low</span> &nbsp;|&nbsp; Owner: <span style="color:#8b90a0">gdpr, paid-channel-analytics, gss-cerebro</span></div><div class="ri-meta" style="margin-top:4px;color:#f59e0b">Regulatory compliance + attribution accuracy</div></div><div class="rec-item" style="border-left-color:#f87171"><div class="ri-title">2. Meta Ads API v17 migration</div><div class="ri-meta">Impact: <span style="color:#e1e4ea">$5M+ GP at risk</span> &nbsp;|&nbsp; Effort: <span style="color:#e1e4ea">High</span> &nbsp;|&nbsp; Owner: <span style="color:#8b90a0">Paid Marketing squad focus</span></div><div class="ri-meta" style="margin-top:4px;color:#f59e0b">Avoid revenue disruption Q3 deadline</div></div><div class="rec-item" style="border-left-color:#f87171"><div class="ri-title">3. Purple Price EMEA expansion</div><div class="ri-meta">Impact: <span style="color:#e1e4ea">$2–4M GP</span> &nbsp;|&nbsp; Effort: <span style="color:#e1e4ea">Med</span> &nbsp;|&nbsp; Owner: <span style="color:#8b90a0">2 P&P engineers + PM</span></div><div class="ri-meta" style="margin-top:4px;color:#f59e0b">IE/NL/DE/BE from <20% → 50%+ PP adoption</div></div><div class="rec-item" style="border-left-color:#f87171"><div class="ri-title">4. Bus-factor mitigation Tier-0</div><div class="ri-meta">Impact: <span style="color:#e1e4ea">Risk reduction</span> &nbsp;|&nbsp; Effort: <span style="color:#e1e4ea">Low</span> &nbsp;|&nbsp; Owner: <span style="color:#8b90a0">Pair programming sessions</span></div><div class="ri-meta" style="margin-top:4px;color:#f59e0b">Single-owner Tier-0 services get 2nd owner</div></div></div>
   <div class="rec-tier" style="border-top:3px solid #fbbf24"><h3 style="color:#fbbf24">&#9651; Should Do</h3><p style="font-size:11px;color:#8b90a0;margin-bottom:12px">Important improvements — plan and resource</p><div class="rec-item" style="border-left-color:#fbbf24"><div class="ri-title">1. Push on-call load balancing</div><div class="ri-meta">Impact: <span style="color:#e1e4ea">Team health</span> &nbsp;|&nbsp; Effort: <span style="color:#e1e4ea">Low</span> &nbsp;|&nbsp; Owner: <span style="color:#8b90a0">Rotate schedule across squads</span></div><div class="ri-meta" style="margin-top:4px;color:#f59e0b">Reduce Push squad on-call from 8h to 4h/week</div></div><div class="rec-item" style="border-left-color:#fbbf24"><div class="ri-title">2. Paid analytics Spark→BQ</div><div class="ri-meta">Impact: <span style="color:#e1e4ea">$96K/yr savings</span> &nbsp;|&nbsp; Effort: <span style="color:#e1e4ea">Med</span> &nbsp;|&nbsp; Owner: <span style="color:#8b90a0">1 data engineer, 1 quarter</span></div><div class="ri-meta" style="margin-top:4px;color:#f59e0b">Resolve RED ORR + cut cost 40%</div></div><div class="rec-item" style="border-left-color:#fbbf24"><div class="ri-title">3. Jira traceability to 80%+</div><div class="ri-meta">Impact: <span style="color:#e1e4ea">Quality</span> &nbsp;|&nbsp; Effort: <span style="color:#e1e4ea">Low</span> &nbsp;|&nbsp; Owner: <span style="color:#8b90a0">Engineering culture + hooks</span></div><div class="ri-meta" style="margin-top:4px;color:#f59e0b">Improve auditability across all squads</div></div><div class="rec-item" style="border-left-color:#fbbf24"><div class="ri-title">4. Observability uplift Tier-0</div><div class="ri-meta">Impact: <span style="color:#e1e4ea">Risk reduction</span> &nbsp;|&nbsp; Effort: <span style="color:#e1e4ea">Med</span> &nbsp;|&nbsp; Owner: <span style="color:#8b90a0">SRE + squad engineers</span></div><div class="ri-meta" style="margin-top:4px;color:#f59e0b">MTTR improvement -40% target</div></div></div>
   <div class="rec-tier" style="border-top:3px solid #f59e0b"><h3 style="color:#f59e0b">&#9675; Could Do</h3><p style="font-size:11px;color:#8b90a0;margin-bottom:12px">Strategic long-term investments</p><div class="rec-item" style="border-left-color:#f59e0b"><div class="ri-title">1. AI-native campaign automation (MCP)</div><div class="ri-meta">Impact: <span style="color:#e1e4ea">$5M+ GP</span> &nbsp;|&nbsp; Effort: <span style="color:#e1e4ea">High</span> &nbsp;|&nbsp; Owner: <span style="color:#8b90a0">Platform team</span></div><div class="ri-meta" style="margin-top:4px;color:#f59e0b">Claude-driven campaign generation — 40% time reduction</div></div><div class="rec-item" style="border-left-color:#f59e0b"><div class="ri-title">2. Unified Pricing & Promotions API</div><div class="ri-meta">Impact: <span style="color:#e1e4ea">Dev velocity</span> &nbsp;|&nbsp; Effort: <span style="color:#e1e4ea">High</span> &nbsp;|&nbsp; Owner: <span style="color:#8b90a0">P&P + Platform</span></div><div class="ri-meta" style="margin-top:4px;color:#f59e0b">Single API surface for all pricing primitives</div></div><div class="rec-item" style="border-left-color:#f59e0b"><div class="ri-title">3. Service mesh modernization</div><div class="ri-meta">Impact: <span style="color:#e1e4ea">$500K/yr + latency -30%</span> &nbsp;|&nbsp; Effort: <span style="color:#e1e4ea">High</span> &nbsp;|&nbsp; Owner: <span style="color:#8b90a0">Multi-squad</span></div><div class="ri-meta" style="margin-top:4px;color:#f59e0b">Envoy/Istio rollout across Tier-0/1 services</div></div></div>
+</div></section><section id="s13"><h2>Score Methodology</h2>
+<div class="card">
+  <p style="font-size:13px;color:#8b90a0;margin:0 0 16px">The four headline scores at the top of this report are <b style="color:#e1e4ea">computed live from the data on this page</b>. Each is shown on a 0&ndash;100 scale. Definitions and formulas below.</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px">
+    <div style="border:1px solid #1a2540;border-radius:10px;padding:14px 16px;background:#0b1322">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="width:9px;height:9px;border-radius:99px;background:#34d399;display:inline-block"></span><b style="font-size:13px;color:#e1e4ea">Health Score</b><span id="mHealth" style="margin-left:auto;font-weight:700;color:#34d399"></span></div>
+      <div style="font-size:12px;color:#8b90a0;line-height:1.5">Tier-weighted rollup of <b style="color:#cfd6e0">ORR status</b> across all 72 services. Each service scores GREEN = 100, YELLOW = 60, RED = 0, weighted by tier (T0 &times;3, T1 &times;2, T2 &times;1) so critical services count more.</div>
+      <div style="font-size:11px;color:#5f7693;margin-top:8px;font-family:ui-monospace,Menlo,monospace">&Sigma;(orr&times;tierWeight) / &Sigma;(100&times;tierWeight)</div>
+    </div>
+    <div style="border:1px solid #1a2540;border-radius:10px;padding:14px 16px;background:#0b1322">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="width:9px;height:9px;border-radius:99px;background:#6c8cff;display:inline-block"></span><b style="font-size:13px;color:#e1e4ea">Reliability</b><span id="mReliab" style="margin-left:auto;font-weight:700;color:#6c8cff"></span></div>
+      <div style="font-size:12px;color:#8b90a0;line-height:1.5">Average of the <b style="color:#cfd6e0">Reliability</b> column from the Per-Squad ORR Scorecard (&sect; OpEx Scorecard), across all 7 squads. Reflects SLO attainment, error budgets and incident posture.</div>
+      <div style="font-size:11px;color:#5f7693;margin-top:8px;font-family:ui-monospace,Menlo,monospace">avg(squad.reliability)</div>
+    </div>
+    <div style="border:1px solid #1a2540;border-radius:10px;padding:14px 16px;background:#0b1322">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="width:9px;height:9px;border-radius:99px;background:#fbbf24;display:inline-block"></span><b style="font-size:13px;color:#e1e4ea">Cost Efficiency</b><span id="mCost" style="margin-left:auto;font-weight:700;color:#fbbf24"></span></div>
+      <div style="font-size:12px;color:#8b90a0;line-height:1.5">Average of the <b style="color:#cfd6e0">Cost Efficiency</b> column from the Per-Squad ORR Scorecard. Derived from actual-vs-budget cloud spend, MoM trend, and rightsizing / idle-waste signals (Cloudability in the live report).</div>
+      <div style="font-size:11px;color:#5f7693;margin-top:8px;font-family:ui-monospace,Menlo,monospace">avg(squad.costEfficiency)</div>
+    </div>
+    <div style="border:1px solid #1a2540;border-radius:10px;padding:14px 16px;background:#0b1322">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="width:9px;height:9px;border-radius:99px;background:#a78bfa;display:inline-block"></span><b style="font-size:13px;color:#e1e4ea">OpEx Maturity</b><span id="mOpex" style="margin-left:auto;font-weight:700;color:#a78bfa"></span></div>
+      <div style="font-size:12px;color:#8b90a0;line-height:1.5">Composite mean of all <b style="color:#cfd6e0">8 operational-excellence dimensions</b> (Reliability, Scalability, Observability, Cost, Ownership, Documentation, Automation, Security) across the 7 squads &mdash; the overall ORR maturity of the portfolio.</div>
+      <div style="font-size:11px;color:#5f7693;margin-top:8px;font-family:ui-monospace,Menlo,monospace">avg(all 8 dims &times; 7 squads)</div>
+    </div>
+  </div>
+  <p style="font-size:11px;color:#5f7693;margin:16px 0 0">Source data: Service Inventory ORR statuses (&sect; Service Inventory) and the Per-Squad ORR Scorecard (&sect; OpEx Scorecard). In the live report these dimensions come from Groupon Service Portal ORR check results; this is a mock with representative values.</p>
 </div></section></div></div><footer>
   <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#2a4060;margin-bottom:8px">Engineering Intelligence Hub</div>
   <div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap">
@@ -531,8 +558,8 @@ renderStats();render();
 </footer><script>
 (function(){
   // Sidebar scroll
-  function scrollTo(id){document.getElementById(id).scrollIntoView({behavior:'smooth'});}
-  window.scrollTo = scrollTo;
+  function goToSection(id){var el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});}
+  window.goToSection = goToSection;
   var secs=document.querySelectorAll('section[id]');
   var links=document.querySelectorAll('.nav-link');
   var obs=new IntersectionObserver(function(entries){
@@ -618,4 +645,26 @@ renderStats();render();
       scales:{r:{min:0,max:100,grid:{color:'rgba(255,255,255,.06)'},angleLines:{color:'rgba(255,255,255,.06)'},ticks:{color:'#8b90a0',font:{size:9},stepSize:20},pointLabels:{color:'#a8c8e0',font:{size:10}}}}}
   });
 })();
-</script></body></html>
+</script><script>
+(function(){
+  var data=[];
+  try{
+    var scripts=document.querySelectorAll('script');
+    for(var i=0;i<scripts.length;i++){var mm=scripts[i].textContent.match(/const DATA=(\[[\s\S]*?\]);/);if(mm){data=JSON.parse(mm[1]);break;}}
+  }catch(e){}
+  var orrVal={GREEN:100,YELLOW:60,RED:0},tw={T0:3,T1:2,T2:1},n=0,d2=0;
+  data.forEach(function(s){var w=tw[s.tier]||1;n+=(orrVal[s.orr]||0)*w;d2+=100*w;});
+  var health=d2?Math.round(n/d2*100):0;
+  var rows=[],tables=document.querySelectorAll('table');
+  tables.forEach(function(t){var head=t.querySelector('thead');if(!head)return;var hl=head.textContent;if(hl.indexOf('Reliab')>=0&&hl.indexOf('Overall')>=0){
+    t.querySelectorAll('tbody tr').forEach(function(tr){var tds=tr.querySelectorAll('td');if(tds.length>=10){var v=[];for(var j=1;j<=8;j++){v.push(parseInt(tds[j].textContent,10));}if(v.every(function(x){return !isNaN(x);}))rows.push(v);}});
+  }});
+  function colAvg(idx){if(!rows.length)return 0;var s=0;rows.forEach(function(r){s+=r[idx];});return Math.round(s/rows.length);}
+  var reliab=colAvg(0), cost=colAvg(3);
+  var opex=0;if(rows.length){var tot=0,c=0;rows.forEach(function(r){r.forEach(function(x){tot+=x;c++;});});opex=Math.round(tot/c);}
+  function set(id,v){var el=document.getElementById(id);if(el)el.textContent=v;}
+  set('scoreHealth',health);set('scoreReliab',reliab);set('scoreCost',cost);set('scoreOpex',opex);
+  set('mHealth',health+'/100');set('mReliab',reliab+'/100');set('mCost',cost+'/100');set('mOpex',opex+'/100');
+})();
+</script>
+</body></html>
