@@ -517,6 +517,7 @@ footer .footer-sub { font-size: 12px; color: #7a9ab8; margin-top: 6px; }
 <div class="tab-content active" id="tab-overview">
 <div class="page-header">
 <h1>Engineering Capacity Intelligence</h1>
+<p style="font-weight:700;color:#dc2626;margin:4px 0 14px;font-size:13px">⚠ Illustrative report with synthetic data — names, ticket IDs, and metrics are fictional and do not represent real individuals or internal systems.</p>
 <div class="subtitle">Himanshu Prakash Jain · Engineering Director · 7 Squads · 60 headcount</div>
 <div class="meta-tags">
 <span class="meta-tag">Capacity = working days × 7h · −8h per OOO day</span>
@@ -1783,7 +1784,7 @@ footer .footer-sub { font-size: 12px; color: #7a9ab8; margin-top: 6px; }
 <div class="eng-note">⚠ Squad at 110% for 3 consecutive sprints. On-call concentrated on Kenji + SREs. 31h meeting load this sprint. Action: push 2 non-P1 tickets to S13, redistribute on-call rotation.</div>
 <div class="ticket-list">
 <div class="ticket-row"><span class="prio-dot" style="background:#ef4444"></span><span class="ticket-key" style="color:var(--text-muted);font-size:9px">MGMT-01</span><span class="ticket-summary">On-call rotation rebalancing — Kenji overload review</span><span class="status-chip status-In-Progress">In Progress</span></div>
-<div class="ticket-row"><span class="prio-dot" style="background:#f97316"></span><span class="ticket-key" style="color:var(--text-muted);font-size:9px">DAS-9780</span><span class="ticket-summary">Bloomreach 2-way SMS — final integration sign-off</span><span class="status-chip status-Review">Review</span></div>
+<div class="ticket-row"><span class="prio-dot" style="background:#f97316"></span><span class="ticket-key" style="color:var(--text-muted);font-size:9px">TEAM-9780</span><span class="ticket-summary">Bloomreach 2-way SMS — final integration sign-off</span><span class="status-chip status-Review">Review</span></div>
 <div class="ticket-row"><span class="prio-dot" style="background:#f59e0b"></span><span class="ticket-key" style="color:var(--text-muted);font-size:9px">HIRING</span><span class="ticket-summary">IC4 (P&amp;P) referral pipeline — 2 profiles reviewed</span><span class="status-chip status-Done">Done</span></div>
 </div>
 </div>
@@ -1803,8 +1804,8 @@ footer .footer-sub { font-size: 12px; color: #7a9ab8; margin-top: 6px; }
 <div class="eng-note info">ℹ Healthy utilization this sprint. Bandwidth freed for IC4 hiring interviews (3 scheduled). Arch review with Supriya on IS ↔ PCC coupling RFC this week.</div>
 <div class="ticket-list">
 <div class="ticket-row"><span class="prio-dot" style="background:#f97316"></span><span class="ticket-key" style="color:var(--text-muted);font-size:9px">HIRING</span><span class="ticket-summary">IC4 (Sr Eng) interview loop — 3 candidates this sprint</span><span class="status-chip status-In-Progress">In Progress</span></div>
-<div class="ticket-row"><span class="prio-dot" style="background:#f59e0b"></span><span class="ticket-key" style="color:var(--text-muted);font-size:9px">IS-9150</span><span class="ticket-summary">GrowthBook migration — sprint planning + capacity review</span><span class="status-chip status-Done">Done</span></div>
-<div class="ticket-row"><span class="prio-dot" style="background:#10b981"></span><span class="ticket-key" style="color:var(--text-muted);font-size:9px">IS-9151</span><span class="ticket-summary">Testcontainers proposal: capacity sign-off for S13</span><span class="status-chip status-To-Do">To Do</span></div>
+<div class="ticket-row"><span class="prio-dot" style="background:#f59e0b"></span><span class="ticket-key" style="color:var(--text-muted);font-size:9px">SVC-9150</span><span class="ticket-summary">GrowthBook migration — sprint planning + capacity review</span><span class="status-chip status-Done">Done</span></div>
+<div class="ticket-row"><span class="prio-dot" style="background:#10b981"></span><span class="ticket-key" style="color:var(--text-muted);font-size:9px">SVC-9151</span><span class="ticket-summary">Testcontainers proposal: capacity sign-off for S13</span><span class="status-chip status-To-Do">To Do</span></div>
 </div>
 </div>
 </div>
@@ -2009,22 +2010,22 @@ new Chart(document.getElementById('hoursDonut'),{
 // ──────────────────────────────────────────────────────────
 const PRIORITIES=[
   {squad:'pp',name:'Shreya Agarwal',color:'#4f6ef7',done:4,active:2,todo:1,tickets:[
-    {key:'IS-9101',p:'High',s:'In Progress',t:'GrowthBook SDK Integration — Bucketing Parity'},
-    {key:'IS-9102',p:'High',s:'Done',t:'Checkout: New User Promo Eligibility — Account Activation'},
-    {key:'IS-9103',p:'P1',s:'Done',t:'Fix Discount Calculation for Multi-Item Checkout'},
-    {key:'IS-9104',p:'Medium',s:'Done',t:'Promo List — Backend & Integration Code Changes'},
-    {key:'IS-9105',p:'Medium',s:'Done',t:'Error handling for Single Use Promo Code process'},
-    {key:'IS-9106',p:'Low',s:'To Do',t:'Documentation: Integration Testing Platform for P&P'},
-    {key:'IS-9107',p:'Medium',s:'Review',t:'User-Level Discount Cap Framework — Planning'},
+    {key:'SVC-9101',p:'High',s:'In Progress',t:'GrowthBook SDK Integration — Bucketing Parity'},
+    {key:'SVC-9102',p:'High',s:'Done',t:'Checkout: New User Promo Eligibility — Account Activation'},
+    {key:'SVC-9103',p:'P1',s:'Done',t:'Fix Discount Calculation for Multi-Item Checkout'},
+    {key:'SVC-9104',p:'Medium',s:'Done',t:'Promo List — Backend & Integration Code Changes'},
+    {key:'SVC-9105',p:'Medium',s:'Done',t:'Error handling for Single Use Promo Code process'},
+    {key:'SVC-9106',p:'Low',s:'To Do',t:'Documentation: Integration Testing Platform for P&P'},
+    {key:'SVC-9107',p:'Medium',s:'Review',t:'User-Level Discount Cap Framework — Planning'},
   ]},
   {squad:'pp',name:'Rohit Verma',color:'#4f6ef7',done:3,active:2,todo:2,tickets:[
-    {key:'IS-9108',p:'High',s:'Done',t:'Force Incentive Discount — Override Best Discount Logic'},
-    {key:'IS-9109',p:'High',s:'Done',t:'Migration: Replace Expy SDK Calls with GrowthBook'},
-    {key:'IS-9110',p:'Medium',s:'In Progress',t:'Deterministic b-cookie Assignment Across Workloads'},
-    {key:'IS-9111',p:'Medium',s:'In Progress',t:'Min Price Table: Optimus to Keboola Migration'},
-    {key:'IS-9112',p:'Low',s:'To Do',t:'Validate Min Price Table — Keboola Prod Cutover'},
-    {key:'IS-9113',p:'Low',s:'To Do',t:'IS EMEA: Optimize AWS Keyspaces Write Performance'},
-    {key:'IS-9114',p:'P1',s:'Done',t:'[W19] P&P On-call Support'},
+    {key:'SVC-9108',p:'High',s:'Done',t:'Force Incentive Discount — Override Best Discount Logic'},
+    {key:'SVC-9109',p:'High',s:'Done',t:'Migration: Replace Expy SDK Calls with GrowthBook'},
+    {key:'SVC-9110',p:'Medium',s:'In Progress',t:'Deterministic b-cookie Assignment Across Workloads'},
+    {key:'SVC-9111',p:'Medium',s:'In Progress',t:'Min Price Table: Optimus to Keboola Migration'},
+    {key:'SVC-9112',p:'Low',s:'To Do',t:'Validate Min Price Table — Keboola Prod Cutover'},
+    {key:'SVC-9113',p:'Low',s:'To Do',t:'IS EMEA: Optimize AWS Keyspaces Write Performance'},
+    {key:'SVC-9114',p:'P1',s:'Done',t:'[W19] P&P On-call Support'},
   ]},
   {squad:'ds',name:'Divya Menon',color:'#6366f1',done:3,active:2,todo:1,tickets:[
     {key:'DP-4201',p:'P0',s:'Done',t:'[ILS Automation] Implement automation for Local NA Custom ILS'},
@@ -2044,28 +2045,28 @@ const PRIORITIES=[
     {key:'DP-4216',p:'Medium',s:'To Do',t:'Fix timezone bug: Goods NA automated ILS start time wrong'},
   ]},
   {squad:'mc1',name:'Rohan Mehta',color:'#10b981',done:5,active:3,todo:2,tickets:[
-    {key:'DAS-9701',p:'P1',s:'Done',t:'[W18] On-call: Pagers analysis — Push Marketing System'},
-    {key:'DAS-9702',p:'P1',s:'Done',t:'[W18] On-call: Pagers analysis — Audience/MTA System'},
-    {key:'DAS-9703',p:'—',s:'Done',t:'Bloomreach 2-Way SMS: Validate BIRD Callback Delivery'},
-    {key:'DAS-9704',p:'—',s:'Done',t:'Configure IP Whitelisting for Bird SMS Integration'},
-    {key:'DAS-9705',p:'—',s:'Done',t:'On-call agent knowledge base — PR for all PMP services'},
-    {key:'DAS-9706',p:'—',s:'In Progress',t:'Subscription Events Schema Design for Bloomreach'},
-    {key:'DAS-9707',p:'—',s:'In Progress',t:'Transactional Email Migration — Proposed Design'},
-    {key:'DAS-9708',p:'—',s:'In Progress',t:'Bloomreach 2-way SMS Integration & Performance Testing'},
-    {key:'DAS-9709',p:'—',s:'To Do',t:'Integrate /send_sms Endpoint with Bird Channels API v2'},
-    {key:'DAS-9710',p:'—',s:'To Do',t:'Audience bcookie payload job failure — root cause analysis'},
+    {key:'TEAM-9701',p:'P1',s:'Done',t:'[W18] On-call: Pagers analysis — Push Marketing System'},
+    {key:'TEAM-9702',p:'P1',s:'Done',t:'[W18] On-call: Pagers analysis — Audience/MTA System'},
+    {key:'TEAM-9703',p:'—',s:'Done',t:'Bloomreach 2-Way SMS: Validate BIRD Callback Delivery'},
+    {key:'TEAM-9704',p:'—',s:'Done',t:'Configure IP Whitelisting for Bird SMS Integration'},
+    {key:'TEAM-9705',p:'—',s:'Done',t:'On-call agent knowledge base — PR for all PMP services'},
+    {key:'TEAM-9706',p:'—',s:'In Progress',t:'Subscription Events Schema Design for Bloomreach'},
+    {key:'TEAM-9707',p:'—',s:'In Progress',t:'Transactional Email Migration — Proposed Design'},
+    {key:'TEAM-9708',p:'—',s:'In Progress',t:'Bloomreach 2-way SMS Integration & Performance Testing'},
+    {key:'TEAM-9709',p:'—',s:'To Do',t:'Integrate /send_sms Endpoint with Bird Channels API v2'},
+    {key:'TEAM-9710',p:'—',s:'To Do',t:'Audience bcookie payload job failure — root cause analysis'},
   ]},
   {squad:'mc1',name:'Varun Nair',color:'#10b981',done:5,active:2,todo:3,tickets:[
-    {key:'DAS-9720',p:'P1',s:'Done',t:'[W19] On-call support — pagers analysis'},
-    {key:'DAS-9721',p:'P1',s:'Done',t:'[W19] On-call support — ad-hoc requests'},
-    {key:'DAS-9722',p:'P1',s:'Done',t:'BR SMS flow — local integration testing'},
-    {key:'DAS-9723',p:'P1',s:'Done',t:'Campaign changes for post-purchase triggers'},
-    {key:'DAS-9724',p:'P1',s:'Done',t:'Whitelisting of CDP proxy endpoints for Bloomreach'},
-    {key:'DAS-9725',p:'P1',s:'In Progress',t:'Test CDP endpoints exposed on Bloomreach side'},
-    {key:'DAS-9726',p:'—',s:'In Progress',t:'Rocketman Template: Inactive Account Deactivation'},
-    {key:'DAS-9727',p:'—',s:'To Do',t:'Investigate campaign attribute for PN sends/clicks'},
-    {key:'DAS-9728',p:'—',s:'To Do',t:'Investigate invalid data format for push notification'},
-    {key:'DAS-9729',p:'P1',s:'To Do',t:'AI Foundry — Contribution to Claude Hub'},
+    {key:'TEAM-9720',p:'P1',s:'Done',t:'[W19] On-call support — pagers analysis'},
+    {key:'TEAM-9721',p:'P1',s:'Done',t:'[W19] On-call support — ad-hoc requests'},
+    {key:'TEAM-9722',p:'P1',s:'Done',t:'BR SMS flow — local integration testing'},
+    {key:'TEAM-9723',p:'P1',s:'Done',t:'Campaign changes for post-purchase triggers'},
+    {key:'TEAM-9724',p:'P1',s:'Done',t:'Whitelisting of CDP proxy endpoints for Bloomreach'},
+    {key:'TEAM-9725',p:'P1',s:'In Progress',t:'Test CDP endpoints exposed on Bloomreach side'},
+    {key:'TEAM-9726',p:'—',s:'In Progress',t:'Rocketman Template: Inactive Account Deactivation'},
+    {key:'TEAM-9727',p:'—',s:'To Do',t:'Investigate campaign attribute for PN sends/clicks'},
+    {key:'TEAM-9728',p:'—',s:'To Do',t:'Investigate invalid data format for push notification'},
+    {key:'TEAM-9729',p:'P1',s:'To Do',t:'AI Foundry — Contribution to Claude Hub'},
   ]},
   {squad:'mc2',name:'Arjun Mehta',color:'#14b8a6',done:4,active:2,todo:2,tickets:[
     {key:'TXN-1101',p:'P1',s:'Done',t:'Consumer Location Service — Redis TTL tuning for peak load'},
