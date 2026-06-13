@@ -222,6 +222,42 @@ footer .footer-sub { font-size: 12px; color: var(--text-muted); margin-top: 6px;
 .header-link.primary{background:var(--accent);border-color:var(--accent);color:#030b08;font-weight:700;}
 .header-link.primary:hover{background:#16a34a;}
 
+/* ── JPROD additions ── */
+:root { --jprod: #3b74f6; --jprod-soft: #7aa5ff; }
+.gchat-jprod { margin-top: 4px; border-top: 1px dashed rgba(59,116,246,.25); padding-top: 7px; display: flex; flex-direction: column; gap: 6px; }
+.gchat-jprod-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--jprod-soft); display: flex; align-items: center; gap: 5px; }
+.jprod-line { font-size: 11px; color: var(--text-muted); line-height: 1.45; }
+.jprod-line .jkey { color: var(--jprod-soft); font-weight: 700; }
+.jprod-line .jsvc { color: var(--text); font-weight: 600; }
+.jprod-line .jdot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 5px; vertical-align: middle; }
+.jprod-line .jchat { color: var(--accent); font-weight: 600; }
+.jprod-none { font-size: 11px; color: var(--text-muted); font-style: italic; }
+
+.jprod-cat { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; margin: 20px 0 12px; display: flex; align-items: center; gap: 8px; }
+.jprod-cat.open { color: #f87171; }
+.jprod-cat.closed { color: #4ade80; }
+.jprod-cat .cat-count { font-weight: 600; color: var(--text-muted); }
+.jprod-table-wrap { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border); }
+.jprod-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.jprod-table thead th { background: var(--surface-2); color: var(--text-muted); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: .07em; padding: 11px 16px; text-align: left; border-bottom: 1px solid var(--border); white-space: nowrap; }
+.jprod-table tbody tr { border-bottom: 1px solid var(--border); transition: background .15s; }
+.jprod-table tbody tr:last-child { border-bottom: none; }
+.jprod-table tbody tr:hover { background: rgba(59,116,246,.04); }
+.jprod-table td { padding: 11px 16px; color: var(--text); vertical-align: middle; }
+.jprod-table a.jprod-key { color: var(--jprod-soft); font-weight: 700; text-decoration: none; }
+.jprod-table a.jprod-key:hover { text-decoration: underline; }
+.jpill { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 20px; white-space: nowrap; }
+.jpill.s-open { background: rgba(239,68,68,.12); border: 1px solid rgba(239,68,68,.3); color: #f87171; }
+.jpill.s-prog { background: rgba(250,204,21,.12); border: 1px solid rgba(250,204,21,.3); color: #fbbf24; }
+.jpill.s-done { background: rgba(34,197,94,.12); border: 1px solid rgba(34,197,94,.3); color: #4ade80; }
+.jprod-svc-tag { font-size: 11px; font-weight: 600; color: var(--text); background: var(--surface-2); border: 1px solid var(--border); padding: 2px 8px; border-radius: 6px; }
+.jprod-chat-link { color: var(--accent); font-size: 12px; font-weight: 600; text-decoration: none; }
+.jprod-chat-link:hover { text-decoration: underline; }
+.jprod-kpi-strip { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 24px; }
+.jprod-kpi { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; }
+.jprod-kpi .k-val { font-size: 26px; font-weight: 700; }
+.jprod-kpi .k-lab { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
 /* ── RESPONSIVE ── */
 @media (max-width: 1400px) {
   main { padding: 36px 20px 20px; }
@@ -283,6 +319,7 @@ footer .footer-sub { font-size: 12px; color: var(--text-muted); margin-top: 6px;
   <a class="sidebar-back" href="/index.html">Engineering Intelligence Hub</a>
   <div class="sidebar-section-label">Sections</div>
   <a class="nav-item active" href="#how-it-works"><span class="nav-dot"></span>How It Works</a>
+  <a class="nav-item" href="#jprod-incidents"><span class="nav-dot"></span>JPROD Incidents</a>
   <a class="nav-item" href="#weekly-trend"><span class="nav-dot"></span>Weekly Alert Trend</a>
   <a class="nav-item" href="#squad-cards"><span class="nav-dot"></span>Squad Workflow Cards</a>
   <a class="nav-item" href="#alert-thresholds"><span class="nav-dot"></span>Alert Thresholds</a>
@@ -308,12 +345,13 @@ footer .footer-sub { font-size: 12px; color: var(--text-muted); margin-top: 6px;
     </div>
     <div class="hero-text-group">
       <h1>On-Call &amp; Reliability Intelligence</h1>
-      <p class="subtitle">Daily OpsGenie alert summaries · 7 squad workflows · n8n automation · GChat delivery</p>
+      <p class="subtitle">Daily OpsGenie alerts + JPROD incidents · 7 squad workflows · n8n automation · GChat delivery</p>
       <div class="hero-chips">
         <span class="hero-chip" style="background:rgba(249,115,22,.1);border-color:rgba(249,115,22,.3);color:rgba(249,115,22,.9);">⚙ n8n</span>
         <span class="hero-chip live">7 Active Workflows</span>
         <span class="hero-chip">7 Squads</span>
         <span class="hero-chip">55 Engineers</span>
+        <span class="hero-chip" style="background:rgba(59,116,246,.1);border-color:rgba(59,116,246,.3);color:#7aa5ff;">📋 JPROD Linked</span>
         <span class="hero-chip">Daily Digest</span>
       </div>
     </div>
@@ -331,7 +369,7 @@ footer .footer-sub { font-size: 12px; color: var(--text-muted); margin-top: 6px;
   <!-- 2. Pipeline -->
   <section id="how-it-works">
     <div class="section-title">How It Works</div>
-    <p class="section-sub">Automated pipeline: OpsGenie signals flow through n8n into squad-level GChat rooms every morning at 08:00 AM IST.</p>
+    <p class="section-sub">Automated pipeline: OpsGenie signals flow through n8n into squad-level GChat rooms every morning at 10:00 AM IST.</p>
     <div class="pipeline">
       <div class="pipeline-step">
         <div class="icon-wrap" style="background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);">
@@ -344,13 +382,23 @@ footer .footer-sub { font-size: 12px; color: var(--text-muted); margin-top: 6px;
       </div>
       <div class="pipeline-arrow">›</div>
       <div class="pipeline-step">
+        <div class="icon-wrap" style="background:rgba(56,116,246,.12);border:1px solid rgba(56,116,246,.3);">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3b74f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 13l2 2 4-4"/>
+          </svg>
+        </div>
+        <div class="step-title">Jira JPROD API</div>
+        <div class="step-desc">Queries JPROD incidents by service (open + closed-in-24h) via JQL on customfield_18801</div>
+      </div>
+      <div class="pipeline-arrow">›</div>
+      <div class="pipeline-step">
         <div class="icon-wrap" style="background:rgba(249,115,22,.12);border:1px solid rgba(249,115,22,.3);">
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/>
           </svg>
         </div>
-        <div class="step-title">n8n Workflow</div>
-        <div class="step-desc">Scheduled trigger at 08:00 AM IST, HTTP fetch, JSON transform</div>
+        <div class="step-title">n8n Merge + Transform</div>
+        <div class="step-desc">10:00 AM IST trigger · merges alert metrics with JPROD incidents, JSON transform</div>
       </div>
       <div class="pipeline-arrow">›</div>
       <div class="pipeline-step">
@@ -384,6 +432,98 @@ footer .footer-sub { font-size: 12px; color: var(--text-muted); margin-top: 6px;
         <div class="step-desc">Posts formatted digest; escalates SLA breaches to EM directly</div>
       </div>
     </div>
+  </section>
+
+  <!-- 3b. JPROD Incidents -->
+  <section id="jprod-incidents">
+    <div class="section-title">📋 JPROD Incidents</div>
+
+    <!-- KPI strip -->
+    <div class="jprod-kpi-strip">
+      <div class="jprod-kpi"><div class="k-val" style="color:var(--jprod-soft)">6</div><div class="k-lab">JPRODs in scope (24h)</div></div>
+      <div class="jprod-kpi"><div class="k-val" style="color:var(--red)">3</div><div class="k-lab">Currently open</div></div>
+      <div class="jprod-kpi"><div class="k-val" style="color:#4ade80">3</div><div class="k-lab">Closed in last 24h</div></div>
+      <div class="jprod-kpi"><div class="k-val" style="color:var(--text)">72</div><div class="k-lab">Services monitored</div></div>
+    </div>
+
+    <!-- Currently open -->
+    <div class="jprod-cat open">🔴 Currently Open JPROD Incidents <span class="cat-count">(3)</span></div>
+    <div class="jprod-table-wrap">
+      <table class="jprod-table">
+        <thead>
+          <tr><th>Key</th><th>Status</th><th>Service</th><th>Squad</th><th>Summary</th><th>Assignee</th><th>Thread</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a class="jprod-key" href="https://groupondev.atlassian.net/browse/JPROD-48190" target="_blank">JPROD-48190</a></td>
+            <td><span class="jpill s-open">● Open</span></td>
+            <td><span class="jprod-svc-tag">gdpr</span></td>
+            <td>MC Deliverability</td>
+            <td>GDPR compliance service failing — RED ORR, regulatory risk</td>
+            <td>Tanvir Hossain</td>
+            <td><a class="jprod-chat-link" href="#" target="_blank">JPROD GChat ↗</a></td>
+          </tr>
+          <tr>
+            <td><a class="jprod-key" href="https://groupondev.atlassian.net/browse/JPROD-48205" target="_blank">JPROD-48205</a></td>
+            <td><span class="jpill s-prog">● In Progress</span></td>
+            <td><span class="jprod-svc-tag">gss-cerebro-job-cloud</span></td>
+            <td>MC Deliverability</td>
+            <td>Subscription cerebro batch jobs failing on legacy scheduler</td>
+            <td>Deepika Rao</td>
+            <td><a class="jprod-chat-link" href="#" target="_blank">JPROD GChat ↗</a></td>
+          </tr>
+          <tr>
+            <td><a class="jprod-key" href="https://groupondev.atlassian.net/browse/JPROD-48217" target="_blank">JPROD-48217</a></td>
+            <td><span class="jpill s-prog">● In Progress</span></td>
+            <td><span class="jprod-svc-tag">paid-channel-analytics</span></td>
+            <td>External Marketing</td>
+            <td>Data pipeline failures — paid-channel spend metrics missing</td>
+            <td>Danny Chen</td>
+            <td><a class="jprod-chat-link" href="#" target="_blank">JPROD GChat ↗</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Closed in last 24h -->
+    <div class="jprod-cat closed">✅ JPRODs Closed in Last 24 Hours <span class="cat-count">(3)</span></div>
+    <div class="jprod-table-wrap">
+      <table class="jprod-table">
+        <thead>
+          <tr><th>Key</th><th>Status</th><th>Service</th><th>Squad</th><th>Summary</th><th>Assignee</th><th>Thread</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a class="jprod-key" href="https://groupondev.atlassian.net/browse/JPROD-48142" target="_blank">JPROD-48142</a></td>
+            <td><span class="jpill s-done">● Resolved</span></td>
+            <td><span class="jprod-svc-tag">rocketman-commercial</span></td>
+            <td>MC Deliverability</td>
+            <td>Email delivery lag (24M+) — throughput restored</td>
+            <td>Tanvir Hossain</td>
+            <td><a class="jprod-chat-link" href="#" target="_blank">JPROD GChat ↗</a></td>
+          </tr>
+          <tr>
+            <td><a class="jprod-key" href="https://groupondev.atlassian.net/browse/JPROD-48156" target="_blank">JPROD-48156</a></td>
+            <td><span class="jpill s-done">● Done</span></td>
+            <td><span class="jprod-svc-tag">loyalty-wallet</span></td>
+            <td>Coupons</td>
+            <td>Wallet balance eventual-consistency gap — reconciled, rolled back deploy</td>
+            <td>Lena Fischer</td>
+            <td><a class="jprod-chat-link" href="#" target="_blank">JPROD GChat ↗</a></td>
+          </tr>
+          <tr>
+            <td><a class="jprod-key" href="https://groupondev.atlassian.net/browse/JPROD-48171" target="_blank">JPROD-48171</a></td>
+            <td><span class="jpill s-done">● Closed</span></td>
+            <td><span class="jprod-svc-tag">sponsored-search-service</span></td>
+            <td>Ads &amp; Sponsored</td>
+            <td>Sponsored search ranking latency spikes — Yellow ORR, tuned</td>
+            <td>James Ofoegbu</td>
+            <td><a class="jprod-chat-link" href="#" target="_blank">JPROD GChat ↗</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
   </section>
 
   <!-- 5. Weekly Trend -->
@@ -469,7 +609,7 @@ footer .footer-sub { font-size: 12px; color: var(--text-muted); margin-top: 6px;
 
       <div style="background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:12px;padding:18px;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-          <span style="font-size:13px;font-weight:700;color:var(--text);">MC Commercial</span>
+          <span style="font-size:13px;font-weight:700;color:var(--text);">MC Promotional</span>
           <span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);color:#4ade80;">🟢 Green</span>
         </div>
         <div style="display:flex;align-items:flex-end;gap:5px;height:48px;margin-bottom:10px;">
@@ -519,7 +659,7 @@ footer .footer-sub { font-size: 12px; color: var(--text-muted); margin-top: 6px;
 
       <div style="background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--yellow);border-radius:12px;padding:18px;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-          <span style="font-size:13px;font-weight:700;color:var(--text);">Paid Marketing</span>
+          <span style="font-size:13px;font-weight:700;color:var(--text);">External Marketing</span>
           <span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px;background:rgba(250,204,21,.1);border:1px solid rgba(250,204,21,.25);color:#fbbf24;">🟡 Yellow</span>
         </div>
         <div style="display:flex;align-items:flex-end;gap:5px;height:48px;margin-bottom:10px;">
@@ -622,7 +762,7 @@ footer .footer-sub { font-size: 12px; color: var(--text-muted); margin-top: 6px;
         <div class="gchat-bubble">
           <div class="gchat-head">
             <span style="font-size:15px;">🔔</span>
-            <span class="gchat-title">Coupons · Daily On-Call</span>
+            <span class="gchat-title">P&amp;P Backend · Daily On-Call</span>
             <span class="gchat-date">May 25</span>
           </div>
           <div class="gchat-body">
@@ -632,6 +772,10 @@ footer .footer-sub { font-size: 12px; color: var(--text-muted); margin-top: 6px;
             <div class="gchat-row"><span class="gdot" style="background:#22c55e"></span> <strong>0</strong> open &nbsp;<span style="font-size:10px;opacity:.6">≤2 · green</span></div>
             <div class="gchat-row"><span class="gdot" style="background:#22c55e"></span> SLA <strong>✅ No breaches</strong></div>
             <div class="gchat-row">⏱ MTTR <strong>0h 30m</strong></div>
+            <div class="gchat-jprod">
+              <div class="gchat-jprod-label">📋 JPROD Incidents</div>
+              <div class="jprod-none">No JPROD incidents for this squad's services</div>
+            </div>
             <div class="gchat-status" style="color:#4ade80;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);">🟢 All clear</div>
           </div>
         </div><button class="gchat-btn">Open in GChat</button>
@@ -668,17 +812,21 @@ footer .footer-sub { font-size: 12px; color: var(--text-muted); margin-top: 6px;
             <div class="gchat-row"><span class="gdot" style="background:#facc15"></span> <strong>4</strong> open &nbsp;<span style="font-size:10px;opacity:.6">3–5 · yellow</span></div>
             <div class="gchat-row"><span class="gdot" style="background:#facc15"></span> SLA <strong>⚠️ 1 breach</strong></div>
             <div class="gchat-row">⏱ MTTR <strong>2h 45m</strong></div>
+            <div class="gchat-jprod">
+              <div class="gchat-jprod-label">📋 Open JPROD Incidents (1)</div>
+              <div class="jprod-line"><span class="jdot" style="background:#facc15"></span><span class="jkey">JPROD-48217</span> (In Progress) · <span class="jsvc">ds-pnp-service</span> · Priya Nair · <span class="jchat">JPROD GChat ↗</span><br>DS feature pipeline lag — stale features served to Pricing models</div>
+            </div>
             <div class="gchat-status" style="color:#fbbf24;background:rgba(250,204,21,.1);border:1px solid rgba(250,204,21,.25);">🟡 Elevated</div>
           </div>
         </div>
         <button class="gchat-btn">Open in GChat</button>
       </div>
 
-      <!-- MC Commercial — GREEN -->
+      <!-- MC Promotional — GREEN -->
       <div class="squad-card status-green">
         <div class="squad-header">
           <div>
-            <div class="squad-name">MC Commercial</div>
+            <div class="squad-name">MC Promotional</div>
             <div class="squad-meta">EM2: Alex Thompson · TL: Kenji Nakamura</div>
           </div>
           <span class="eng-badge">11 eng</span>
@@ -695,7 +843,7 @@ footer .footer-sub { font-size: 12px; color: var(--text-muted); margin-top: 6px;
         <div class="gchat-bubble">
           <div class="gchat-head">
             <span style="font-size:15px;">🔔</span>
-            <span class="gchat-title">MC Commercial · Daily On-Call</span>
+            <span class="gchat-title">MC Promotional · Daily On-Call</span>
             <span class="gchat-date">May 25</span>
           </div>
           <div class="gchat-body">
@@ -742,17 +890,24 @@ footer .footer-sub { font-size: 12px; color: var(--text-muted); margin-top: 6px;
             <div class="gchat-row"><span class="gdot" style="background:#ef4444"></span> <strong>6</strong> open &nbsp;<span style="font-size:10px;opacity:.6">>5 · red</span></div>
             <div class="gchat-row"><span class="gdot" style="background:#ef4444"></span> SLA <strong>⚠️ 3 breaches</strong></div>
             <div class="gchat-row">⏱ MTTR <strong>4h 20m</strong></div>
+            <div class="gchat-jprod">
+              <div class="gchat-jprod-label">📋 Open JPROD Incidents (2)</div>
+              <div class="jprod-line"><span class="jdot" style="background:#ef4444"></span><span class="jkey">JPROD-48190</span> (Open) · <span class="jsvc">gdpr</span> · Tanvir Hossain · <span class="jchat">JPROD GChat ↗</span><br>GDPR compliance service failing — RED ORR, regulatory risk</div>
+              <div class="jprod-line"><span class="jdot" style="background:#facc15"></span><span class="jkey">JPROD-48205</span> (In Progress) · <span class="jsvc">gss-cerebro-job-cloud</span> · Deepika Rao · <span class="jchat">JPROD GChat ↗</span><br>Subscription cerebro batch jobs failing on legacy scheduler</div>
+              <div class="gchat-jprod-label" style="color:#4ade80;margin-top:3px;">✅ Closed in last 24h (1)</div>
+              <div class="jprod-line"><span class="jdot" style="background:#22c55e"></span><span class="jkey">JPROD-48142</span> (Resolved) · <span class="jsvc">rocketman-commercial</span> · Tanvir Hossain · <span class="jchat">JPROD GChat ↗</span><br>Email delivery lag (24M+) — throughput restored</div>
+            </div>
             <div class="gchat-status" style="color:#f87171;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);">🔴 Critical</div>
           </div>
         </div>
         <button class="gchat-btn">Open in GChat</button>
       </div>
 
-      <!-- Paid Marketing — YELLOW -->
+      <!-- External Marketing — YELLOW -->
       <div class="squad-card status-yellow">
         <div class="squad-header">
           <div>
-            <div class="squad-name">Paid Marketing</div>
+            <div class="squad-name">External Marketing</div>
             <div class="squad-meta">Sr Mgr: Rachel Kim · TL: Danny Chen</div>
           </div>
           <span class="eng-badge">9 eng</span>
@@ -769,7 +924,7 @@ footer .footer-sub { font-size: 12px; color: var(--text-muted); margin-top: 6px;
         <div class="gchat-bubble">
           <div class="gchat-head">
             <span style="font-size:15px;">🔔</span>
-            <span class="gchat-title">Paid Marketing · Daily On-Call</span>
+            <span class="gchat-title">External Marketing · Daily On-Call</span>
             <span class="gchat-date">May 25</span>
           </div>
           <div class="gchat-body">
@@ -918,12 +1073,16 @@ footer .footer-sub { font-size: 12px; color: var(--text-muted); margin-top: 6px;
     <p class="section-sub">Infrastructure powering the daily reliability digest.</p>
     <div class="automation-box">
       <div class="auto-heading">
-        <span>⚡</span> Powered by n8n + OpsGenie + GChat
+        <span>⚡</span> Powered by n8n + OpsGenie + Jira JPROD + GChat
       </div>
       <div class="auto-chips">
+        <div class="auto-chip" style="border-color:rgba(59,116,246,.3);">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3b74f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 13l2 2 4-4"/></svg>
+          JPROD incidents via JQL on service field
+        </div>
         <div class="auto-chip">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
-          Daily cron at 08:00 AM IST
+          Daily cron at 10:00 AM IST
         </div>
         <div class="auto-chip">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
@@ -947,7 +1106,7 @@ footer .footer-sub { font-size: 12px; color: var(--text-muted); margin-top: 6px;
         </div>
       </div>
       <div class="auto-note">
-        <strong>Workflow architecture:</strong> n8n self-hosted on internal infra · OpsGenie V2 REST API with team-scoped API keys · GChat Webhooks per squad room · Escalation path: SLA breach → EM DM + squad thread mention · All payloads logged to S3 for 30-day audit retention.
+        <strong>Workflow architecture:</strong> n8n self-hosted on internal infra · OpsGenie V2 REST API with team-scoped API keys · Jira Service Management (JPROD) REST API via JQL on <code>customfield_18801</code> · 4-input Merge node combines on-call engineer + alert metrics + JPROD incidents · GChat Webhooks per squad room · Escalation path: SLA breach → EM DM + squad thread mention · All payloads logged to S3 for 30-day audit retention.
       </div>
     </div>
   </section>
