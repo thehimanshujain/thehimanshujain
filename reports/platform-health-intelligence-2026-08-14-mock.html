@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2322c55e'/%3E%3Ctext x='16' y='23' font-family='system-ui,sans-serif' font-size='18' font-weight='700' fill='%23030b08' text-anchor='middle'%3EH%3C/text%3E%3C/svg%3E">
+<title>Platform Health Intelligence &mdash; 2026-08-14 (Mock)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0f1117;--surface:#1a1d27;--surface2:#22262f;--border:#2e3340;
+  --text:#e1e4ea;--text-muted:#8b90a0;--accent:#f59e0b;
+  --green:#34d399;--yellow:#fbbf24;--orange:#fb923c;--red:#f87171;--purple:#a78bfa}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',system-ui,sans-serif;min-height:100vh}
+header{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(8,14,26,.97);
+  border-bottom:3px solid #f59e0b;backdrop-filter:blur(10px);padding:0 32px;height:58px;
+  display:flex;align-items:center;justify-content:space-between}
+header a.back-link{color:#f59e0b;text-decoration:none;font-size:14px;font-weight:500;display:flex;align-items:center;gap:6px;transition:opacity .2s}
+header a.back-link:hover{opacity:.75}
+header a.back-link::before{content:"←";font-size:16px}
+.hdr-owner{position:absolute;left:50%;transform:translateX(-50%);white-space:nowrap;display:flex;align-items:center;gap:6px}
+.hdr-owner .name{font-size:15px;font-weight:700;background:linear-gradient(90deg,#f59e0b,#fb923c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hdr-owner .title{font-size:14px;color:#7a9ab8;font-weight:400}
+.hdr-link{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;
+  color:#080e1a;text-decoration:none;background:#f59e0b;border:1px solid #f59e0b;
+  padding:8px 16px;border-radius:9px;transition:all .15s}
+.hdr-link:hover{background:#d97706;border-color:#d97706}
+.page-wrap{display:flex;min-height:calc(100vh - 58px);margin-top:58px}
+.sidebar{width:260px;background:#080e1a;border-right:1px solid #1a2540;
+  position:fixed;top:58px;left:0;height:calc(100vh - 58px);overflow-y:auto;
+  display:flex;flex-direction:column;z-index:100}
+#main{margin-left:260px;flex:1;padding:32px 40px;max-width:1500px}
+footer{border-top:3px solid #f59e0b;padding:24px 32px;text-align:center;background:#080e1a;
+  margin-left:260px}
+h1{font-size:22px;font-weight:700;margin-bottom:4px}
+h2{font-size:16px;font-weight:600;margin:32px 0 16px;padding-bottom:8px;border-bottom:1px solid var(--border);color:var(--text)}
+h3{font-size:13px;font-weight:600;margin:16px 0 8px;color:#c9a050}
+section{margin-bottom:40px;scroll-margin-top:70px}
+.subtitle{font-size:12px;color:var(--text-muted);margin-bottom:20px}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-bottom:20px}
+.kpi-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center}
+.kpi-card .val{font-size:26px;font-weight:700;color:var(--accent)}
+.kpi-card.green .val{color:var(--green)}
+.kpi-card.red .val{color:var(--red)}
+.kpi-card.yellow .val{color:var(--yellow)}
+.kpi-card.purple .val{color:var(--purple)}
+.kpi-card.orange .val{color:var(--orange)}
+.kpi-card .lbl{font-size:11px;color:var(--text-muted);margin-top:4px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:16px}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-bottom:16px}
+.card-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.card-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px}
+.chart-wrap{position:relative;height:260px}
+.chart-wrap-sm{position:relative;height:200px}
+.chart-wrap-lg{position:relative;height:320px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:9px 12px;font-size:10px;font-weight:700;color:var(--text-muted);
+  text-transform:uppercase;letter-spacing:.06em;background:#0f1521;border-bottom:1px solid var(--border)}
+td{padding:9px 12px;border-bottom:1px solid #1a2030;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(108,140,255,.03)}
+.nav-link{display:block;padding:7px 20px;font-size:12px;color:#7a9ab8;text-decoration:none;
+  border-left:2px solid transparent;transition:all .15s;cursor:pointer}
+.nav-link:hover,.nav-link.active{color:#f59e0b;border-left-color:#f59e0b;background:rgba(245,158,11,.07)}
+.nav-section-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;
+  color:#4a6080;padding:12px 20px 4px}
+.hub-o7-wrap{position:relative;display:inline-flex;border-radius:99px;padding:1.5px;background:#2e3340}
+.hub-o7-inner{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:500;
+  color:#7a9ab8;text-decoration:none;padding:5px 14px;border-radius:99px;background:#080e1a;
+  position:relative;z-index:1;white-space:nowrap}
+.hub-o7-inner:hover{color:#f59e0b}
+.hub-capsule-row{padding:10px 16px 12px;border-bottom:1px solid #1a2540;margin-bottom:2px;display:flex;align-items:center}
+.score-pill{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:99px;
+  font-size:13px;font-weight:700;border:1px solid}
+.score-green{background:rgba(52,211,153,.12);color:#34d399;border-color:rgba(52,211,153,.3)}
+.score-yellow{background:rgba(251,191,36,.12);color:#fbbf24;border-color:rgba(251,191,36,.3)}
+.score-blue{background:rgba(245,158,11,.12);color:#f59e0b;border-color:rgba(245,158,11,.3)}
+.score-purple{background:rgba(167,139,250,.12);color:#a78bfa;border-color:rgba(167,139,250,.3)}
+.insight-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.insight{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px}
+.insight .badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;
+  margin-bottom:10px;display:inline-block;border:1px solid}
+.insight h4{font-size:13px;font-weight:600;color:#e1e4ea;margin-bottom:8px}
+.insight p{font-size:12px;color:#8b90a0;line-height:1.6}
+.insight .action{margin-top:10px;font-size:11px;color:#f59e0b;font-weight:600;padding-top:8px;border-top:1px solid var(--border)}
+.rec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.rec-tier{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px}
+.rec-tier h3{margin-bottom:12px;font-size:14px}
+.rec-item{padding:10px;background:#0f1521;border-radius:6px;margin-bottom:8px;border-left:3px solid}
+.rec-item .ri-title{font-size:12px;font-weight:600;color:#e1e4ea;margin-bottom:4px}
+.rec-item .ri-meta{font-size:11px;color:#8b90a0}
+.squad-strip{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:20px}
+.squad-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px}
+.avail-bar{height:8px;border-radius:4px;background:#1a2540;margin:6px 0;overflow:hidden}
+.sidebar-footer{padding:16px 20px;font-size:10px;color:#4a6080;border-top:1px solid #1a2540;margin-top:auto}
+
+/* === Service Inventory accordion (si-) === */
+.si-head{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:14px}
+.si-title-wrap{display:flex;align-items:baseline;gap:10px}
+.si-title{font-size:15px;font-weight:700;color:#e1e4ea}
+.si-count{font-size:12px;color:#8b90a0}
+.si-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.si-statstrip{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:16px}
+.si-stat{background:#22262f;border:1px solid #2e3340;border-radius:12px;padding:14px 18px;display:flex;flex-direction:column;justify-content:center;min-height:64px}
+.si-stat .n{font-size:24px;font-weight:700;line-height:1.05}
+.si-stat .l{font-size:11px;color:#8b90a0;text-transform:uppercase;letter-spacing:.06em;margin-top:6px}
+@media(max-width:760px){.si-statstrip{grid-template-columns:repeat(3,1fr)}}
+.si-stat.t0 .n{color:#f87171}.si-stat.t1 .n{color:#f59e0b}.si-stat.t2 .n{color:#8b90a0}
+.si-dot{display:inline-block;width:8px;height:8px;border-radius:99px;margin-right:3px;vertical-align:middle}
+.si-dot.g{background:#34d399}.si-dot.y{background:#fbbf24}.si-dot.r{background:#f87171}
+.si-toggle{display:inline-flex;background:#22262f;border:1px solid #2e3340;border-radius:8px;padding:3px}
+.si-toggle button{background:none;border:none;color:#8b90a0;font-size:12px;font-weight:600;padding:5px 13px;border-radius:6px;cursor:pointer;font-family:inherit}
+.si-toggle button.on{background:#6c8cff;color:#fff}
+.si-search{background:#22262f;border:1px solid #2e3340;border-radius:8px;color:#e1e4ea;font-size:12px;padding:6px 11px;width:180px;font-family:inherit}
+.si-search::placeholder{color:#8b90a0}
+.si-btn{background:#22262f;border:1px solid #2e3340;color:#8b90a0;font-size:11px;font-weight:600;padding:6px 11px;border-radius:8px;cursor:pointer;font-family:inherit}
+.si-btn:hover{color:#e1e4ea;border-color:#6c8cff}
+.si-chips{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;align-items:center}
+.si-chips .si-chip-label{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:#8b90a0;font-weight:600;margin-right:2px}
+.si-chip{font-size:12.5px;font-weight:600;padding:8px 18px;border-radius:99px;cursor:pointer;border:1px solid #2e3340;background:#22262f;color:#8b90a0;user-select:none;transition:border-color .15s,color .15s}
+.si-chip:hover{color:#e1e4ea}
+.si-chip.on{color:#e1e4ea}
+.si-chip.on[data-f="GREEN"]{background:rgba(52,211,153,.15);border-color:rgba(52,211,153,.4);color:#34d399}
+.si-chip.on[data-f="YELLOW"]{background:rgba(251,191,36,.15);border-color:rgba(251,191,36,.4);color:#fbbf24}
+.si-chip.on[data-f="RED"]{background:rgba(248,113,113,.15);border-color:rgba(248,113,113,.4);color:#f87171}
+.si-chip.on[data-f="High"]{background:rgba(248,113,113,.12);border-color:rgba(248,113,113,.35);color:#f87171}
+.si-chip.on[data-f="Med"]{background:rgba(251,191,36,.12);border-color:rgba(251,191,36,.35);color:#fbbf24}
+.si-chip.on[data-f="ALL"]{background:rgba(108,140,255,.15);border-color:rgba(108,140,255,.4);color:#6c8cff}
+.si-chip-sep{width:1px;align-self:stretch;background:#2e3340;margin:0 6px}
+.si-group{border:1px solid #2e3340;border-radius:10px;margin-bottom:10px;overflow:hidden}
+.si-group-head{display:flex;align-items:center;gap:10px;padding:11px 14px;cursor:pointer;background:#22262f;user-select:none}
+.si-group-head:hover{background:#272c37}
+.si-caret{transition:transform .18s;color:#8b90a0;font-size:11px}
+.si-group.open .si-caret{transform:rotate(90deg)}
+.si-group-rail{width:4px;align-self:stretch;border-radius:99px;flex-shrink:0;min-height:18px}
+.si-group-name{font-weight:700;font-size:13px;color:#e1e4ea}
+.si-group-sub{font-size:11px;color:#8b90a0}
+.si-group-health{margin-left:auto;font-size:11px;color:#8b90a0;display:flex;gap:9px;align-items:center}
+.si-group-body{display:none}
+.si-group.open .si-group-body{display:block}
+.si-tbl{width:100%;border-collapse:collapse}
+.si-tbl th{text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:#8b90a0;font-weight:600;padding:8px 14px;background:#1e222b;cursor:pointer;white-space:nowrap}
+.si-tbl th .arr{opacity:.4;font-size:9px;margin-left:3px}
+.si-tbl th.sorted .arr{opacity:1;color:#6c8cff}
+.si-tbl td{padding:9px 14px;border-top:1px solid #2e3340;font-size:12px;vertical-align:middle}
+.si-tbl tr.svc:hover td{background:rgba(108,140,255,.04)}
+.si-tbl tr.svc.flag-red td{background:rgba(248,113,113,.05)}
+.si-svc-name{font-weight:600;color:#e1e4ea}
+.si-muted{color:#8b90a0;font-size:11px}
+.si-purpose{color:#8b90a0;font-size:11px;max-width:320px}
+.si-tier-badge{font-size:10px;font-weight:700;padding:1px 6px;border-radius:3px}
+.si-tier-T0{background:rgba(248,113,113,.15);color:#f87171}
+.si-tier-T1{background:rgba(245,158,11,.15);color:#f59e0b}
+.si-tier-T2{background:rgba(139,144,160,.15);color:#8b90a0}
+.si-squad-badge{font-size:10px;font-weight:600;padding:2px 7px;border-radius:3px;background:rgba(245,158,11,.12);color:#f59e0b;white-space:nowrap}
+.si-squad-MC{background:rgba(167,139,250,.12);color:#a78bfa}
+.si-squad-Coupons{background:rgba(108,140,255,.12);color:#6c8cff}
+.si-squad-External{background:rgba(52,211,153,.10);color:#34d399}
+.si-squad-AoG{background:rgba(251,191,36,.10);color:#fbbf24}
+.si-orr{padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600;border:1px solid}
+.si-orr-GREEN{background:rgba(52,211,153,.15);color:#34d399;border-color:rgba(52,211,153,.3)}
+.si-orr-YELLOW{background:rgba(251,191,36,.15);color:#fbbf24;border-color:rgba(251,191,36,.3)}
+.si-orr-RED{background:rgba(248,113,113,.15);color:#f87171;border-color:rgba(248,113,113,.3)}
+.si-risk-Low{color:#34d399;font-weight:600;font-size:11px}
+.si-risk-Med{color:#fbbf24;font-weight:600;font-size:11px}
+.si-risk-High{color:#f87171;font-weight:700;font-size:11px}
+.si-empty{padding:24px;text-align:center;color:#8b90a0;font-size:12px}
+
+/* sortable table + chart toggle */
+table.sortable thead th{cursor:pointer;user-select:none;white-space:nowrap;background:rgba(245,158,11,.07);color:#cdb98a;transition:background .15s,color .15s;position:relative}
+table.sortable thead th:hover{background:rgba(245,158,11,.16);color:#f59e0b}
+table.sortable thead th .sarr{display:inline-block;font-size:10px;opacity:.5;margin-left:5px;color:#f59e0b}
+table.sortable thead th:hover .sarr{opacity:.9}
+table.sortable thead th.sort-asc,table.sortable thead th.sort-desc{background:rgba(245,158,11,.2);color:#f59e0b}
+table.sortable thead th.sort-asc .sarr,table.sortable thead th.sort-desc .sarr{opacity:1;font-size:0}
+table.sortable thead th.sort-asc .sarr::after{content:"\2191";font-size:11px}
+table.sortable thead th.sort-desc .sarr::after{content:"\2193";font-size:11px}
+.sort-hint{font-size:10px;font-weight:500;color:#7a9ab8;background:rgba(122,154,184,.1);border:1px solid rgba(122,154,184,.25);padding:2px 8px;border-radius:99px;margin-left:8px;vertical-align:middle}
+.cc-toggle{display:inline-flex;background:#0b1322;border:1px solid #1a2540;border-radius:7px;padding:2px}
+.cc-toggle button{background:none;border:none;color:#7a9ab8;font-size:11px;font-weight:600;padding:4px 11px;border-radius:5px;cursor:pointer;font-family:inherit}
+.cc-toggle button.on{background:#f59e0b;color:#0f1117}
+</style></head><body><header>
+  <a class="back-link" href="/index.html">Engineering Intelligence Hub</a>
+  <div class="hdr-owner">
+    <span class="name">Himanshu Jain</span>
+    <span class="title">&middot; Director of Software Engineering</span>
+  </div>
+  <a class="hdr-link" href="https://www.linkedin.com/in/thehimanshujain/" target="_blank">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    LinkedIn <span style="font-size:15px;font-weight:800;line-height:1">&#8599;</span>
+  </a>
+</header><div class="page-wrap"><nav class="sidebar">
+  <div style="padding:16px 20px 20px;border-bottom:1px solid #1a2540;margin-bottom:10px;display:flex;align-items:center;gap:12px;">
+    <div style="width:36px;height:36px;border-radius:10px;flex-shrink:0;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.3);display:flex;align-items:center;justify-content:center;box-shadow:0 0 16px rgba(245,158,11,.2);">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <circle cx="14" cy="14" r="3.5" fill="rgba(245,158,11,.9)"/>
+        <path d="M14 4A10 10 0 0 1 24 14" stroke="rgba(245,158,11,.9)" stroke-width="2" stroke-linecap="round" fill="none"/>
+        <path d="M14 4A10 10 0 0 0 4 14"  stroke="rgba(245,158,11,.4)" stroke-width="2" stroke-linecap="round" fill="none"/>
+        <path d="M4 14A10 10 0 0 0 14 24" stroke="rgba(245,158,11,.4)" stroke-width="2" stroke-linecap="round" fill="none"/>
+        <path d="M14 24A10 10 0 0 0 24 14" stroke="rgba(245,158,11,.65)" stroke-width="2" stroke-linecap="round" fill="none"/>
+        <circle cx="24" cy="14" r="2" fill="rgba(245,158,11,.8)"/>
+        <circle cx="14" cy="4"  r="1.5" fill="rgba(245,158,11,.5)"/>
+        <circle cx="4"  cy="14" r="1.5" fill="rgba(245,158,11,.3)"/>
+      </svg>
+    </div>
+    <div>
+      <div style="font-size:13px;font-weight:700;color:#f59e0b;white-space:normal;line-height:1.3">Platform Health Intelligence</div>
+      <div style="font-size:11px;color:#8b90a0;margin-top:1px;">2026-08-14</div>
+    </div>
+  </div>
+  <div class="hub-capsule-row">
+    <div class="hub-o7-wrap" id="hub-comet">
+      <a href="/index.html" class="hub-o7-inner">&#8592; Engineering Intelligence Hub</a>
+    </div>
+  </div>
+  <div class="nav-section-title">Overview</div>
+  <a class="nav-link active" data-sec="s01" onclick="goToSection('s01')">Executive Summary</a>
+  <a class="nav-link" data-sec="s02" onclick="goToSection('s02')">Portfolio Overview</a>
+  <a class="nav-link" data-sec="s03" onclick="goToSection('s03')">Service Inventory</a>
+  <div class="nav-section-title">Operations</div>
+  <a class="nav-link" data-sec="s04" onclick="goToSection('s04')">Reliability Intelligence</a>
+  <a class="nav-link" data-sec="s05" onclick="goToSection('s05')">Cost Intelligence</a>
+  <a class="nav-link" data-sec="s06" onclick="goToSection('s06')">Engineering Capacity</a>
+  <div class="nav-section-title">Strategy</div>
+  <a class="nav-link" data-sec="s07" onclick="goToSection('s07')">Strategic Initiatives</a>
+  <a class="nav-link" data-sec="s08" onclick="goToSection('s08')">Technical Debt</a>
+  <a class="nav-link" data-sec="s09" onclick="goToSection('s09')">Dependency Intelligence</a>
+  <div class="nav-section-title">Scorecard</div>
+  <a class="nav-link" data-sec="s10" onclick="goToSection('s10')">OpEx Scorecard</a>
+  <a class="nav-link" data-sec="s11" onclick="goToSection('s11')">Leadership Insights</a>
+  <a class="nav-link" data-sec="s12" onclick="goToSection('s12')">Next Quarter Recs</a>
+  <a class="nav-link" data-sec="s13" onclick="goToSection('s13')">Score Methodology</a>
+</nav><div id="main">
+<section id="s01">
+<h1>Platform Health Intelligence &mdash; Himanshu Jain</h1>
+<div class="subtitle">Director, Global Marketing &amp; Ads Platforms &nbsp;&middot;&nbsp; 2026-08-14 &nbsp;&middot;&nbsp; 72 services &nbsp;&middot;&nbsp; 4 leaders &nbsp;&middot;&nbsp; 53 engineers &nbsp;&middot;&nbsp; MOCK DATA</div>
+<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px">
+  <span class="score-green">&#9679; Health Score <span id="scoreHealth">—</span>/100</span>
+  <span class="score-blue">&#9679; Reliability <span id="scoreReliab">—</span>/100</span>
+  <span class="score-yellow">&#9679; Cost Efficiency <span id="scoreCost">—</span>/100</span>
+  <span class="score-purple">&#9679; OpEx Maturity <span id="scoreOpex">—</span>/100</span>
+</div>
+<div class="kpi-grid">
+  <div class="kpi-card"><div class="val">72</div><div class="lbl">Total Services</div></div>
+  <div class="kpi-card red"><div class="val">3</div><div class="lbl">RED Services</div></div>
+  <div class="kpi-card yellow"><div class="val">4</div><div class="lbl">YELLOW Services</div></div>
+  <div class="kpi-card green"><div class="val">65</div><div class="lbl">GREEN Services</div></div>
+  <div class="kpi-card"><div class="val">53</div><div class="lbl">Active Engineers</div></div>
+  <div class="kpi-card purple"><div class="val">7</div><div class="lbl">Squads</div></div>
+  <div class="kpi-card orange"><div class="val">$324K</div><div class="lbl">Monthly Cloud Spend</div></div>
+  <div class="kpi-card"><div class="val">9</div><div class="lbl">Tier-0 Services</div></div>
+</div>
+<div class="card-grid-3">
+  <div class="card" style="border-left:3px solid #34d399">
+    <h3 style="color:#34d399">&#10003; Portfolio Strengths</h3>
+    <p style="font-size:12px;color:#8b90a0;line-height:1.7">
+      &bull; 90% ORR GREEN rate across 72 services<br>
+      &bull; MTA migration saved $450K/yr; AWS&rarr;GCP $9M/yr reduction achieved<br>
+      &bull; Purple Price at 76% US adoption driving $38M+/yr GP
+    </p>
+  </div>
+  <div class="card" style="border-left:3px solid #f87171">
+    <h3 style="color:#f87171">&#9888; Key Risks</h3>
+    <p style="font-size:12px;color:#8b90a0;line-height:1.7">
+      &bull; 3 RED ORR services (gdpr, paid-channel-analytics, gss-cerebro-job-cloud)<br>
+      &bull; Bus factor risk on 9 Tier-0 services with single primary owners<br>
+      &bull; Meta Ads API v17 deprecation migration pending — revenue exposure
+    </p>
+  </div>
+  <div class="card" style="border-left:3px solid #f59e0b">
+    <h3>Leadership Summary</h3>
+    <p style="font-size:12px;color:#8b90a0;line-height:1.7">
+      Portfolio spans 72 services generating ~$300M+/yr GP across Pricing &amp; Promotions,
+      P&P Backend, Coupons, Paid Marketing, and Ads &amp; Sponsored. 56-member global org (India, Europe, US).
+      Cost efficiency improving YoY: 324K/mo vs ~$350K/mo prior year (-22%).
+      Immediate action needed on 3 RED ORR services.
+    </p>
+  </div>
+</div>
+</section>
+<section id="s02">
+<h2>Portfolio Overview</h2>
+<div class="kpi-grid" style="grid-template-columns:repeat(4,1fr)">
+  <div class="kpi-card red"><div class="val">9</div><div class="lbl">Tier-0 (Critical)</div></div>
+  <div class="kpi-card yellow"><div class="val">33</div><div class="lbl">Tier-1 (Important)</div></div>
+  <div class="kpi-card"><div class="val">30</div><div class="lbl">Tier-2 (Standard)</div></div>
+  <div class="kpi-card green"><div class="val">4</div><div class="lbl">Engineering Leaders</div></div>
+</div>
+<div class="card-grid-2">
+  <div class="card"><h3>Squad Breakdown<span class="sort-hint">&#8597; click a column to sort</span></h3>
+    <table id="squadTable" class="sortable"><thead><tr><th data-k="0" data-type="text">Squad<span class="sarr">&#8597;</span></th><th data-k="1" data-type="num" style="text-align:center">Engineers<span class="sarr">&#8597;</span></th><th data-k="2" data-type="num" style="text-align:center">Services<span class="sarr">&#8597;</span></th><th data-k="3" data-type="num">Monthly Spend<span class="sarr">&#8597;</span></th><th data-k="4" data-type="num">YoY<span class="sarr">&#8597;</span></th></tr></thead><tbody><tr><td><span style="background:rgba(245,158,11,.12);color:#f59e0b;font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px">P&P Backend</span></td><td style="text-align:center;color:#e1e4ea">11</td><td style="text-align:center;color:#8b90a0">7</td><td style="color:#e1e4ea">$62K</td><td style="color:#34d399;font-weight:600">-12%</td></tr><tr><td><span style="background:rgba(245,158,11,.12);color:#f59e0b;font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px">P&P Data Science</span></td><td style="text-align:center;color:#e1e4ea">6</td><td style="text-align:center;color:#8b90a0">2</td><td style="color:#e1e4ea">$9K</td><td style="color:#34d399;font-weight:600">-5%</td></tr><tr><td><span style="background:rgba(245,158,11,.12);color:#f59e0b;font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px">MC Deliverability</span></td><td style="text-align:center;color:#e1e4ea">10</td><td style="text-align:center;color:#8b90a0">13</td><td style="color:#e1e4ea">$89K</td><td style="color:#34d399;font-weight:600">-37%</td></tr><tr><td><span style="background:rgba(245,158,11,.12);color:#f59e0b;font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px">MC Promotional</span></td><td style="text-align:center;color:#e1e4ea">10</td><td style="text-align:center;color:#8b90a0">15</td><td style="color:#e1e4ea">$44K</td><td style="color:#34d399;font-weight:600">-8%</td></tr><tr><td><span style="background:rgba(245,158,11,.12);color:#f59e0b;font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px">Coupons</span></td><td style="text-align:center;color:#e1e4ea">6</td><td style="text-align:center;color:#8b90a0">14</td><td style="color:#e1e4ea">$59K</td><td style="color:#34d399;font-weight:600">-2%</td></tr><tr><td><span style="background:rgba(245,158,11,.12);color:#f59e0b;font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px">External Marketing</span></td><td style="text-align:center;color:#e1e4ea">5</td><td style="text-align:center;color:#8b90a0">12</td><td style="color:#e1e4ea">$43K</td><td style="color:#34d399;font-weight:600">-7%</td></tr><tr><td><span style="background:rgba(245,158,11,.12);color:#f59e0b;font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px">Ads &amp; Sponsored</span></td><td style="text-align:center;color:#e1e4ea">5</td><td style="text-align:center;color:#8b90a0">9</td><td style="color:#e1e4ea">$18K</td><td style="color:#34d399;font-weight:600">-5%</td></tr></tbody></table></div>
+  <div class="card"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><h3 style="margin:0">Cloud Spend by Squad</h3><div class="cc-toggle" id="squadCostToggle"><button data-t="bar" class="on">Bar</button><button data-t="doughnut">Donut</button></div></div><div class="chart-wrap"><canvas id="cSquadCost"></canvas></div></div>
+</div>
+</section>
+<section id="s03">
+<h2>Service Inventory</h2>
+<div class="card">
+  <div class="si-head">
+    <div class="si-title-wrap"><span class="si-title">Services</span><span class="si-count" id="si-count"></span></div>
+    <div class="si-actions">
+      <div class="si-toggle" id="si-toggle"><button data-g="tier" class="on">By Tier</button><button data-g="squad">By Team</button></div>
+      <input class="si-search" id="si-search" placeholder="Search service…">
+      <button class="si-btn" id="si-expand">Expand all</button>
+      <button class="si-btn" id="si-csv">Export CSV</button>
+    </div>
+  </div>
+  <div class="si-statstrip" id="si-statstrip"></div>
+  <div class="si-chips" id="si-chips">
+    <span class="si-chip-label">ORR</span>
+    <span class="si-chip on" data-grp="orr" data-f="ALL">All</span>
+    <span class="si-chip" data-grp="orr" data-f="GREEN"><span class="si-dot g"></span>Green</span>
+    <span class="si-chip" data-grp="orr" data-f="YELLOW"><span class="si-dot y"></span>Yellow</span>
+    <span class="si-chip" data-grp="orr" data-f="RED"><span class="si-dot r"></span>Red</span>
+    <span class="si-chip-sep"></span>
+    <span class="si-chip-label">Risk</span>
+    <span class="si-chip" data-grp="risk" data-f="High">High</span>
+    <span class="si-chip" data-grp="risk" data-f="Med">Medium</span>
+  </div>
+  <div id="si-groups"></div>
+</div>
+<script>
+(function(){
+const DATA=[{"svc": "incentive-service", "owner": "Raj Patel", "squad": "P&P Backend", "tier": "T0", "orr": "GREEN", "risk": "Low", "purpose": "Real-time incentive rules engine — $300M+/yr GP"}, {"svc": "pricing_service", "owner": "Raj Patel", "squad": "P&P Backend", "tier": "T0", "orr": "GREEN", "risk": "Low", "purpose": "Dynamic pricing & RPO platform"}, {"svc": "dynamic_pricing", "owner": "Raj Patel", "squad": "P&P Backend", "tier": "T1", "orr": "GREEN", "risk": "Low", "purpose": "Demand/supply pricing optimization"}, {"svc": "pricing-control-center-jtier", "owner": "Raj Patel", "squad": "P&P Backend", "tier": "T1", "orr": "GREEN", "risk": "Low", "purpose": "PCC backend — pricing rule management"}, {"svc": "pricing-control-center-ui", "owner": "Raj Patel", "squad": "P&P Backend", "tier": "T2", "orr": "GREEN", "risk": "Low", "purpose": "PCC frontend — operator UI"}, {"svc": "badges-service", "owner": "Raj Patel", "squad": "P&P Backend", "tier": "T1", "orr": "GREEN", "risk": "Low", "purpose": "Deal badge classification & display"}, {"svc": "crm-message-service", "owner": "Raj Patel", "squad": "P&P Backend", "tier": "T1", "orr": "GREEN", "risk": "Low", "purpose": "CRM messaging service"}, {"svc": "gdpr", "owner": "Arjun Mehta", "squad": "MC Deliverability", "tier": "T1", "orr": "RED", "risk": "High", "purpose": "GDPR data compliance service"}, {"svc": "badges-trending-calculator", "owner": "Vikram Sharma", "squad": "P&P Data Science", "tier": "T2", "orr": "GREEN", "risk": "Low", "purpose": "Trending badge score calculator"}, {"svc": "ds-pnp-service", "owner": "Vikram Sharma", "squad": "P&P Data Science", "tier": "T1", "orr": "GREEN", "risk": "Low", "purpose": "Data science models & features for Pricing & Promotions"}, {"svc": "rocketman-commercial", "owner": "Arjun Mehta", "squad": "MC Deliverability", "tier": "T0", "orr": "GREEN", "risk": "Low", "purpose": "Email delivery — 130M+ emails/day"}, {"svc": "mta", "owner": "Arjun Mehta", "squad": "MC Deliverability", "tier": "T0", "orr": "GREEN", "risk": "Low", "purpose": "Mail Transfer Agent — 64% cost reduction on GCP"}, {"svc": "mailman", "owner": "Arjun Mehta", "squad": "MC Deliverability", "tier": "T1", "orr": "GREEN", "risk": "Low", "purpose": "Email campaign orchestration"}, {"svc": "dmarc", "owner": "Arjun Mehta", "squad": "MC Deliverability", "tier": "T2", "orr": "GREEN", "risk": "Low", "purpose": "Email DMARC compliance"}, {"svc": "gaurun", "owner": "Arjun Mehta", "squad": "MC Deliverability", "tier": "T2", "orr": "GREEN", "risk": "Low", "purpose": "Go push notification gateway"}, {"svc": "gss-cerebro-job-cloud", "owner": "Arjun Mehta", "squad": "MC Deliverability", "tier": "T1", "orr": "RED", "risk": "High", "purpose": "Subscription cerebro batch jobs"}, {"svc": "global_subscription_service", "owner": "Arjun Mehta", "squad": "MC Deliverability", "tier": "T0", "orr": "GREEN", "risk": "Low", "purpose": "Global subscription platform — Groupon+"}, {"svc": "sub_center", "owner": "Arjun Mehta", "squad": "MC Deliverability", "tier": "T1", "orr": "GREEN", "risk": "Low", "purpose": "Subscription management center"}, {"svc": "subscription-flow", "owner": "Arjun Mehta", "squad": "MC Deliverability", "tier": "T1", "orr": "GREEN", "risk": "Low", "purpose": "Subscription checkout flow"}, {"svc": "subscription-programs-app", "owner": "Arjun Mehta", "squad": "MC Deliverability", "tier": "T2", "orr": "GREEN", "risk": "Low", "purpose": "Subscription programs frontend"}, {"svc": "subscription-programs-itier", "owner": "Arjun Mehta", "squad": "MC Deliverability", "tier": "T2", "orr": "GREEN", "risk": "Low", "purpose": "Subscription programs backend"}, {"svc": "consumer-location-svc-pipeline", "owner": "Arjun Mehta", "squad": "MC Deliverability", "tier": "T2", "orr": "GREEN", "risk": "Low", "purpose": "Consumer location data pipeline"}, {"svc": "email_campaign_management", "owner": "Kenji Nakamura", "squad": "MC Promotional", "tier": "T1", "orr": "GREEN", "risk": "Low", "purpose": "Campaign management platform"}, {"svc": "emailsearch", "owner": "Kenji Nakamura", "squad": "MC Promotional", "tier": "T2", "orr": "GREEN", "risk": "Low", "purpose": "Email search & dataloader"}, {"svc": "ams", "owner": "Kenji Nakamura", "squad": "MC Promotional", "tier": "T2", "orr": "GREEN", "risk": "Low", "purpose": "Audience management system"}, {"svc": "audience-data-workflows", "owner": "Kenji Nakamura", "squad": "MC Promotional", "tier": "T2", "orr": "GREEN", "risk": "Low", "purpose": "Audience data pipeline"}, {"svc": "inbox_management_platform", "owner": "Kenji Nakamura", "squad": "MC Promotional", "tier": "T1", "orr": "GREEN", "risk": "Low", "purpose": "Push inbox management"}, {"svc": "arbitration-service", "owner": "Kenji Nakamura", "squad": "MC Promotional", "tier": "T1", "orr": "GREEN", "risk": "Low", "purpose": "Push arbitration & frequency capping"}, {"svc": "regla", "owner": "Kenji Nakamura", "squad": "MC Promotional", "tier": "T2", "orr": "GREEN", "risk": "Low", "purpose": "Push rule engine"}, {"svc": "push-client-proxy", "owner": "Kenji Nakamura", "squad": "MC Promotional", "tier": "T1", "orr": "GREEN", "risk": "Low", "purpose": "Push delivery proxy"}, {"svc": "cas-data-pipelines", "owner": "Kenji Nakamura", "squad": "MC Promotional", "tier": "T2", "orr": "GREEN", "risk": "Low", "purpose": "Campaign attribution & scoring pipeline"}, {"svc": "proximity_notifications", "owner": "Kenji Nakamura", "squad": "MC Promotional", "tier": "T2", "orr": "GREEN", "risk": "Low", "purpose": "Geo-targeted push notifications"}, {"svc": "deal_assignment_file_service", "owner": "Kenji Nakamura", "squad": "MC Promotional", "tier": "T2", "orr": "GREEN", "risk": "Low", "purpose": "Deal assignment for push campaigns"}, {"svc": "pmp-core-data-pipeline", "owner": "Kenji Nakamura", "squad": "MC Promotional", "tier": "T2", "orr": "GREEN", "risk": "Low", "purpose": "PMP core data pipeline"}, {"svc": "pmp-datasync", "owner": "Kenji Nakamura", "squad": "MC Promotional", "tier": "T2", "orr": "GREEN", "risk": "Low", "purpose": "PMP data sync service"}, {"svc": "cm-performance-spark", "owner": "Kenji Nakamura", "squad": "MC Promotional", "tier": "T2", "orr": "GREEN", "risk": "Low", "purpose": "Campaign performance Spark jobs"}, {"svc": "targeted-deal-message", "owner": "Kenji Nakamura", "squad": "MC Promotional", "tier": "T2", "orr": "GREEN", "risk": "Low", "purpose": "Targeted deal message delivery"}, {"svc": "groupon-plus-service", "owner": "Ravi Krishnan", "squad": "Coupons", "tier": "T0", "orr": "GREEN", "risk": "Low", "purpose": "Groupon+ subscription core service"}, {"svc": "cashback-service", "owner": "Ravi Krishnan", "squad": "Coupons", "tier": "T1", "orr": "GREEN", "risk": "Low", "purpose": "Cashback reward processing & ledger"}, {"svc": "loyalty-wallet", "owner": "Ravi Krishnan", "squad": "Coupons", "tier": "T1", "orr": "YELLOW", "risk": "Med", "purpose": "User loyalty wallet & balance management"}, {"svc": "rewards-engine", "owner": "Ravi Krishnan", "squad": "Coupons", "tier": "T1", "orr": "GREEN", "risk": "Low", "purpose": "Rule-based reward calculation engine"}, {"svc": "referral-service", "owner": "Ravi Krishnan", "squad": "Coupons", "tier": "T2", "orr": "GREEN", "risk": "Low", "purpose": "User referral program management"}, {"svc": "gamification-service", "owner": "Ravi Krishnan", "squad": "Coupons", "tier": "T2", "orr": "GREEN", "risk": "Low", "purpose": "Gamification & milestone tracking"}, {"svc": "points-ledger", "owner": "Ravi Krishnan", "squad": "Coupons", "tier": "T1", "orr": "GREEN", "risk": "Low", "purpose": "Points accrual & redemption ledger"}, {"svc": "tier-management-service", "owner": "Ravi Krishnan", "squad": "Coupons", "tier": "T2", "orr": "GREEN", "risk": "Low", "purpose": "Customer tier classification & transitions"}, {"svc": "loyalty-analytics-pipeline", "owner": "Ravi Krishnan", "squad": "Coupons", "tier": "T2", "orr": "GREEN", "risk": "Low", "purpose": "Loyalty data analytics & reporting pipeline"}, {"svc": "bundled-deals-service", "owner": "Ravi Krishnan", "squad": "Coupons", "tier": "T1", "orr": "GREEN", "risk": "Low", "purpose": "Bundled discount orchestration"}, {"svc": "expiry-notification-svc", "owner": "Ravi Krishnan", "squad": "Coupons", "tier": "T2", "orr": "YELLOW", "risk": "Med", "purpose": "Reward expiry notification service"}, {"svc": "voucher-service", "owner": "Ravi Krishnan", "squad": "Coupons", "tier": "T0", "orr": "GREEN", "risk": "Low", "purpose": "VoucherCloud/Coupons core platform"}, {"svc": "coupon-validation-svc", "owner": "Ravi Krishnan", "squad": "Coupons", "tier": "T1", "orr": "GREEN", "risk": "Low", "purpose": "Real-time coupon validation API"}, {"svc": "category-reward-rules", "owner": "Ravi Krishnan", "squad": "Coupons", "tier": "T2", "orr": "GREEN", "risk": "Low", "purpose": "Category-based reward rule configuration"}, {"svc": "affiliate-service", "owner": "Danny Chen", "squad": "External Marketing", "tier": "T1", "orr": "GREEN", "risk": "Low", "purpose": "Commission Junction & affiliate network integration"}, {"svc": "google-ads-integration", "owner": "Danny Chen", "squad": "External Marketing", "tier": "T1", "orr": "GREEN", "risk": "Low", "purpose": "Google Ads API — 24% total GP via paid channel"}, {"svc": "facebook-ads-integration", "owner": "Danny Chen", "squad": "External Marketing", "tier": "T1", "orr": "YELLOW", "risk": "Med", "purpose": "Meta Ads integration — retargeting & prospecting"}, {"svc": "microsoft-ads-svc", "owner": "Danny Chen", "squad": "External Marketing", "tier": "T2", "orr": "GREEN", "risk": "Low", "purpose": "Microsoft/Bing Ads API integration"}, {"svc": "bid-management-service", "owner": "Danny Chen", "squad": "External Marketing", "tier": "T1", "orr": "GREEN", "risk": "Low", "purpose": "Automated bid strategy & budget management"}, {"svc": "attribution-service", "owner": "Danny Chen", "squad": "External Marketing", "tier": "T1", "orr": "GREEN", "risk": "Low", "purpose": "Multi-touch attribution — paid channel ROI"}, {"svc": "conversion-tracking-svc", "owner": "Danny Chen", "squad": "External Marketing", "tier": "T1", "orr": "GREEN", "risk": "Low", "purpose": "Conversion pixel management & event tracking"}, {"svc": "audience-sync-service", "owner": "Danny Chen", "squad": "External Marketing", "tier": "T2", "orr": "GREEN", "risk": "Low", "purpose": "Audience segment sync to ad platforms"}, {"svc": "creative-management-svc", "owner": "Danny Chen", "squad": "External Marketing", "tier": "T2", "orr": "GREEN", "risk": "Low", "purpose": "Ad creative versioning & A/B management"}, {"svc": "paid-channel-analytics", "owner": "Danny Chen", "squad": "External Marketing", "tier": "T2", "orr": "RED", "risk": "High", "purpose": "Paid channel performance reporting pipeline"}, {"svc": "affiliate-fraud-detection", "owner": "Danny Chen", "squad": "External Marketing", "tier": "T1", "orr": "GREEN", "risk": "Low", "purpose": "Affiliate fraud detection & click validation"}, {"svc": "commission-ledger-svc", "owner": "Danny Chen", "squad": "External Marketing", "tier": "T1", "orr": "GREEN", "risk": "Low", "purpose": "Affiliate commission calculation & payout"}, {"svc": "aog-ranking-service", "owner": "Priya Kumar", "squad": "Ads & Sponsored", "tier": "T0", "orr": "GREEN", "risk": "Low", "purpose": "Merchant placement ranking engine — $9M+ annual GP"}, {"svc": "rokt-integration", "owner": "Priya Kumar", "squad": "Ads & Sponsored", "tier": "T1", "orr": "GREEN", "risk": "Low", "purpose": "ROKT post-purchase ad integration"}, {"svc": "freestar-integration", "owner": "Priya Kumar", "squad": "Ads & Sponsored", "tier": "T1", "orr": "GREEN", "risk": "Low", "purpose": "Freestar display ad monetization"}, {"svc": "merchant-placement-svc", "owner": "Priya Kumar", "squad": "Ads & Sponsored", "tier": "T1", "orr": "GREEN", "risk": "Low", "purpose": "Sponsored merchant placement API"}, {"svc": "sponsored-search-service", "owner": "Priya Kumar", "squad": "Ads & Sponsored", "tier": "T0", "orr": "YELLOW", "risk": "Med", "purpose": "Sponsored search result ranking & serving"}, {"svc": "ads-config-service", "owner": "Priya Kumar", "squad": "Ads & Sponsored", "tier": "T2", "orr": "GREEN", "risk": "Low", "purpose": "Ads configuration & feature flag management"}, {"svc": "impression-tracking-svc", "owner": "Priya Kumar", "squad": "Ads & Sponsored", "tier": "T1", "orr": "GREEN", "risk": "Low", "purpose": "Ad impression & click tracking pipeline"}, {"svc": "revenue-share-calculator", "owner": "Priya Kumar", "squad": "Ads & Sponsored", "tier": "T2", "orr": "GREEN", "risk": "Low", "purpose": "Ads & Sponsored revenue share computation service"}, {"svc": "browse-ads-service", "owner": "Priya Kumar", "squad": "Ads & Sponsored", "tier": "T1", "orr": "GREEN", "risk": "Low", "purpose": "Browse page sponsored listing integration"}];
+let groupBy='tier',orrFilter='ALL',riskFilter=null,q='',sortKey=null,sortDir=1;
+const TIER_LABEL={T0:'Tier-0 · Critical',T1:'Tier-1 · Important',T2:'Tier-2 · Standard'};
+const TIER_RAIL={T0:'#f87171',T1:'#f59e0b',T2:'#8b90a0'};
+const TIER_ORDER={T0:0,T1:1,T2:2};
+function squadClass(s){if(s.indexOf('MC')===0)return'si-squad-MC';if(s.indexOf('Coupons')===0)return'si-squad-Coupons';if(s.indexOf('External')===0)return'si-squad-External';if(s.indexOf('Ads')===0)return'si-squad-AoG';return'';}
+function squadRail(s){if(s.indexOf('MC')===0)return'#a78bfa';if(s.indexOf('Coupons')===0)return'#6c8cff';if(s.indexOf('External')===0)return'#34d399';if(s.indexOf('Ads')===0)return'#fbbf24';return'#f59e0b';}
+function $(id){return document.getElementById(id);}
+function filtered(){return DATA.filter(function(d){if(orrFilter!=='ALL'&&d.orr!==orrFilter)return false;if(riskFilter&&d.risk!==riskFilter)return false;if(q&&!(d.svc.toLowerCase().indexOf(q)>=0||d.owner.toLowerCase().indexOf(q)>=0||d.purpose.toLowerCase().indexOf(q)>=0))return false;return true;});}
+function renderStats(){var all=DATA,t={T0:0,T1:0,T2:0},o={GREEN:0,YELLOW:0,RED:0},high=0;all.forEach(function(d){t[d.tier]++;o[d.orr]++;if(d.risk==='High')high++;});
+$('si-statstrip').innerHTML=
+'<div class="si-stat"><div class="n">'+all.length+'</div><div class="l">Services</div></div>'+
+'<div class="si-stat t0"><div class="n">'+t.T0+'</div><div class="l">Tier-0</div></div>'+
+'<div class="si-stat t1"><div class="n">'+t.T1+'</div><div class="l">Tier-1</div></div>'+
+'<div class="si-stat t2"><div class="n">'+t.T2+'</div><div class="l">Tier-2</div></div>'+
+'<div class="si-stat"><div class="n" style="font-size:18px;display:flex;gap:12px"><span><span class="si-dot g"></span>'+o.GREEN+'</span><span><span class="si-dot y"></span>'+o.YELLOW+'</span><span><span class="si-dot r"></span>'+o.RED+'</span></div><div class="l">ORR Health</div></div>'+
+'<div class="si-stat"><div class="n" style="color:#f87171">'+high+'</div><div class="l">High Risk</div></div>';}
+function row(d){var flag=(d.orr==='RED'||d.risk==='High')?' flag-red':'';
+return '<tr class="svc'+flag+'"><td><span class="si-svc-name">'+d.svc+'</span></td><td class="si-muted">'+d.owner+'</td><td><span class="si-squad-badge '+squadClass(d.squad)+'">'+d.squad+'</span></td><td><span class="si-tier-badge si-tier-'+d.tier+'">'+d.tier+'</span></td><td><span class="si-orr si-orr-'+d.orr+'">'+d.orr+'</span></td><td><span class="si-risk-'+d.risk+'">'+d.risk+'</span></td><td class="si-purpose">'+d.purpose+'</td></tr>';}
+var COLS=[['svc','Service'],['owner','Owner'],['squad','Team'],['tier','Tier'],['orr','ORR'],['risk','Risk'],['purpose','Business Purpose']];
+function thead(){return '<thead><tr>'+COLS.map(function(c){return '<th data-k="'+c[0]+'" class="'+(sortKey===c[0]?'sorted':'')+'">'+c[1]+'<span class="arr">'+(sortKey===c[0]?(sortDir>0?'▲':'▼'):'↕')+'</span></th>';}).join('')+'</tr></thead>';}
+function sortRows(rows){if(!sortKey)return rows;var ord={T0:0,T1:1,T2:2,GREEN:0,YELLOW:1,RED:2,Low:0,Med:1,High:2};return rows.slice().sort(function(a,b){var x=a[sortKey],y=b[sortKey];if(sortKey==='tier'||sortKey==='orr'||sortKey==='risk'){x=ord[x];y=ord[y];}else{x=(''+x).toLowerCase();y=(''+y).toLowerCase();}return (x<y?-1:x>y?1:0)*sortDir;});}
+function render(){var rows=filtered();$('si-count').textContent=rows.length+' of '+DATA.length+' shown';var key=groupBy==='tier'?'tier':'squad';var groups={};rows.forEach(function(d){(groups[d[key]]=groups[d[key]]||[]).push(d);});var keys=Object.keys(groups);keys.sort(function(a,b){return groupBy==='tier'?TIER_ORDER[a]-TIER_ORDER[b]:groups[b].length-groups[a].length;});var host=$('si-groups');if(!rows.length){host.innerHTML='<div class="si-empty">No services match the current filters.</div>';return;}
+host.innerHTML=keys.map(function(k,i){var items=sortRows(groups[k]);var g=items.filter(function(d){return d.orr==='GREEN';}).length,y=items.filter(function(d){return d.orr==='YELLOW';}).length,r=items.filter(function(d){return d.orr==='RED';}).length;var rail=groupBy==='tier'?TIER_RAIL[k]:squadRail(k);var name=groupBy==='tier'?(TIER_LABEL[k]||k):k;var open=(i===0||q||orrFilter!=='ALL'||riskFilter)?' open':'';
+return '<div class="si-group'+open+'"><div class="si-group-head" onclick="this.parentNode.classList.toggle(\'open\')"><span class="si-caret">▶</span><span class="si-group-rail" style="background:'+rail+'"></span><span class="si-group-name">'+name+'</span><span class="si-group-sub">· '+items.length+' service'+(items.length>1?'s':'')+'</span><span class="si-group-health"><span><span class="si-dot g"></span>'+g+'</span><span><span class="si-dot y"></span>'+y+'</span><span><span class="si-dot r"></span>'+r+'</span></span></div><div class="si-group-body"><table class="si-tbl">'+thead()+'<tbody>'+items.map(row).join('')+'</tbody></table></div></div>';}).join('');
+host.querySelectorAll('.si-tbl th').forEach(function(th){th.onclick=function(e){e.stopPropagation();var k=th.dataset.k;if(sortKey===k)sortDir*=-1;else{sortKey=k;sortDir=1;}render();};});}
+$('si-toggle').onclick=function(e){var b=e.target.closest('button');if(!b)return;groupBy=b.dataset.g;Array.prototype.forEach.call(e.currentTarget.children,function(x){x.classList.toggle('on',x===b);});render();};
+$('si-search').oninput=function(e){q=e.target.value.trim().toLowerCase();render();};
+$('si-chips').onclick=function(e){var c=e.target.closest('.si-chip');if(!c)return;var grp=c.dataset.grp,f=c.dataset.f;if(grp==='orr'){orrFilter=f;document.querySelectorAll('.si-chip[data-grp=orr]').forEach(function(x){x.classList.toggle('on',x===c);});}else{riskFilter=riskFilter===f?null:f;document.querySelectorAll('.si-chip[data-grp=risk]').forEach(function(x){x.classList.toggle('on',x.dataset.f===riskFilter);});}render();};
+$('si-expand').onclick=function(e){var gs=document.querySelectorAll('.si-group');var anyClosed=Array.prototype.some.call(gs,function(g){return !g.classList.contains('open');});gs.forEach(function(g){g.classList.toggle('open',anyClosed);});e.target.textContent=anyClosed?'Collapse all':'Expand all';};
+$('si-csv').onclick=function(){var rows=filtered();var head=['Service','Owner','Team','Tier','ORR','Risk','Business Purpose'];var esc=function(s){return '"'+(''+s).replace(/"/g,'""')+'"';};var csv=[head.join(',')].concat(rows.map(function(d){return [d.svc,d.owner,d.squad,d.tier,d.orr,d.risk,d.purpose].map(esc).join(',');})).join('\n');var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='service-inventory.csv';a.click();};
+renderStats();render();
+})();
+</script>
+</section>
+<section id="s04">
+<h2>Reliability Intelligence</h2>
+<div class="card-grid-2">
+  <div class="card"><h3>Service Availability by Squad (%)</h3><div class="chart-wrap"><canvas id="cAvail"></canvas></div></div>
+  <div class="card"><h3>Incident Trend (Last 6 Months)</h3><div class="chart-wrap"><canvas id="cInc"></canvas></div></div>
+</div>
+<div class="card-grid-3">
+  <div class="card" style="border-left:3px solid #34d399">
+    <h3 style="color:#34d399">Top 5 Healthiest Services</h3><div style="padding:6px 0;border-bottom:1px solid #1a2030;font-size:12px;color:#34d399;font-weight:500">&#10003; incentive-service <span style="color:#8b90a0;font-weight:400">(P&P Backend)</span></div><div style="padding:6px 0;border-bottom:1px solid #1a2030;font-size:12px;color:#34d399;font-weight:500">&#10003; mta <span style="color:#8b90a0;font-weight:400">(MC Deliverability)</span></div><div style="padding:6px 0;border-bottom:1px solid #1a2030;font-size:12px;color:#34d399;font-weight:500">&#10003; groupon-plus-service <span style="color:#8b90a0;font-weight:400">(Coupons)</span></div><div style="padding:6px 0;border-bottom:1px solid #1a2030;font-size:12px;color:#34d399;font-weight:500">&#10003; aog-ranking-service <span style="color:#8b90a0;font-weight:400">(Ads &amp; Sponsored)</span></div><div style="padding:6px 0;border-bottom:1px solid #1a2030;font-size:12px;color:#34d399;font-weight:500">&#10003; google-ads-integration <span style="color:#8b90a0;font-weight:400">(External Marketing)</span></div>  </div>
+  <div class="card" style="border-left:3px solid #f87171">
+    <h3 style="color:#f87171">Services Requiring Attention</h3><div style="padding:6px 0;border-bottom:1px solid #1a2030;font-size:12px;color:#f87171;font-weight:500">&#9888; gdpr <span style="color:#8b90a0;font-weight:400">(MC Deliverability)</span></div><div style="padding:6px 0;border-bottom:1px solid #1a2030;font-size:12px;color:#f87171;font-weight:500">&#9888; gss-cerebro-job-cloud <span style="color:#8b90a0;font-weight:400">(MC Deliverability)</span></div><div style="padding:6px 0;border-bottom:1px solid #1a2030;font-size:12px;color:#fbbf24;font-weight:500">&#9679; loyalty-wallet <span style="color:#8b90a0;font-weight:400">(Coupons)</span></div><div style="padding:6px 0;border-bottom:1px solid #1a2030;font-size:12px;color:#fbbf24;font-weight:500">&#9679; expiry-notification-svc <span style="color:#8b90a0;font-weight:400">(Coupons)</span></div><div style="padding:6px 0;border-bottom:1px solid #1a2030;font-size:12px;color:#fbbf24;font-weight:500">&#9679; facebook-ads-integration <span style="color:#8b90a0;font-weight:400">(External Marketing)</span></div><div style="padding:6px 0;border-bottom:1px solid #1a2030;font-size:12px;color:#f87171;font-weight:500">&#9888; paid-channel-analytics <span style="color:#8b90a0;font-weight:400">(External Marketing)</span></div><div style="padding:6px 0;border-bottom:1px solid #1a2030;font-size:12px;color:#fbbf24;font-weight:500">&#9679; sponsored-search-service <span style="color:#8b90a0;font-weight:400">(Ads &amp; Sponsored)</span></div>  </div>
+  <div class="card">
+    <h3>MTTR Estimates by Tier</h3>
+    <table><tbody>
+      <tr><td style="color:#f87171;font-weight:600">Tier-0</td><td style="color:#e1e4ea">15–30 min</td><td style="color:#34d399;font-size:11px">24/7 on-call</td></tr>
+      <tr><td style="color:#fbbf24;font-weight:600">Tier-1</td><td style="color:#e1e4ea">1–4 hrs</td><td style="color:#fbbf24;font-size:11px">Business hours</td></tr>
+      <tr><td style="color:#8b90a0;font-weight:600">Tier-2</td><td style="color:#e1e4ea">4–24 hrs</td><td style="color:#8b90a0;font-size:11px">Next business day</td></tr>
+    </tbody></table>
+    <div style="margin-top:12px">
+      <div style="font-size:11px;color:#8b90a0;margin-bottom:4px">Pager volume reduction (18 months)</div>
+      <div style="font-size:20px;font-weight:700;color:#34d399">-63%</div>
+      <div style="font-size:11px;color:#4a6080">via ORR improvements &amp; alert hygiene</div>
+    </div>
+  </div>
+</div>
+</section>
+<section id="s05">
+<h2>Cost Intelligence</h2>
+<div class="kpi-grid" style="grid-template-columns:repeat(4,1fr)">
+  <div class="kpi-card orange"><div class="val">$324K</div><div class="lbl">Monthly Spend</div></div>
+  <div class="kpi-card green"><div class="val">$3.9M</div><div class="lbl">Annualised</div></div>
+  <div class="kpi-card green"><div class="val">-22%</div><div class="lbl">YoY Reduction</div></div>
+  <div class="kpi-card"><div class="val">$9M+</div><div class="lbl">Saved via AWS→GCP</div></div>
+</div>
+<div class="card-grid-2">
+  <div class="card"><h3>Monthly Spend Trend (Last 6 Months)</h3><div class="chart-wrap"><canvas id="cCostTrend"></canvas></div></div>
+  <div class="card"><h3>Top 10 Services by Cost ($K/mo)</h3><div class="chart-wrap"><canvas id="cTopCost"></canvas></div></div>
+</div>
+<div class="card-grid-2">
+  <div class="card"><h3>Cost Optimization Opportunities</h3>
+    <table><thead><tr><th>Service</th><th>Current</th><th>Opportunity</th><th>Est. Savings</th></tr></thead><tbody>
+      <tr><td style="color:#e1e4ea">emailsearch cluster</td><td>$12K/mo</td><td style="color:#8b90a0">Rightsize ES nodes</td><td style="color:#34d399">$3.5K/mo</td></tr>
+      <tr><td style="color:#e1e4ea">Legacy audience pipelines</td><td>$11K/mo</td><td style="color:#8b90a0">Consolidate to unified DAG</td><td style="color:#34d399">$4K/mo</td></tr>
+      <tr><td style="color:#e1e4ea">Push notification infra</td><td>$44K/mo</td><td style="color:#8b90a0">Multi-region consolidation</td><td style="color:#34d399">$6K/mo</td></tr>
+      <tr><td style="color:#e1e4ea">Paid channel analytics</td><td>$24K/mo</td><td style="color:#8b90a0">Spark→BigQuery migration</td><td style="color:#34d399">$8K/mo</td></tr>
+      <tr><td style="color:#e1e4ea">Dev/test environments</td><td>$18K/mo</td><td style="color:#8b90a0">Ephemeral env automation</td><td style="color:#34d399">$9K/mo</td></tr>
+    </tbody></table>
+  </div>
+  <div class="card">
+    <h3>Cost Achievements vs Pipeline</h3>
+    <div style="margin-bottom:12px">
+      <div style="font-size:11px;color:#8b90a0;margin-bottom:4px">Achieved (last 2 years)</div>
+      <div style="font-size:22px;font-weight:700;color:#34d399">$10.6M/yr</div>
+      <div style="font-size:11px;color:#4a6080">MTA $450K + AWS→GCP $9M + Medallion $1.1M</div>
+    </div>
+    <div>
+      <div style="font-size:11px;color:#8b90a0;margin-bottom:4px">Identified pipeline (next 12 months)</div>
+      <div style="font-size:22px;font-weight:700;color:#fbbf24">$365K/yr</div>
+      <div style="font-size:11px;color:#4a6080">5 opportunities above at full capture</div>
+    </div>
+  </div>
+</div>
+</section>
+<section id="s06">
+<h2>Engineering Capacity Intelligence</h2>
+<div class="card">
+  <div class="card"><h3>Bus Factor Analysis</h3>
+    <p style="font-size:12px;color:#8b90a0;margin-bottom:12px">Services with &le;1 primary active contributor in last 3 weeks:</p><div style="padding:7px 10px;background:#0f1521;border-radius:6px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:12px;color:#e1e4ea">incentive-service</span><span style="font-size:10px;background:rgba(248,113,113,.15);color:#f87171;padding:2px 7px;border-radius:3px;font-weight:600">BUS FACTOR 1</span></div><div style="padding:7px 10px;background:#0f1521;border-radius:6px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:12px;color:#e1e4ea">pricing_service</span><span style="font-size:10px;background:rgba(248,113,113,.15);color:#f87171;padding:2px 7px;border-radius:3px;font-weight:600">BUS FACTOR 1</span></div><div style="padding:7px 10px;background:#0f1521;border-radius:6px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:12px;color:#e1e4ea">mta</span><span style="font-size:10px;background:rgba(248,113,113,.15);color:#f87171;padding:2px 7px;border-radius:3px;font-weight:600">BUS FACTOR 1</span></div><div style="padding:7px 10px;background:#0f1521;border-radius:6px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:12px;color:#e1e4ea">voucher-service</span><span style="font-size:10px;background:rgba(248,113,113,.15);color:#f87171;padding:2px 7px;border-radius:3px;font-weight:600">BUS FACTOR 1</span></div><div style="padding:7px 10px;background:#0f1521;border-radius:6px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:12px;color:#e1e4ea">aog-ranking-service</span><span style="font-size:10px;background:rgba(248,113,113,.15);color:#f87171;padding:2px 7px;border-radius:3px;font-weight:600">BUS FACTOR 1</span></div><div style="padding:7px 10px;background:#0f1521;border-radius:6px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:12px;color:#e1e4ea">gdpr</span><span style="font-size:10px;background:rgba(248,113,113,.15);color:#f87171;padding:2px 7px;border-radius:3px;font-weight:600">BUS FACTOR 1</span></div>  </div></div>
+</section>
+<section id="s07">
+<h2>Strategic Initiative Dashboard</h2>
+<div class="card">
+  <table><thead><tr><th>Initiative</th><th>Squad</th><th>Status</th><th>Confidence</th><th>Due</th><th>Risk</th><th>GP / Impact</th></tr></thead>
+    <tbody><tr><td style="font-weight:600;color:#e1e4ea;font-size:12px">Purple Price Global Expansion</td><td><span style="background:rgba(245,158,11,.12);color:#f59e0b;font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px">P&P Backend</span></td><td><span style="color:#f59e0b;font-size:11px;font-weight:600">In Progress</span></td><td><div style="display:flex;align-items:center;gap:6px"><div style="width:50px;background:#22262f;border-radius:3px;height:6px"><div style="width:85%;height:6px;background:#34d399;border-radius:3px"></div></div><span style="font-size:11px;color:#34d399">85%</span></div></td><td style="font-size:11px;color:#8b90a0">Q4 2026</td><td style="color:#34d399;font-size:11px;font-weight:600">Low</td><td style="font-size:11px;color:#34d399;font-weight:600">$38M+/yr</td></tr>
+<tr><td style="font-weight:600;color:#e1e4ea;font-size:12px">ILS Automation NA & INTL</td><td><span style="background:rgba(245,158,11,.12);color:#f59e0b;font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px">P&P Backend</span></td><td><span style="color:#f59e0b;font-size:11px;font-weight:600">In Progress</span></td><td><div style="display:flex;align-items:center;gap:6px"><div style="width:50px;background:#22262f;border-radius:3px;height:6px"><div style="width:78%;height:6px;background:#fbbf24;border-radius:3px"></div></div><span style="font-size:11px;color:#fbbf24">78%</span></div></td><td style="font-size:11px;color:#8b90a0">Q4 2026</td><td style="color:#fbbf24;font-size:11px;font-weight:600">Med</td><td style="font-size:11px;color:#34d399;font-weight:600">$1.5M+</td></tr>
+<tr><td style="font-weight:600;color:#e1e4ea;font-size:12px">Closed Promotions Deprecation</td><td><span style="background:rgba(245,158,11,.12);color:#f59e0b;font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px">P&P Backend</span></td><td><span style="color:#34d399;font-size:11px;font-weight:600">Completed</span></td><td><div style="display:flex;align-items:center;gap:6px"><div style="width:50px;background:#22262f;border-radius:3px;height:6px"><div style="width:100%;height:6px;background:#34d399;border-radius:3px"></div></div><span style="font-size:11px;color:#34d399">100%</span></div></td><td style="font-size:11px;color:#8b90a0">Q2 2026</td><td style="color:#34d399;font-size:11px;font-weight:600">None</td><td style="font-size:11px;color:#34d399;font-weight:600">$13.4M/yr</td></tr>
+<tr><td style="font-weight:600;color:#e1e4ea;font-size:12px">AI Email Personalization</td><td><span style="background:rgba(245,158,11,.12);color:#f59e0b;font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px">P&P Backend</span></td><td><span style="color:#f59e0b;font-size:11px;font-weight:600">In Progress</span></td><td><div style="display:flex;align-items:center;gap:6px"><div style="width:50px;background:#22262f;border-radius:3px;height:6px"><div style="width:72%;height:6px;background:#fbbf24;border-radius:3px"></div></div><span style="font-size:11px;color:#fbbf24">72%</span></div></td><td style="font-size:11px;color:#8b90a0">Q1 2027</td><td style="color:#fbbf24;font-size:11px;font-weight:600">Med</td><td style="font-size:11px;color:#34d399;font-weight:600">$4.7M/yr</td></tr>
+<tr><td style="font-weight:600;color:#e1e4ea;font-size:12px">MCP Platform (Claude)</td><td><span style="background:rgba(245,158,11,.12);color:#f59e0b;font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px">P&P Backend</span></td><td><span style="color:#f59e0b;font-size:11px;font-weight:600">In Progress</span></td><td><div style="display:flex;align-items:center;gap:6px"><div style="width:50px;background:#22262f;border-radius:3px;height:6px"><div style="width:65%;height:6px;background:#fbbf24;border-radius:3px"></div></div><span style="font-size:11px;color:#fbbf24">65%</span></div></td><td style="font-size:11px;color:#8b90a0">Q1 2027</td><td style="color:#f87171;font-size:11px;font-weight:600">High</td><td style="font-size:11px;color:#34d399;font-weight:600">$5M+</td></tr>
+<tr><td style="font-weight:600;color:#e1e4ea;font-size:12px">Loyalty Programs Scale</td><td><span style="background:rgba(245,158,11,.12);color:#f59e0b;font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px">Coupons</span></td><td><span style="color:#f59e0b;font-size:11px;font-weight:600">In Progress</span></td><td><div style="display:flex;align-items:center;gap:6px"><div style="width:50px;background:#22262f;border-radius:3px;height:6px"><div style="width:80%;height:6px;background:#34d399;border-radius:3px"></div></div><span style="font-size:11px;color:#34d399">80%</span></div></td><td style="font-size:11px;color:#8b90a0">Q4 2026</td><td style="color:#34d399;font-size:11px;font-weight:600">Low</td><td style="font-size:11px;color:#34d399;font-weight:600">+30% sessions</td></tr>
+<tr><td style="font-weight:600;color:#e1e4ea;font-size:12px">Paid Channel ROI Improvement</td><td><span style="background:rgba(245,158,11,.12);color:#f59e0b;font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px">External Marketing</span></td><td><span style="color:#f59e0b;font-size:11px;font-weight:600">In Progress</span></td><td><div style="display:flex;align-items:center;gap:6px"><div style="width:50px;background:#22262f;border-radius:3px;height:6px"><div style="width:70%;height:6px;background:#fbbf24;border-radius:3px"></div></div><span style="font-size:11px;color:#fbbf24">70%</span></div></td><td style="font-size:11px;color:#8b90a0">Q4 2026</td><td style="color:#fbbf24;font-size:11px;font-weight:600">Med</td><td style="font-size:11px;color:#34d399;font-weight:600">12% GP growth</td></tr>
+<tr><td style="font-weight:600;color:#e1e4ea;font-size:12px">Ads &amp; Sponsored Revenue Expansion</td><td><span style="background:rgba(245,158,11,.12);color:#f59e0b;font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px">Ads &amp; Sponsored</span></td><td><span style="color:#f59e0b;font-size:11px;font-weight:600">In Progress</span></td><td><div style="display:flex;align-items:center;gap:6px"><div style="width:50px;background:#22262f;border-radius:3px;height:6px"><div style="width:75%;height:6px;background:#fbbf24;border-radius:3px"></div></div><span style="font-size:11px;color:#fbbf24">75%</span></div></td><td style="font-size:11px;color:#8b90a0">Q4 2026</td><td style="color:#34d399;font-size:11px;font-weight:600">Low</td><td style="font-size:11px;color:#34d399;font-weight:600">$9M+ base</td></tr></tbody>
+  </table>
+</div>
+<div class="card"><h3>Delivery Roadmap (Next 6 Months)</h3>
+  <div style="font-size:11px;color:#8b90a0;margin-bottom:12px">Aug 2026 &mdash; Jan 2027</div>
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px"><div style="width:200px;font-size:11px;color:#8b90a0;text-align:right;flex-shrink:0">Purple Price Global</div><div style="flex:1;position:relative;height:22px;background:#1a1d27;border-radius:4px"><div style="position:absolute;left:0.0%;width:37.5%;height:100%;background:#6c8cff;opacity:.8;border-radius:4px;display:flex;align-items:center;justify-content:center"><span style="font-size:10px;color:#fff;font-weight:600">3m</span></div></div></div>
+<div style="display:flex;align-items:center;gap:12px;margin-bottom:8px"><div style="width:200px;font-size:11px;color:#8b90a0;text-align:right;flex-shrink:0">ILS Automation</div><div style="flex:1;position:relative;height:22px;background:#1a1d27;border-radius:4px"><div style="position:absolute;left:12.5%;width:37.5%;height:100%;background:#34d399;opacity:.8;border-radius:4px;display:flex;align-items:center;justify-content:center"><span style="font-size:10px;color:#fff;font-weight:600">3m</span></div></div></div>
+<div style="display:flex;align-items:center;gap:12px;margin-bottom:8px"><div style="width:200px;font-size:11px;color:#8b90a0;text-align:right;flex-shrink:0">AI Email Personalization</div><div style="flex:1;position:relative;height:22px;background:#1a1d27;border-radius:4px"><div style="position:absolute;left:25.0%;width:50.0%;height:100%;background:#a78bfa;opacity:.8;border-radius:4px;display:flex;align-items:center;justify-content:center"><span style="font-size:10px;color:#fff;font-weight:600">4m</span></div></div></div>
+<div style="display:flex;align-items:center;gap:12px;margin-bottom:8px"><div style="width:200px;font-size:11px;color:#8b90a0;text-align:right;flex-shrink:0">MCP Platform</div><div style="flex:1;position:relative;height:22px;background:#1a1d27;border-radius:4px"><div style="position:absolute;left:37.5%;width:62.5%;height:100%;background:#f59e0b;opacity:.8;border-radius:4px;display:flex;align-items:center;justify-content:center"><span style="font-size:10px;color:#fff;font-weight:600">5m</span></div></div></div>
+<div style="display:flex;align-items:center;gap:12px;margin-bottom:8px"><div style="width:200px;font-size:11px;color:#8b90a0;text-align:right;flex-shrink:0">Loyalty Scale</div><div style="flex:1;position:relative;height:22px;background:#1a1d27;border-radius:4px"><div style="position:absolute;left:12.5%;width:37.5%;height:100%;background:#fb923c;opacity:.8;border-radius:4px;display:flex;align-items:center;justify-content:center"><span style="font-size:10px;color:#fff;font-weight:600">3m</span></div></div></div>
+<div style="display:flex;align-items:center;gap:12px;margin-bottom:8px"><div style="width:200px;font-size:11px;color:#8b90a0;text-align:right;flex-shrink:0">Ads &amp; Sponsored Revenue Expansion</div><div style="flex:1;position:relative;height:22px;background:#1a1d27;border-radius:4px"><div style="position:absolute;left:0.0%;width:50.0%;height:100%;background:#06b6d4;opacity:.8;border-radius:4px;display:flex;align-items:center;justify-content:center"><span style="font-size:10px;color:#fff;font-weight:600">4m</span></div></div></div>
+<div style="display:flex;align-items:center;gap:12px;margin-bottom:8px"><div style="width:200px;font-size:11px;color:#8b90a0;text-align:right;flex-shrink:0">Paid Channel ROI</div><div style="flex:1;position:relative;height:22px;background:#1a1d27;border-radius:4px"><div style="position:absolute;left:25.0%;width:37.5%;height:100%;background:#f87171;opacity:.8;border-radius:4px;display:flex;align-items:center;justify-content:center"><span style="font-size:10px;color:#fff;font-weight:600">3m</span></div></div></div>
+</div>
+</section>
+<section id="s08">
+<h2>Technical Debt Intelligence</h2>
+<div class="card-grid-2">
+  <div class="card">
+    <h3>Debt Score &amp; Upgrade Backlog</h3>
+    <table><thead><tr><th>Service</th><th>Squad</th><th>Debt Score</th><th>Risk</th><th>Issue</th><th>Effort</th></tr></thead>
+      <tbody><tr><td style="font-weight:600;color:#e1e4ea;font-size:12px">gdpr</td><td><span style="background:rgba(245,158,11,.12);color:#f59e0b;font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px">Compliance</span></td><td><div style="display:flex;align-items:center;gap:8px"><div style="width:60px;background:#22262f;border-radius:3px;height:6px"><div style="width:78%;height:100%;background:#f87171;border-radius:3px"></div></div><span style="color:#f87171;font-size:12px;font-weight:600">78</span></div></td><td style="color:#f87171;font-size:11px;font-weight:600">High</td><td style="font-size:11px;color:#8b90a0">Non-compliant ORR — failing regulatory checks</td><td style="font-size:11px;color:#8b90a0">M</td></tr>
+<tr><td style="font-weight:600;color:#e1e4ea;font-size:12px">gss-cerebro-job-cloud</td><td><span style="background:rgba(245,158,11,.12);color:#f59e0b;font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px">Coupons</span></td><td><div style="display:flex;align-items:center;gap:8px"><div style="width:60px;background:#22262f;border-radius:3px;height:6px"><div style="width:72%;height:100%;background:#f87171;border-radius:3px"></div></div><span style="color:#f87171;font-size:12px;font-weight:600">72</span></div></td><td style="color:#f87171;font-size:11px;font-weight:600">High</td><td style="font-size:11px;color:#8b90a0">Batch job infra on legacy scheduler — RED ORR</td><td style="font-size:11px;color:#8b90a0">M</td></tr>
+<tr><td style="font-weight:600;color:#e1e4ea;font-size:12px">loyalty-wallet</td><td><span style="background:rgba(245,158,11,.12);color:#f59e0b;font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px">Coupons</span></td><td><div style="display:flex;align-items:center;gap:8px"><div style="width:60px;background:#22262f;border-radius:3px;height:6px"><div style="width:65%;height:100%;background:#fbbf24;border-radius:3px"></div></div><span style="color:#fbbf24;font-size:12px;font-weight:600">65</span></div></td><td style="color:#fbbf24;font-size:11px;font-weight:600">Med</td><td style="font-size:11px;color:#8b90a0">Eventual consistency gaps in wallet balance</td><td style="font-size:11px;color:#8b90a0">L</td></tr>
+<tr><td style="font-weight:600;color:#e1e4ea;font-size:12px">expiry-notification-svc</td><td><span style="background:rgba(245,158,11,.12);color:#f59e0b;font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px">Coupons</span></td><td><div style="display:flex;align-items:center;gap:8px"><div style="width:60px;background:#22262f;border-radius:3px;height:6px"><div style="width:60%;height:100%;background:#fbbf24;border-radius:3px"></div></div><span style="color:#fbbf24;font-size:12px;font-weight:600">60</span></div></td><td style="color:#fbbf24;font-size:11px;font-weight:600">Med</td><td style="font-size:11px;color:#8b90a0">Reliability issues under load — Yellow ORR</td><td style="font-size:11px;color:#8b90a0">L</td></tr>
+<tr><td style="font-weight:600;color:#e1e4ea;font-size:12px">facebook-ads-integration</td><td><span style="background:rgba(245,158,11,.12);color:#f59e0b;font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px">External Marketing</span></td><td><div style="display:flex;align-items:center;gap:8px"><div style="width:60px;background:#22262f;border-radius:3px;height:6px"><div style="width:58%;height:100%;background:#fbbf24;border-radius:3px"></div></div><span style="color:#fbbf24;font-size:12px;font-weight:600">58</span></div></td><td style="color:#fbbf24;font-size:11px;font-weight:600">Med</td><td style="font-size:11px;color:#8b90a0">Meta API v17 deprecation — migration pending</td><td style="font-size:11px;color:#8b90a0">M</td></tr>
+<tr><td style="font-weight:600;color:#e1e4ea;font-size:12px">paid-channel-analytics</td><td><span style="background:rgba(245,158,11,.12);color:#f59e0b;font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px">External Marketing</span></td><td><div style="display:flex;align-items:center;gap:8px"><div style="width:60px;background:#22262f;border-radius:3px;height:6px"><div style="width:75%;height:100%;background:#f87171;border-radius:3px"></div></div><span style="color:#f87171;font-size:12px;font-weight:600">75</span></div></td><td style="color:#f87171;font-size:11px;font-weight:600">High</td><td style="font-size:11px;color:#8b90a0">Data pipeline failures — RED ORR, missing attribution</td><td style="font-size:11px;color:#8b90a0">H</td></tr>
+<tr><td style="font-weight:600;color:#e1e4ea;font-size:12px">sponsored-search-service</td><td><span style="background:rgba(245,158,11,.12);color:#f59e0b;font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px">Ads &amp; Sponsored</span></td><td><div style="display:flex;align-items:center;gap:8px"><div style="width:60px;background:#22262f;border-radius:3px;height:6px"><div style="width:62%;height:100%;background:#fbbf24;border-radius:3px"></div></div><span style="color:#fbbf24;font-size:12px;font-weight:600">62</span></div></td><td style="color:#fbbf24;font-size:11px;font-weight:600">Med</td><td style="font-size:11px;color:#8b90a0">Ranking latency spikes — Yellow ORR</td><td style="font-size:11px;color:#8b90a0">M</td></tr>
+<tr><td style="font-weight:600;color:#e1e4ea;font-size:12px">gaurun</td><td><span style="background:rgba(245,158,11,.12);color:#f59e0b;font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px">Push</span></td><td><div style="display:flex;align-items:center;gap:8px"><div style="width:60px;background:#22262f;border-radius:3px;height:6px"><div style="width:55%;height:100%;background:#fbbf24;border-radius:3px"></div></div><span style="color:#fbbf24;font-size:12px;font-weight:600">55</span></div></td><td style="color:#34d399;font-size:11px;font-weight:600">Low</td><td style="font-size:11px;color:#8b90a0">Go version 1.18 EOL — needs upgrade</td><td style="font-size:11px;color:#8b90a0">L</td></tr>
+<tr><td style="font-weight:600;color:#e1e4ea;font-size:12px">emailsearch</td><td><span style="background:rgba(245,158,11,.12);color:#f59e0b;font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px">P&P Backend</span></td><td><div style="display:flex;align-items:center;gap:8px"><div style="width:60px;background:#22262f;border-radius:3px;height:6px"><div style="width:48%;height:100%;background:#34d399;border-radius:3px"></div></div><span style="color:#34d399;font-size:12px;font-weight:600">48</span></div></td><td style="color:#34d399;font-size:11px;font-weight:600">Low</td><td style="font-size:11px;color:#8b90a0">Elasticsearch 7.x approaching EOL</td><td style="font-size:11px;color:#8b90a0">L</td></tr>
+<tr><td style="font-weight:600;color:#e1e4ea;font-size:12px">audience-data-workflows</td><td><span style="background:rgba(245,158,11,.12);color:#f59e0b;font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px">CLS/Data</span></td><td><div style="display:flex;align-items:center;gap:8px"><div style="width:60px;background:#22262f;border-radius:3px;height:6px"><div style="width:45%;height:100%;background:#34d399;border-radius:3px"></div></div><span style="color:#34d399;font-size:12px;font-weight:600">45</span></div></td><td style="color:#34d399;font-size:11px;font-weight:600">Low</td><td style="font-size:11px;color:#8b90a0">Airflow 2.x upgrade backlog</td><td style="font-size:11px;color:#8b90a0">M</td></tr></tbody>
+    </table>
+  </div>
+  <div class="card">
+    <h3>Architecture Modernization Status</h3>
+    <div style="margin-bottom:12px">
+      <div style="font-size:11px;color:#8b90a0;margin-bottom:6px">SOA &rarr; Medallion Architecture (Email)</div>
+      <div style="background:#1a2030;border-radius:6px;height:10px;overflow:hidden"><div style="width:85%;height:100%;background:linear-gradient(90deg,#34d399,#f59e0b)"></div></div>
+      <div style="font-size:11px;color:#34d399;margin-top:4px">85% complete &mdash; $1.1M/yr savings</div>
+    </div>
+    <div style="margin-bottom:12px">
+      <div style="font-size:11px;color:#8b90a0;margin-bottom:6px">AWS &rarr; GCP Migration (212 services)</div>
+      <div style="background:#1a2030;border-radius:6px;height:10px;overflow:hidden"><div style="width:100%;height:100%;background:linear-gradient(90deg,#34d399,#34d399)"></div></div>
+      <div style="font-size:11px;color:#34d399;margin-top:4px">100% complete &mdash; $9M/yr savings</div>
+    </div>
+    <div style="margin-bottom:12px">
+      <div style="font-size:11px;color:#8b90a0;margin-bottom:6px">Redis Caching Layer (Pricing Service)</div>
+      <div style="background:#1a2030;border-radius:6px;height:10px;overflow:hidden"><div style="width:100%;height:100%;background:linear-gradient(90deg,#34d399,#34d399)"></div></div>
+      <div style="font-size:11px;color:#34d399;margin-top:4px">100% complete &mdash; 80% latency reduction</div>
+    </div>
+    <div>
+      <div style="font-size:11px;color:#8b90a0;margin-bottom:6px">Meta Ads API v17 Migration</div>
+      <div style="background:#1a2030;border-radius:6px;height:10px;overflow:hidden"><div style="width:20%;height:100%;background:#f87171"></div></div>
+      <div style="font-size:11px;color:#f87171;margin-top:4px">20% complete &mdash; at risk, Q4 deadline</div>
+    </div>
+  </div>
+</div>
+</section>
+<section id="s09">
+<h2>Service Dependency Intelligence</h2>
+<div class="card-grid-2">
+  <div class="card">
+    <h3>Critical Path Services (by downstream fan-out)</h3>
+    <table><thead><tr><th>Service</th><th>Upstream</th><th>Downstream</th><th>SPOF</th></tr></thead>
+      <tbody><tr><td style="font-weight:600;color:#e1e4ea;font-size:12px">incentive-service</td><td style="text-align:center;color:#f59e0b;font-weight:600">3</td><td style="text-align:center;color:#34d399;font-weight:600">12</td><td><span style="background:rgba(248,113,113,.15);color:#f87171;font-size:10px;padding:2px 6px;border-radius:3px;font-weight:600">SPOF</span></td></tr>
+<tr><td style="font-weight:600;color:#e1e4ea;font-size:12px">pricing_service</td><td style="text-align:center;color:#f59e0b;font-weight:600">2</td><td style="text-align:center;color:#34d399;font-weight:600">8</td><td><span style="background:rgba(248,113,113,.15);color:#f87171;font-size:10px;padding:2px 6px;border-radius:3px;font-weight:600">SPOF</span></td></tr>
+<tr><td style="font-weight:600;color:#e1e4ea;font-size:12px">rocketman-commercial</td><td style="text-align:center;color:#f59e0b;font-weight:600">5</td><td style="text-align:center;color:#34d399;font-weight:600">2</td><td><span style="background:rgba(248,113,113,.15);color:#f87171;font-size:10px;padding:2px 6px;border-radius:3px;font-weight:600">SPOF</span></td></tr>
+<tr><td style="font-weight:600;color:#e1e4ea;font-size:12px">mta</td><td style="text-align:center;color:#f59e0b;font-weight:600">3</td><td style="text-align:center;color:#34d399;font-weight:600">1</td><td><span style="background:rgba(248,113,113,.15);color:#f87171;font-size:10px;padding:2px 6px;border-radius:3px;font-weight:600">SPOF</span></td></tr>
+<tr><td style="font-weight:600;color:#e1e4ea;font-size:12px">global_subscription_service</td><td style="text-align:center;color:#f59e0b;font-weight:600">4</td><td style="text-align:center;color:#34d399;font-weight:600">6</td><td><span style="background:rgba(248,113,113,.15);color:#f87171;font-size:10px;padding:2px 6px;border-radius:3px;font-weight:600">SPOF</span></td></tr>
+<tr><td style="font-weight:600;color:#e1e4ea;font-size:12px">aog-ranking-service</td><td style="text-align:center;color:#f59e0b;font-weight:600">3</td><td style="text-align:center;color:#34d399;font-weight:600">4</td><td><span style="color:#8b90a0;font-size:10px">—</span></td></tr>
+<tr><td style="font-weight:600;color:#e1e4ea;font-size:12px">attribution-service</td><td style="text-align:center;color:#f59e0b;font-weight:600">6</td><td style="text-align:center;color:#34d399;font-weight:600">3</td><td><span style="color:#8b90a0;font-size:10px">—</span></td></tr>
+<tr><td style="font-weight:600;color:#e1e4ea;font-size:12px">voucher-service</td><td style="text-align:center;color:#f59e0b;font-weight:600">2</td><td style="text-align:center;color:#34d399;font-weight:600">5</td><td><span style="color:#8b90a0;font-size:10px">—</span></td></tr>
+<tr><td style="font-weight:600;color:#e1e4ea;font-size:12px">rewards-engine</td><td style="text-align:center;color:#f59e0b;font-weight:600">4</td><td style="text-align:center;color:#34d399;font-weight:600">3</td><td><span style="color:#8b90a0;font-size:10px">—</span></td></tr>
+<tr><td style="font-weight:600;color:#e1e4ea;font-size:12px">push-client-proxy</td><td style="text-align:center;color:#f59e0b;font-weight:600">3</td><td style="text-align:center;color:#34d399;font-weight:600">4</td><td><span style="color:#8b90a0;font-size:10px">—</span></td></tr></tbody>
+    </table>
+  </div>
+  <div class="card">
+    <h3>Critical Dependency Chain</h3>
+    <p style="font-size:12px;color:#8b90a0;margin-bottom:16px">Order-confirmation email path (P0 revenue chain):</p>
+    <div style="display:flex;flex-direction:column;gap:4px"><div style="background:#f8717118;border:1px solid #f8717140;border-radius:6px;padding:10px 14px"><div style="font-size:12px;font-weight:600;color:#f87171">incentive-service</div><div style="font-size:11px;color:#8b90a0;margin-top:2px">Applies discount rule</div></div><div style="text-align:center;color:#2e3340;font-size:16px">&darr;</div><div style="background:#fb923c18;border:1px solid #fb923c40;border-radius:6px;padding:10px 14px"><div style="font-size:12px;font-weight:600;color:#fb923c">pricing_service</div><div style="font-size:11px;color:#8b90a0;margin-top:2px">Validates final price</div></div><div style="text-align:center;color:#2e3340;font-size:16px">&darr;</div><div style="background:#fbbf2418;border:1px solid #fbbf2440;border-radius:6px;padding:10px 14px"><div style="font-size:12px;font-weight:600;color:#fbbf24">rocketman-commercial</div><div style="font-size:11px;color:#8b90a0;margin-top:2px">Queues confirmation email</div></div><div style="text-align:center;color:#2e3340;font-size:16px">&darr;</div><div style="background:#34d39918;border:1px solid #34d39940;border-radius:6px;padding:10px 14px"><div style="font-size:12px;font-weight:600;color:#34d399">mta</div><div style="font-size:11px;color:#8b90a0;margin-top:2px">Delivers to consumer inbox</div></div>    </div>
+    <p style="font-size:11px;color:#f87171;margin-top:12px">&#9888; Any failure in this chain = direct GP loss. All 4 are Tier-0 SPOFs.</p>
+  </div>
+</div>
+</section>
+<section id="s10">
+<h2>Operational Excellence Scorecard</h2>
+<div class="card-grid-2">
+  <div class="card"><h3>Portfolio Radar — Overall Score: 78/100</h3><div class="chart-wrap"><canvas id="cOERadar"></canvas></div></div>
+  <div class="card"><h3>Per-Dimension Scores</h3><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><div style="width:120px;font-size:12px;color:#8b90a0">Reliability</div><div style="flex:1;background:#22262f;border-radius:3px;height:8px;overflow:hidden"><div style="width:82%;height:100%;background:#34d399;border-radius:3px"></div></div><span style="font-size:12px;font-weight:600;color:#34d399;width:30px;text-align:right">82</span></div><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><div style="width:120px;font-size:12px;color:#8b90a0">Scalability</div><div style="flex:1;background:#22262f;border-radius:3px;height:8px;overflow:hidden"><div style="width:76%;height:100%;background:#fbbf24;border-radius:3px"></div></div><span style="font-size:12px;font-weight:600;color:#fbbf24;width:30px;text-align:right">76</span></div><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><div style="width:120px;font-size:12px;color:#8b90a0">Observability</div><div style="flex:1;background:#22262f;border-radius:3px;height:8px;overflow:hidden"><div style="width:73%;height:100%;background:#fbbf24;border-radius:3px"></div></div><span style="font-size:12px;font-weight:600;color:#fbbf24;width:30px;text-align:right">73</span></div><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><div style="width:120px;font-size:12px;color:#8b90a0">Cost Efficiency</div><div style="flex:1;background:#22262f;border-radius:3px;height:8px;overflow:hidden"><div style="width:81%;height:100%;background:#34d399;border-radius:3px"></div></div><span style="font-size:12px;font-weight:600;color:#34d399;width:30px;text-align:right">81</span></div><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><div style="width:120px;font-size:12px;color:#8b90a0">Ownership</div><div style="flex:1;background:#22262f;border-radius:3px;height:8px;overflow:hidden"><div style="width:87%;height:100%;background:#34d399;border-radius:3px"></div></div><span style="font-size:12px;font-weight:600;color:#34d399;width:30px;text-align:right">87</span></div><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><div style="width:120px;font-size:12px;color:#8b90a0">Documentation</div><div style="flex:1;background:#22262f;border-radius:3px;height:8px;overflow:hidden"><div style="width:69%;height:100%;background:#fbbf24;border-radius:3px"></div></div><span style="font-size:12px;font-weight:600;color:#fbbf24;width:30px;text-align:right">69</span></div><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><div style="width:120px;font-size:12px;color:#8b90a0">Automation</div><div style="flex:1;background:#22262f;border-radius:3px;height:8px;overflow:hidden"><div style="width:74%;height:100%;background:#fbbf24;border-radius:3px"></div></div><span style="font-size:12px;font-weight:600;color:#fbbf24;width:30px;text-align:right">74</span></div><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><div style="width:120px;font-size:12px;color:#8b90a0">Security</div><div style="flex:1;background:#22262f;border-radius:3px;height:8px;overflow:hidden"><div style="width:79%;height:100%;background:#fbbf24;border-radius:3px"></div></div><span style="font-size:12px;font-weight:600;color:#fbbf24;width:30px;text-align:right">79</span></div>  </div>
+</div>
+<div class="card">
+  <h3>Per-Squad Scorecard Comparison<span class="sort-hint">&#8597; click a column to sort</span></h3>
+  <table id="oeTable" class="sortable"><thead><tr><th data-k="0" data-type="text">Squad<span class="sarr">&#8597;</span></th><th data-k="1" data-type="num" style="text-align:center">Reliab<span class="sarr">&#8597;</span></th><th data-k="2" data-type="num" style="text-align:center">Scalab<span class="sarr">&#8597;</span></th><th data-k="3" data-type="num" style="text-align:center">Observ<span class="sarr">&#8597;</span></th><th data-k="4" data-type="num" style="text-align:center">Cost E<span class="sarr">&#8597;</span></th><th data-k="5" data-type="num" style="text-align:center">Owners<span class="sarr">&#8597;</span></th><th data-k="6" data-type="num" style="text-align:center">Docume<span class="sarr">&#8597;</span></th><th data-k="7" data-type="num" style="text-align:center">Automa<span class="sarr">&#8597;</span></th><th data-k="8" data-type="num" style="text-align:center">Securi<span class="sarr">&#8597;</span></th><th data-k="9" data-type="num" style="text-align:center">Overall<span class="sarr">&#8597;</span></th></tr></thead><tbody><tr><td style="font-weight:600;color:#e1e4ea;font-size:12px">P&P Backend</td><td style="text-align:center;font-size:12px;color:#34d399">87</td><td style="text-align:center;font-size:12px;color:#34d399">80</td><td style="text-align:center;font-size:12px;color:#fbbf24">76</td><td style="text-align:center;font-size:12px;color:#34d399">88</td><td style="text-align:center;font-size:12px;color:#34d399">93</td><td style="text-align:center;font-size:12px;color:#fbbf24">73</td><td style="text-align:center;font-size:12px;color:#fbbf24">78</td><td style="text-align:center;font-size:12px;color:#34d399">82</td><td style="text-align:center;font-weight:700;color:#34d399">82</td></tr><tr><td style="font-weight:600;color:#e1e4ea;font-size:12px">P&P Data Science</td><td style="text-align:center;font-size:12px;color:#34d399">85</td><td style="text-align:center;font-size:12px;color:#fbbf24">78</td><td style="text-align:center;font-size:12px;color:#34d399">80</td><td style="text-align:center;font-size:12px;color:#34d399">85</td><td style="text-align:center;font-size:12px;color:#34d399">90</td><td style="text-align:center;font-size:12px;color:#fbbf24">75</td><td style="text-align:center;font-size:12px;color:#34d399">82</td><td style="text-align:center;font-size:12px;color:#34d399">80</td><td style="text-align:center;font-weight:700;color:#34d399">82</td></tr><tr><td style="font-weight:600;color:#e1e4ea;font-size:12px">MC Deliverability</td><td style="text-align:center;font-size:12px;color:#34d399">90</td><td style="text-align:center;font-size:12px;color:#34d399">82</td><td style="text-align:center;font-size:12px;color:#fbbf24">78</td><td style="text-align:center;font-size:12px;color:#34d399">92</td><td style="text-align:center;font-size:12px;color:#34d399">88</td><td style="text-align:center;font-size:12px;color:#fbbf24">70</td><td style="text-align:center;font-size:12px;color:#fbbf24">76</td><td style="text-align:center;font-size:12px;color:#34d399">84</td><td style="text-align:center;font-weight:700;color:#34d399">82</td></tr><tr><td style="font-weight:600;color:#e1e4ea;font-size:12px">MC Promotional</td><td style="text-align:center;font-size:12px;color:#34d399">80</td><td style="text-align:center;font-size:12px;color:#fbbf24">75</td><td style="text-align:center;font-size:12px;color:#fbbf24">68</td><td style="text-align:center;font-size:12px;color:#fbbf24">78</td><td style="text-align:center;font-size:12px;color:#34d399">85</td><td style="text-align:center;font-size:12px;color:#fbbf24">65</td><td style="text-align:center;font-size:12px;color:#fbbf24">70</td><td style="text-align:center;font-size:12px;color:#fbbf24">76</td><td style="text-align:center;font-weight:700;color:#fbbf24">75</td></tr><tr><td style="font-weight:600;color:#e1e4ea;font-size:12px">Coupons</td><td style="text-align:center;font-size:12px;color:#fbbf24">78</td><td style="text-align:center;font-size:12px;color:#fbbf24">72</td><td style="text-align:center;font-size:12px;color:#fbbf24">70</td><td style="text-align:center;font-size:12px;color:#fbbf24">75</td><td style="text-align:center;font-size:12px;color:#34d399">85</td><td style="text-align:center;font-size:12px;color:#fbbf24">68</td><td style="text-align:center;font-size:12px;color:#fbbf24">72</td><td style="text-align:center;font-size:12px;color:#fbbf24">78</td><td style="text-align:center;font-weight:700;color:#fbbf24">75</td></tr><tr><td style="font-weight:600;color:#e1e4ea;font-size:12px">External Marketing</td><td style="text-align:center;font-size:12px;color:#fbbf24">72</td><td style="text-align:center;font-size:12px;color:#fbbf24">70</td><td style="text-align:center;font-size:12px;color:#fbbf24">65</td><td style="text-align:center;font-size:12px;color:#fbbf24">72</td><td style="text-align:center;font-size:12px;color:#34d399">80</td><td style="text-align:center;font-size:12px;color:#f87171">60</td><td style="text-align:center;font-size:12px;color:#fbbf24">65</td><td style="text-align:center;font-size:12px;color:#fbbf24">72</td><td style="text-align:center;font-weight:700;color:#fbbf24">70</td></tr><tr><td style="font-weight:600;color:#e1e4ea;font-size:12px">Ads &amp; Sponsored</td><td style="text-align:center;font-size:12px;color:#34d399">80</td><td style="text-align:center;font-size:12px;color:#fbbf24">78</td><td style="text-align:center;font-size:12px;color:#fbbf24">74</td><td style="text-align:center;font-size:12px;color:#34d399">80</td><td style="text-align:center;font-size:12px;color:#34d399">88</td><td style="text-align:center;font-size:12px;color:#fbbf24">72</td><td style="text-align:center;font-size:12px;color:#fbbf24">74</td><td style="text-align:center;font-size:12px;color:#34d399">80</td><td style="text-align:center;font-weight:700;color:#fbbf24">78</td></tr></tbody></table></div></section><section id="s11"><h2>AI-Generated Leadership Insights</h2>
+<p style="font-size:12px;color:#8b90a0;margin:0 0 16px">Generated using ORR status &amp; failing checks, cost metrics (Cloudability), incident history, and the service dependency graph.</p>
+<div class="insight-grid"><div class="insight"><span class="badge" style="background:rgba(248,113,113,.15);color:#f87171;border-color:rgba(248,113,113,.3)">&#9888; WORRY ABOUT</span><h4>3 Services in RED ORR</h4><p>3 of 72 services are RED. <b>gdpr</b> (Tier-1) is failing regulatory ORR checks &mdash; direct compliance exposure. <b>gss-cerebro-job-cloud</b> (Tier-1) runs batch infra on a legacy scheduler. Both sit in <b>MC Deliverability</b>. <b>paid-channel-analytics</b> (Tier-2, External Marketing) rounds out the three.</p><div class="action">&#8594; P0: assign owners and clear all 3 RED ORRs within 2 sprints; gdpr first given regulatory risk.</div></div><div class="insight"><span class="badge" style="background:rgba(167,139,250,.15);color:#a78bfa;border-color:rgba(167,139,250,.3)">&#128274; HIDDEN RISK</span><h4>Bus Factor on Critical Services</h4><p>6 services have a bus factor of 1 (&le;1 primary contributor in the last 3 weeks): 5 of them are <b>Tier-0</b> &mdash; incentive-service, pricing_service, mta, voucher-service, aog-ranking-service &mdash; plus <b>gdpr</b> (Tier-1, also RED). A single extended absence on any of these is an operational risk.</p><div class="action">&#8594; Pair-program / add a secondary owner on each bus-factor-1 service; prioritise the 5 Tier-0.</div></div><div class="insight"><span class="badge" style="background:rgba(251,191,36,.15);color:#fbbf24;border-color:rgba(251,191,36,.3)">&#128101; ORG BOTTLENECK</span><h4>gdpr is a Stacked Single Point of Failure</h4><p><b>gdpr</b> is simultaneously RED ORR, bus-factor-1, and carries the highest tech-debt score (78, High) for a failing regulatory check. Three independent risk signals converge on one Tier-1 service with one contributor &mdash; no redundancy.</p><div class="action">&#8594; Treat gdpr as a standalone remediation track: backfill ownership + fund the ORR/compliance fix.</div></div><div class="insight"><span class="badge" style="background:rgba(52,211,153,.15);color:#34d399;border-color:rgba(52,211,153,.3)">&#10003; RUNNING WELL</span><h4>Cloud Cost Discipline</h4><p>Monthly spend is <b>$324K</b> ($3.9M annualised), down <b>22% YoY</b> while GP grows. $10.6M/yr already captured over two years (MTA $450K + AWS&rarr;GCP $9M + Medallion email $1.1M). Portfolio cost-efficiency score computes to <b>81/100</b>.</p><div class="action">&#8594; Document the AWS&rarr;GCP + MTA playbook and apply it to the remaining legacy messaging infra.</div></div><div class="insight"><span class="badge" style="background:rgba(251,191,36,.15);color:#fbbf24;border-color:rgba(251,191,36,.3)">&#128176; COST OPPORTUNITY</span><h4>$365K/yr Optimisation Pipeline</h4><p>5 identified-but-unrealised optimisations from Cost Intelligence: Push infra multi-region consolidation ($6K/mo), Spark&rarr;BigQuery for paid analytics ($8K/mo), ephemeral dev/test environments ($9K/mo), emailsearch ES rightsizing ($3.5K/mo), and audience-pipeline consolidation ($4K/mo) &mdash; <b>$30.5K/mo &asymp; $365K/yr</b>.</p><div class="action">&#8594; Fund 1 platform engineer for 2 quarters to execute the pipeline; sequence by $/effort.</div></div><div class="insight"><span class="badge" style="background:rgba(245,158,11,.15);color:#f59e0b;border-color:rgba(245,158,11,.3)">&#128200; INVEST IN</span><h4>Concentration Risk on the P0 Revenue Chain</h4><p><b>incentive-service</b> is the top critical-path service with <b>12 downstream</b> dependents and is flagged SPOF on the P0 order-confirmation revenue chain (incentive &rarr; pricing &rarr; checkout). pricing_service (8 downstream) and global_subscription_service (6) are the next-largest SPOFs.</p><div class="action">&#8594; Invest in resilience for incentive-service: redundancy, circuit-breakers, and dependency-fan-out load tests.</div></div></div></section><section id="s12"><h2>Next Quarter Recommendations</h2><div class="rec-grid">
+  <div class="rec-tier" style="border-top:3px solid #f87171"><h3 style="color:#f87171">&#9650; Must Do</h3><p style="font-size:11px;color:#8b90a0;margin-bottom:12px">Highest impact &amp; urgency — address this quarter</p><div class="rec-item" style="border-left-color:#f87171"><div class="ri-title">1. Resolve 3 RED ORR services</div><div class="ri-meta">Impact: <span style="color:#e1e4ea">Risk</span> &nbsp;|&nbsp; Effort: <span style="color:#e1e4ea">Low</span> &nbsp;|&nbsp; Owner: <span style="color:#8b90a0">gdpr, paid-channel-analytics, gss-cerebro</span></div><div class="ri-meta" style="margin-top:4px;color:#f59e0b">Regulatory compliance + attribution accuracy</div></div><div class="rec-item" style="border-left-color:#f87171"><div class="ri-title">2. Meta Ads API v17 migration</div><div class="ri-meta">Impact: <span style="color:#e1e4ea">$5M+ GP at risk</span> &nbsp;|&nbsp; Effort: <span style="color:#e1e4ea">High</span> &nbsp;|&nbsp; Owner: <span style="color:#8b90a0">Paid Marketing squad focus</span></div><div class="ri-meta" style="margin-top:4px;color:#f59e0b">Avoid revenue disruption Q4 deadline</div></div><div class="rec-item" style="border-left-color:#f87171"><div class="ri-title">3. Purple Price EMEA expansion</div><div class="ri-meta">Impact: <span style="color:#e1e4ea">$2–4M GP</span> &nbsp;|&nbsp; Effort: <span style="color:#e1e4ea">Med</span> &nbsp;|&nbsp; Owner: <span style="color:#8b90a0">2 P&P engineers + PM</span></div><div class="ri-meta" style="margin-top:4px;color:#f59e0b">IE/NL/DE/BE from <20% → 50%+ PP adoption</div></div><div class="rec-item" style="border-left-color:#f87171"><div class="ri-title">4. Bus-factor mitigation Tier-0</div><div class="ri-meta">Impact: <span style="color:#e1e4ea">Risk reduction</span> &nbsp;|&nbsp; Effort: <span style="color:#e1e4ea">Low</span> &nbsp;|&nbsp; Owner: <span style="color:#8b90a0">Pair programming sessions</span></div><div class="ri-meta" style="margin-top:4px;color:#f59e0b">Single-owner Tier-0 services get 2nd owner</div></div></div>
+  <div class="rec-tier" style="border-top:3px solid #fbbf24"><h3 style="color:#fbbf24">&#9651; Should Do</h3><p style="font-size:11px;color:#8b90a0;margin-bottom:12px">Important improvements — plan and resource</p><div class="rec-item" style="border-left-color:#fbbf24"><div class="ri-title">1. Push on-call load balancing</div><div class="ri-meta">Impact: <span style="color:#e1e4ea">Team health</span> &nbsp;|&nbsp; Effort: <span style="color:#e1e4ea">Low</span> &nbsp;|&nbsp; Owner: <span style="color:#8b90a0">Rotate schedule across squads</span></div><div class="ri-meta" style="margin-top:4px;color:#f59e0b">Reduce Push squad on-call from 8h to 4h/week</div></div><div class="rec-item" style="border-left-color:#fbbf24"><div class="ri-title">2. Paid analytics Spark→BQ</div><div class="ri-meta">Impact: <span style="color:#e1e4ea">$96K/yr savings</span> &nbsp;|&nbsp; Effort: <span style="color:#e1e4ea">Med</span> &nbsp;|&nbsp; Owner: <span style="color:#8b90a0">1 data engineer, 1 quarter</span></div><div class="ri-meta" style="margin-top:4px;color:#f59e0b">Resolve RED ORR + cut cost 40%</div></div><div class="rec-item" style="border-left-color:#fbbf24"><div class="ri-title">3. Jira traceability to 80%+</div><div class="ri-meta">Impact: <span style="color:#e1e4ea">Quality</span> &nbsp;|&nbsp; Effort: <span style="color:#e1e4ea">Low</span> &nbsp;|&nbsp; Owner: <span style="color:#8b90a0">Engineering culture + hooks</span></div><div class="ri-meta" style="margin-top:4px;color:#f59e0b">Improve auditability across all squads</div></div><div class="rec-item" style="border-left-color:#fbbf24"><div class="ri-title">4. Observability uplift Tier-0</div><div class="ri-meta">Impact: <span style="color:#e1e4ea">Risk reduction</span> &nbsp;|&nbsp; Effort: <span style="color:#e1e4ea">Med</span> &nbsp;|&nbsp; Owner: <span style="color:#8b90a0">SRE + squad engineers</span></div><div class="ri-meta" style="margin-top:4px;color:#f59e0b">MTTR improvement -40% target</div></div></div>
+  <div class="rec-tier" style="border-top:3px solid #f59e0b"><h3 style="color:#f59e0b">&#9675; Could Do</h3><p style="font-size:11px;color:#8b90a0;margin-bottom:12px">Strategic long-term investments</p><div class="rec-item" style="border-left-color:#f59e0b"><div class="ri-title">1. AI-native campaign automation (MCP)</div><div class="ri-meta">Impact: <span style="color:#e1e4ea">$5M+ GP</span> &nbsp;|&nbsp; Effort: <span style="color:#e1e4ea">High</span> &nbsp;|&nbsp; Owner: <span style="color:#8b90a0">Platform team</span></div><div class="ri-meta" style="margin-top:4px;color:#f59e0b">Claude-driven campaign generation — 40% time reduction</div></div><div class="rec-item" style="border-left-color:#f59e0b"><div class="ri-title">2. Unified Pricing & Promotions API</div><div class="ri-meta">Impact: <span style="color:#e1e4ea">Dev velocity</span> &nbsp;|&nbsp; Effort: <span style="color:#e1e4ea">High</span> &nbsp;|&nbsp; Owner: <span style="color:#8b90a0">P&P + Platform</span></div><div class="ri-meta" style="margin-top:4px;color:#f59e0b">Single API surface for all pricing primitives</div></div><div class="rec-item" style="border-left-color:#f59e0b"><div class="ri-title">3. Service mesh modernization</div><div class="ri-meta">Impact: <span style="color:#e1e4ea">$500K/yr + latency -30%</span> &nbsp;|&nbsp; Effort: <span style="color:#e1e4ea">High</span> &nbsp;|&nbsp; Owner: <span style="color:#8b90a0">Multi-squad</span></div><div class="ri-meta" style="margin-top:4px;color:#f59e0b">Envoy/Istio rollout across Tier-0/1 services</div></div></div>
+</div></section><section id="s13"><h2>Score Methodology</h2>
+<div class="card">
+  <p style="font-size:13px;color:#8b90a0;margin:0 0 16px">The four headline scores at the top of this report are <b style="color:#e1e4ea">computed live from the data on this page</b>. Each is shown on a 0&ndash;100 scale. Definitions and formulas below.</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px">
+    <div style="border:1px solid #1a2540;border-radius:10px;padding:14px 16px;background:#0b1322">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="width:9px;height:9px;border-radius:99px;background:#34d399;display:inline-block"></span><b style="font-size:13px;color:#e1e4ea">Health Score</b><span id="mHealth" style="margin-left:auto;font-weight:700;color:#34d399"></span></div>
+      <div style="font-size:12px;color:#8b90a0;line-height:1.5">Tier-weighted rollup of <b style="color:#cfd6e0">ORR status</b> across all 72 services. Each service scores GREEN = 100, YELLOW = 60, RED = 0, weighted by tier (T0 &times;3, T1 &times;2, T2 &times;1) so critical services count more.</div>
+      <div style="font-size:11px;color:#5f7693;margin-top:8px;font-family:ui-monospace,Menlo,monospace">&Sigma;(orr&times;tierWeight) / &Sigma;(100&times;tierWeight)</div>
+    </div>
+    <div style="border:1px solid #1a2540;border-radius:10px;padding:14px 16px;background:#0b1322">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="width:9px;height:9px;border-radius:99px;background:#6c8cff;display:inline-block"></span><b style="font-size:13px;color:#e1e4ea">Reliability</b><span id="mReliab" style="margin-left:auto;font-weight:700;color:#6c8cff"></span></div>
+      <div style="font-size:12px;color:#8b90a0;line-height:1.5">Average of the <b style="color:#cfd6e0">Reliability</b> column from the Per-Squad ORR Scorecard (&sect; OpEx Scorecard), across all 7 squads. Reflects SLO attainment, error budgets and incident posture.</div>
+      <div style="font-size:11px;color:#5f7693;margin-top:8px;font-family:ui-monospace,Menlo,monospace">avg(squad.reliability)</div>
+    </div>
+    <div style="border:1px solid #1a2540;border-radius:10px;padding:14px 16px;background:#0b1322">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="width:9px;height:9px;border-radius:99px;background:#fbbf24;display:inline-block"></span><b style="font-size:13px;color:#e1e4ea">Cost Efficiency</b><span id="mCost" style="margin-left:auto;font-weight:700;color:#fbbf24"></span></div>
+      <div style="font-size:12px;color:#8b90a0;line-height:1.5">Average of the <b style="color:#cfd6e0">Cost Efficiency</b> column from the Per-Squad ORR Scorecard. Derived from actual-vs-budget cloud spend, MoM trend, and rightsizing / idle-waste signals (Cloudability in the live report).</div>
+      <div style="font-size:11px;color:#5f7693;margin-top:8px;font-family:ui-monospace,Menlo,monospace">avg(squad.costEfficiency)</div>
+    </div>
+    <div style="border:1px solid #1a2540;border-radius:10px;padding:14px 16px;background:#0b1322">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="width:9px;height:9px;border-radius:99px;background:#a78bfa;display:inline-block"></span><b style="font-size:13px;color:#e1e4ea">OpEx Maturity</b><span id="mOpex" style="margin-left:auto;font-weight:700;color:#a78bfa"></span></div>
+      <div style="font-size:12px;color:#8b90a0;line-height:1.5">Composite mean of all <b style="color:#cfd6e0">8 operational-excellence dimensions</b> (Reliability, Scalability, Observability, Cost, Ownership, Documentation, Automation, Security) across the 7 squads &mdash; the overall ORR maturity of the portfolio.</div>
+      <div style="font-size:11px;color:#5f7693;margin-top:8px;font-family:ui-monospace,Menlo,monospace">avg(all 8 dims &times; 7 squads)</div>
+    </div>
+  </div>
+  <p style="font-size:11px;color:#5f7693;margin:16px 0 0">Source data: Service Inventory ORR statuses (&sect; Service Inventory) and the Per-Squad ORR Scorecard (&sect; OpEx Scorecard). In the live report these dimensions come from Groupon Service Portal ORR check results; this is a mock with representative values.</p>
+</div></section></div></div><footer>
+  <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#2a4060;margin-bottom:8px">Engineering Intelligence Hub</div>
+  <div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap">
+    <span style="font-size:16px;font-weight:700;background:linear-gradient(90deg,#f59e0b,#fb923c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Himanshu Jain</span>
+    <span style="color:#2e3340">&middot;</span>
+    <span style="font-size:12px;color:#4a6080">Director &middot; Global Marketing &amp; Ads Platforms</span>
+    <span style="color:#2e3340">&middot;</span>
+    <span style="font-size:11px;color:#4a6080">72 services &middot; 53 engineers &middot; 2026-08-14</span>
+    <span style="color:#2e3340">&middot;</span>
+    <a href="https://www.linkedin.com/in/thehimanshujain/" target="_blank" style="font-size:11px;color:#f59e0b;text-decoration:none;font-weight:600;border:1px solid rgba(245,158,11,.5);background:rgba(245,158,11,.10);padding:3px 10px;border-radius:20px">LinkedIn &#8599;</a>
+  </div>
+</footer><script>
+(function(){
+  // Sidebar scroll
+  function goToSection(id){var el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});}
+  window.goToSection = goToSection;
+  var secs=document.querySelectorAll('section[id]');
+  var links=document.querySelectorAll('.nav-link');
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){if(e.isIntersecting){var id=e.target.id;links.forEach(function(l){l.classList.toggle('active',l.getAttribute('data-sec')===id);});}});
+  },{threshold:0.15});
+  secs.forEach(function(s){obs.observe(s);});
+
+})();
+(function(){
+  // Hub comet
+  var el=document.getElementById('hub-comet');
+  if(!el)return;
+  var deg=0;
+  function tick(){
+    el.style.background='conic-gradient(from '+deg+'deg, rgba(245,158,11,.05) 0%, rgba(245,158,11,.4) 70%, #f59e0b 88%, rgba(255,255,255,.9) 92%, transparent 96%, transparent 100%)';
+    deg=(deg+2.4)%360;
+    requestAnimationFrame(tick);
+  }
+  tick();
+}());
+(function(){
+
+  var COLORS=['#6c8cff','#34d399','#f59e0b','#a78bfa','#f87171','#06b6d4','#ec4899','#84cc16','#fbbf24','#10b981','#e879f9'];
+  var SQUADS=["P&P Backend", "P&P Data Science", "MC Deliverability", "MC Promotional", "Coupons", "External Marketing", "Ads & Sponsored"];
+  var SQUAD_MONTHLY=[62000, 9000, 89000, 44000, 59000, 43000, 18000];
+
+  // cSquadCost
+  var squadCostChart=null;
+  function renderSquadCost(kind){
+    if(squadCostChart) squadCostChart.destroy();
+    var isBar = kind==='bar';
+    if(isBar){
+      // sort squads high -> low for a clean ranked horizontal bar
+      var pairs=SQUADS.map(function(s,i){return {s:s,v:SQUAD_MONTHLY[i]};}).sort(function(a,b){return b.v-a.v;});
+      var labels=pairs.map(function(p){return p.s;}), vals=pairs.map(function(p){return p.v;});
+      squadCostChart=new Chart(document.getElementById('cSquadCost').getContext('2d'),{
+        type:'bar',
+        data:{labels:labels,datasets:[{label:'Monthly Spend',data:vals,backgroundColor:'#f59e0b',borderRadius:5,barThickness:18}]},
+        options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+          layout:{padding:{right:18}},
+          plugins:{legend:{display:false},
+            tooltip:{callbacks:{label:function(c){return '$'+c.parsed.x.toLocaleString()+'/mo';}}}},
+          scales:{
+            x:{ticks:{color:'#8b90a0',font:{size:10},callback:function(v){return '$'+(v/1000)+'K';}},grid:{color:'rgba(46,51,64,.5)'},border:{display:false}},
+            y:{ticks:{color:'#cfd6e0',font:{size:11}},grid:{display:false},border:{display:false}}
+          }}
+      });
+    } else {
+      squadCostChart=new Chart(document.getElementById('cSquadCost').getContext('2d'),{
+        type:'doughnut',
+        data:{labels:SQUADS,datasets:[{data:SQUAD_MONTHLY,backgroundColor:COLORS,borderColor:'#0f1117',borderWidth:2,hoverOffset:6}]},
+        options:{responsive:true,maintainAspectRatio:false,cutout:'58%',
+          plugins:{legend:{position:'right',labels:{color:'#cfd6e0',font:{size:11},padding:9,boxWidth:12,usePointStyle:true,pointStyle:'circle'}},
+            tooltip:{callbacks:{label:function(c){var t=c.dataset.data.reduce(function(a,b){return a+b;},0);return c.label+': $'+c.parsed.toLocaleString()+' ('+Math.round(c.parsed/t*100)+'%)';}}}}}
+      });
+    }
+  }
+  renderSquadCost('bar');
+  (function(){
+    var tg=document.getElementById('squadCostToggle');
+    if(tg) tg.addEventListener('click',function(e){
+      var b=e.target.closest('button'); if(!b) return;
+      Array.prototype.forEach.call(tg.children,function(x){x.classList.toggle('on',x===b);});
+      renderSquadCost(b.getAttribute('data-t'));
+    });
+  })();
+
+  // cAvail
+  new Chart(document.getElementById('cAvail').getContext('2d'),{
+    type:'bar',
+    data:{labels:["P&P Backend", "P&P Data Science", "MC Deliverability", "MC Promotional", "Coupons", "External Marketing", "Ads & Sponsored"],datasets:[{label:'Availability %',data:[99.98, 99.97, 99.94, 99.96, 99.87, 99.91, 99.72],backgroundColor:COLORS,borderRadius:4}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{x:{min:99.5,max:100,grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#8b90a0',callback:function(v){return v+'%';}}},y:{grid:{display:false},ticks:{color:'#e1e4ea',font:{size:11}}}}}
+  });
+
+  // cInc
+  new Chart(document.getElementById('cInc').getContext('2d'),{
+    type:'bar',
+    data:{labels:["Dec", "Jan", "Feb", "Mar", "Apr", "May"],datasets:[
+      {label:'P1',data:[2, 1, 3, 1, 0, 1],backgroundColor:'#ef4444',stack:'s'},
+      {label:'P2',data:[5, 4, 6, 3, 2, 3],backgroundColor:'#f59e0b',stack:'s'},
+      {label:'P3',data:[8, 7, 9, 5, 4, 4],backgroundColor:'#3b82f6',stack:'s'}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:'bottom',labels:{color:'#8b90a0',font:{size:10}}}},
+      scales:{x:{stacked:true,grid:{display:false},ticks:{color:'#8b90a0'}},y:{stacked:true,grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#8b90a0'}}}}
+  });
+
+  // cCostTrend
+  new Chart(document.getElementById('cCostTrend').getContext('2d'),{
+    type:'line',
+    data:{labels:["Mar 26", "Apr 26", "May 26", "Jun 26", "Jul 26", "Aug 26"],datasets:[{label:'Monthly Spend ($)',data:[310000, 305000, 298000, 291000, 282000, 274000],borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,.1)',borderWidth:2,fill:true,tension:.4,pointBackgroundColor:'#f59e0b'}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{x:{grid:{display:false},ticks:{color:'#8b90a0'}},y:{grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#8b90a0',callback:function(v){return '$'+(v/1000).toFixed(0)+'K';}}}}}
+  });
+
+  // cTopCost
+  new Chart(document.getElementById('cTopCost').getContext('2d'),{
+    type:'bar',
+    data:{labels:["rocketman-commercial", "incentive-service", "pricing_service", "aog-ranking-service", "global_subscription_service", "google-ads-integration", "push-client-proxy", "voucher-service", "bid-management-service", "rewards-engine"],datasets:[{label:'$K/mo',data:[89, 62, 48, 42, 38, 31, 28, 25, 22, 19],backgroundColor:COLORS,borderRadius:4}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{x:{grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#8b90a0',callback:function(v){return '$'+v+'K';}}},y:{grid:{display:false},ticks:{color:'#e1e4ea',font:{size:10}}}}}
+  });
+
+  // cOERadar
+  new Chart(document.getElementById('cOERadar').getContext('2d'),{
+    type:'radar',
+    data:{labels:["Reliability", "Scalability", "Observability", "Cost Efficiency", "Ownership", "Documentation", "Automation", "Security"],datasets:[
+      {label:'Portfolio',data:[82, 76, 73, 81, 87, 69, 74, 79],borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,.15)',borderWidth:2,pointBackgroundColor:'#f59e0b'},
+      {label:'Target',data:[90,90,90,90,90,90,90,90],borderColor:'rgba(52,211,153,.4)',backgroundColor:'transparent',borderWidth:1,borderDash:[4,4],pointRadius:0}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:'bottom',labels:{color:'#8b90a0',font:{size:10}}}},
+      scales:{r:{min:0,max:100,grid:{color:'rgba(255,255,255,.06)'},angleLines:{color:'rgba(255,255,255,.06)'},ticks:{color:'#8b90a0',font:{size:9},stepSize:20},pointLabels:{color:'#a8c8e0',font:{size:10}}}}}
+  });
+})();
+</script><script>
+(function(){
+  function num(el){return parseInt((el.textContent||'').replace(/[^0-9]/g,''),10);}
+  // --- pull service data from the Service Inventory accordion blob ---
+  var data=[];
+  try{
+    var scripts=document.querySelectorAll('script');
+    for(var i=0;i<scripts.length;i++){var mm=scripts[i].textContent.match(/const DATA=(\[[\s\S]*?\]);/);if(mm){data=JSON.parse(mm[1]);break;}}
+  }catch(e){}
+  // --- Health: tier-weighted ORR ---
+  var orrVal={GREEN:100,YELLOW:60,RED:0},tw={T0:3,T1:2,T2:1},n=0,d2=0;
+  data.forEach(function(s){var w=tw[s.tier]||1;n+=(orrVal[s.orr]||0)*w;d2+=100*w;});
+  var health=d2?Math.round(n/d2*100):0;
+  // --- parse the OpEx Scorecard table (last table whose header has Reliab/Overall) ---
+  var rows=[],tables=document.querySelectorAll('table');
+  tables.forEach(function(t){var head=t.querySelector('thead');if(!head)return;var hl=head.textContent;if(hl.indexOf('Reliab')>=0&&hl.indexOf('Overall')>=0){
+    t.querySelectorAll('tbody tr').forEach(function(tr){var tds=tr.querySelectorAll('td');if(tds.length>=10){var v=[];for(var j=1;j<=8;j++){v.push(parseInt(tds[j].textContent,10));}if(v.every(function(x){return !isNaN(x);}))rows.push(v);}});
+  }});
+  function colAvg(idx){if(!rows.length)return 0;var s=0;rows.forEach(function(r){s+=r[idx];});return Math.round(s/rows.length);}
+  var reliab=colAvg(0), cost=colAvg(3);
+  var opex=0;if(rows.length){var tot=0,c=0;rows.forEach(function(r){r.forEach(function(x){tot+=x;c++;});});opex=Math.round(tot/c);}
+  function set(id,v){var el=document.getElementById(id);if(el)el.textContent=v;}
+  set('scoreHealth',health);set('scoreReliab',reliab);set('scoreCost',cost);set('scoreOpex',opex);
+  set('mHealth',health+'/100');set('mReliab',reliab+'/100');set('mCost',cost+'/100');set('mOpex',opex+'/100');
+})();
+</script>
+<script>
+(function(){
+  function wire(table){
+    if(!table) return;
+    var tbody=table.querySelector('tbody'); var ths=table.querySelectorAll('thead th');
+    function cellVal(tr,k,type){var td=tr.children[k];var txt=(td.textContent||'').trim();if(type==='num'){var n=parseFloat(txt.replace(/[^0-9.\-]/g,''));return isNaN(n)?0:n;}return txt.toLowerCase();}
+    ths.forEach(function(th){th.addEventListener('click',function(){
+      var k=parseInt(th.getAttribute('data-k'),10),type=th.getAttribute('data-type');
+      var asc=!th.classList.contains('sort-asc');
+      ths.forEach(function(x){x.classList.remove('sort-asc','sort-desc');});
+      th.classList.add(asc?'sort-asc':'sort-desc');
+      var rows=Array.prototype.slice.call(tbody.querySelectorAll('tr'));
+      rows.sort(function(a,b){var x=cellVal(a,k,type),y=cellVal(b,k,type);if(x<y)return asc?-1:1;if(x>y)return asc?1:-1;return 0;});
+      rows.forEach(function(r){tbody.appendChild(r);});
+    });});
+  }
+  document.querySelectorAll('table.sortable').forEach(wire);
+})();
+</script>
+</body></html>
