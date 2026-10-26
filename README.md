@@ -2,6 +2,8 @@
 
 Director of Software Engineering. I build high-impact engineering teams and scalable platforms, and I use automation and AI to give leaders a clear view of how their systems and teams are doing.
 
+18+ years building and scaling engineering teams across marketing, ads, pricing and platform engineering.
+
 🌐 **[thehimanshujain.com](https://thehimanshujain.com)**
 
 ---
